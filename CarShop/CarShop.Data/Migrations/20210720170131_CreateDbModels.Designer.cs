@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210719141302_MakeSomeDbColumsNullable")]
-    partial class MakeSomeDbColumsNullable
+    [Migration("20210720170131_CreateDbModels")]
+    partial class CreateDbModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,96 @@ namespace CarShop.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("CarComfort", b =>
+                {
+                    b.Property<int>("CarsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ComfortPropertiesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CarsId", "ComfortPropertiesId");
+
+                    b.HasIndex("ComfortPropertiesId");
+
+                    b.ToTable("CarComfort");
+                });
+
+            modelBuilder.Entity("CarExterior", b =>
+                {
+                    b.Property<int>("CarsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExteriorPropertiesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CarsId", "ExteriorPropertiesId");
+
+                    b.HasIndex("ExteriorPropertiesId");
+
+                    b.ToTable("CarExterior");
+                });
+
+            modelBuilder.Entity("CarInterior", b =>
+                {
+                    b.Property<int>("CarsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InteriorPropertiesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CarsId", "InteriorPropertiesId");
+
+                    b.HasIndex("InteriorPropertiesId");
+
+                    b.ToTable("CarInterior");
+                });
+
+            modelBuilder.Entity("CarOther", b =>
+                {
+                    b.Property<int>("CarsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OtherPropertiesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CarsId", "OtherPropertiesId");
+
+                    b.HasIndex("OtherPropertiesId");
+
+                    b.ToTable("CarOther");
+                });
+
+            modelBuilder.Entity("CarProtection", b =>
+                {
+                    b.Property<int>("CarsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProtectionPropertiesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CarsId", "ProtectionPropertiesId");
+
+                    b.HasIndex("ProtectionPropertiesId");
+
+                    b.ToTable("CarProtection");
+                });
+
+            modelBuilder.Entity("CarSafety", b =>
+                {
+                    b.Property<int>("CarsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SafetyPropertiesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CarsId", "SafetyPropertiesId");
+
+                    b.HasIndex("SafetyPropertiesId");
+
+                    b.ToTable("CarSafety");
+                });
 
             modelBuilder.Entity("CarShop.Data.Models.Brand", b =>
                 {
@@ -65,8 +155,8 @@ namespace CarShop.Data.Migrations
                     b.Property<int?>("HorsePower")
                         .HasColumnType("int");
 
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ImageId")
+                        .HasColumnType("int");
 
                     b.Property<int>("ModelId")
                         .HasColumnType("int");
@@ -85,7 +175,7 @@ namespace CarShop.Data.Migrations
                     b.Property<int>("TransmisionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TravelledDistance")
+                    b.Property<int?>("TravelledDistance")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -97,6 +187,8 @@ namespace CarShop.Data.Migrations
                     b.HasIndex("EngineTypeId");
 
                     b.HasIndex("EuroStandardId");
+
+                    b.HasIndex("ImageId");
 
                     b.HasIndex("ModelId");
 
@@ -112,15 +204,10 @@ namespace CarShop.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CarId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CarId");
 
                     b.ToTable("ComfortProperties");
                 });
@@ -177,17 +264,27 @@ namespace CarShop.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CarId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarId");
-
                     b.ToTable("ExteriorProperties");
+                });
+
+            modelBuilder.Entity("CarShop.Data.Models.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("CarShop.Data.Models.Interior", b =>
@@ -197,15 +294,10 @@ namespace CarShop.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CarId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CarId");
 
                     b.ToTable("InteriorProperties");
                 });
@@ -217,10 +309,15 @@ namespace CarShop.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("BrandId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
 
                     b.ToTable("Models");
                 });
@@ -232,15 +329,10 @@ namespace CarShop.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CarId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CarId");
 
                     b.ToTable("OtherProperties");
                 });
@@ -283,15 +375,10 @@ namespace CarShop.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CarId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CarId");
 
                     b.ToTable("ProtectionProperties");
                 });
@@ -303,15 +390,10 @@ namespace CarShop.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CarId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CarId");
 
                     b.ToTable("SafetyProperties");
                 });
@@ -323,15 +405,10 @@ namespace CarShop.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CarId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CarId");
 
                     b.ToTable("SpecialProperties");
                 });
@@ -349,6 +426,21 @@ namespace CarShop.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TransmisionTypes");
+                });
+
+            modelBuilder.Entity("CarSpecial", b =>
+                {
+                    b.Property<int>("CarsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SpecialPropertiesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CarsId", "SpecialPropertiesId");
+
+                    b.HasIndex("SpecialPropertiesId");
+
+                    b.ToTable("CarSpecial");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -551,6 +643,96 @@ namespace CarShop.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("CarComfort", b =>
+                {
+                    b.HasOne("CarShop.Data.Models.Car", null)
+                        .WithMany()
+                        .HasForeignKey("CarsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CarShop.Data.Models.Comfort", null)
+                        .WithMany()
+                        .HasForeignKey("ComfortPropertiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CarExterior", b =>
+                {
+                    b.HasOne("CarShop.Data.Models.Car", null)
+                        .WithMany()
+                        .HasForeignKey("CarsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CarShop.Data.Models.Exterior", null)
+                        .WithMany()
+                        .HasForeignKey("ExteriorPropertiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CarInterior", b =>
+                {
+                    b.HasOne("CarShop.Data.Models.Car", null)
+                        .WithMany()
+                        .HasForeignKey("CarsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CarShop.Data.Models.Interior", null)
+                        .WithMany()
+                        .HasForeignKey("InteriorPropertiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CarOther", b =>
+                {
+                    b.HasOne("CarShop.Data.Models.Car", null)
+                        .WithMany()
+                        .HasForeignKey("CarsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CarShop.Data.Models.Other", null)
+                        .WithMany()
+                        .HasForeignKey("OtherPropertiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CarProtection", b =>
+                {
+                    b.HasOne("CarShop.Data.Models.Car", null)
+                        .WithMany()
+                        .HasForeignKey("CarsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CarShop.Data.Models.Protection", null)
+                        .WithMany()
+                        .HasForeignKey("ProtectionPropertiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CarSafety", b =>
+                {
+                    b.HasOne("CarShop.Data.Models.Car", null)
+                        .WithMany()
+                        .HasForeignKey("CarsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CarShop.Data.Models.Safety", null)
+                        .WithMany()
+                        .HasForeignKey("SafetyPropertiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CarShop.Data.Models.Car", b =>
                 {
                     b.HasOne("CarShop.Data.Models.Brand", "Brand")
@@ -575,6 +757,12 @@ namespace CarShop.Data.Migrations
                         .WithMany()
                         .HasForeignKey("EuroStandardId");
 
+                    b.HasOne("CarShop.Data.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CarShop.Data.Models.Model", "Model")
                         .WithMany()
                         .HasForeignKey("ModelId")
@@ -595,37 +783,22 @@ namespace CarShop.Data.Migrations
 
                     b.Navigation("EuroStandard");
 
+                    b.Navigation("Image");
+
                     b.Navigation("Model");
 
                     b.Navigation("Transmision");
                 });
 
-            modelBuilder.Entity("CarShop.Data.Models.Comfort", b =>
+            modelBuilder.Entity("CarShop.Data.Models.Model", b =>
                 {
-                    b.HasOne("CarShop.Data.Models.Car", null)
-                        .WithMany("ComfortProperties")
-                        .HasForeignKey("CarId");
-                });
+                    b.HasOne("CarShop.Data.Models.Brand", "Brand")
+                        .WithMany("Models")
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-            modelBuilder.Entity("CarShop.Data.Models.Exterior", b =>
-                {
-                    b.HasOne("CarShop.Data.Models.Car", null)
-                        .WithMany("ExteriorProperties")
-                        .HasForeignKey("CarId");
-                });
-
-            modelBuilder.Entity("CarShop.Data.Models.Interior", b =>
-                {
-                    b.HasOne("CarShop.Data.Models.Car", null)
-                        .WithMany("InteriorProperties")
-                        .HasForeignKey("CarId");
-                });
-
-            modelBuilder.Entity("CarShop.Data.Models.Other", b =>
-                {
-                    b.HasOne("CarShop.Data.Models.Car", null)
-                        .WithMany("OtherProperties")
-                        .HasForeignKey("CarId");
+                    b.Navigation("Brand");
                 });
 
             modelBuilder.Entity("CarShop.Data.Models.Post", b =>
@@ -643,25 +816,19 @@ namespace CarShop.Data.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("CarShop.Data.Models.Protection", b =>
+            modelBuilder.Entity("CarSpecial", b =>
                 {
                     b.HasOne("CarShop.Data.Models.Car", null)
-                        .WithMany("ProtectionProperties")
-                        .HasForeignKey("CarId");
-                });
+                        .WithMany()
+                        .HasForeignKey("CarsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("CarShop.Data.Models.Safety", b =>
-                {
-                    b.HasOne("CarShop.Data.Models.Car", null)
-                        .WithMany("SafetyProperties")
-                        .HasForeignKey("CarId");
-                });
-
-            modelBuilder.Entity("CarShop.Data.Models.Special", b =>
-                {
-                    b.HasOne("CarShop.Data.Models.Car", null)
-                        .WithMany("SpecialProperties")
-                        .HasForeignKey("CarId");
+                    b.HasOne("CarShop.Data.Models.Special", null)
+                        .WithMany()
+                        .HasForeignKey("SpecialPropertiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -715,21 +882,9 @@ namespace CarShop.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CarShop.Data.Models.Car", b =>
+            modelBuilder.Entity("CarShop.Data.Models.Brand", b =>
                 {
-                    b.Navigation("ComfortProperties");
-
-                    b.Navigation("ExteriorProperties");
-
-                    b.Navigation("InteriorProperties");
-
-                    b.Navigation("OtherProperties");
-
-                    b.Navigation("ProtectionProperties");
-
-                    b.Navigation("SafetyProperties");
-
-                    b.Navigation("SpecialProperties");
+                    b.Navigation("Models");
                 });
 #pragma warning restore 612, 618
         }

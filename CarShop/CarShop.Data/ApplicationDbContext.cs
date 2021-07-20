@@ -6,6 +6,11 @@ namespace CarShop.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+        public ApplicationDbContext()
+        {
+
+        }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -26,10 +31,25 @@ namespace CarShop.Data
         public DbSet<Transmision> TransmisionTypes { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Model> Models { get; set; }
+        public DbSet<Image> Images { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            // Not best practice but it is a solution for now
+            // TODO: Fix this thing
+            optionsBuilder.UseSqlServer("Server=.;Database=CarShop;Trusted_Connection=True;MultipleActiveResultSets=true");
+
+            base.OnConfiguring(optionsBuilder);
+        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Car>().Property(x => x.Price).HasPrecision(14, 2);
+            builder.Entity<Model>()
+                .HasOne(x => x.Brand)
+                .WithMany(x => x.Models)
+                .HasForeignKey(x => x.BrandId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);
         }

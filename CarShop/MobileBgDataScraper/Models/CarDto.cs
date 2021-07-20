@@ -18,7 +18,6 @@
             SpecialProperties = new List<string>();
         }
 
-        public int Id { get; set; }
 
         public string Brand { get; set; }
 
@@ -50,18 +49,18 @@
 
         public string ImageUrl { get; set; }
 
-        public virtual IEnumerable<string> SafetyProperties { get; set; }
+        public virtual ICollection<string> SafetyProperties { get; set; }
 
-        public virtual IEnumerable<string> ComfortProperties { get; set; }
+        public virtual ICollection<string> ComfortProperties { get; set; }
 
-        public virtual IEnumerable<string> OtherProperties { get; set; }
+        public virtual ICollection<string> OtherProperties { get; set; }
 
-        public virtual IEnumerable<string> ExteriorProperties { get; set; }
+        public virtual ICollection<string> ExteriorProperties { get; set; }
 
-        public virtual IEnumerable<string> InteriorProperties { get; set; }
+        public virtual ICollection<string> InteriorProperties { get; set; }
 
-        public virtual IEnumerable<string> ProtectionProperties { get; set; }
+        public virtual ICollection<string> ProtectionProperties { get; set; }
 
-        public virtual IEnumerable<string> SpecialProperties { get; set; }
+        public virtual ICollection<string> SpecialProperties { get; set; }
     }
 }
