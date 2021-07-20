@@ -6,9 +6,10 @@
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
+    using MobileBgDataScraper.Models;
+
     using AngleSharp;
     using AngleSharp.Dom;
-    using MobileBgDataScraper.Models;
 
     class Program
     {
@@ -20,15 +21,17 @@
             config = Configuration.Default.WithDefaultLoader();
             context = BrowsingContext.New(config);
 
-            var car = GetCar("https://www.mobile.bg/pcgi/mobile.cgi?act=4&adv=11626433709764309&slink=kt4wy4");
-            var car2 = GetCar("https://www.mobile.bg/pcgi/mobile.cgi?act=4&adv=11620798005281686");
-            var car3 = GetCar("https://www.mobile.bg/pcgi/mobile.cgi?act=4&adv=21626358782196243");
-            var car4 = GetCar("https://www.mobile.bg/pcgi/mobile.cgi?act=4&adv=11625407559751380");
+            var car = GetCar("https://www.mobile.bg/pcgi/mobile.cgi?act=4&adv=11626433709764309");// Alfa
+            var car2 = GetCar("https://www.mobile.bg/pcgi/mobile.cgi?act=4&adv=11620798005281686"); // Golf 
+            var car3 = GetCar("https://www.mobile.bg/pcgi/mobile.cgi?act=4&adv=21626358782196243"); // Acura
+            var car4 = GetCar("https://www.mobile.bg/pcgi/mobile.cgi?act=4&adv=11625407559751380"); // A3
+            var car5 = GetCar("https://www.mobile.bg/pcgi/mobile.cgi?act=4&adv=11626702518884978"); // Tesla
 
             return;
-            
+
             // Iterate through pages with posts
-            Parallel.For(1, 10, (i) => {
+            Parallel.For(1, 10, (i) =>
+            {
                 var url = $"https://www.mobile.bg/pcgi/mobile.cgi?act=3&slink=kt4wy4&f1={i}";
                 Console.WriteLine(url);
                 var postUrls = GetPostUrls(url);
@@ -60,6 +63,14 @@
 
             car.ProduceYear = GetYear(document);
             car.EngineType = GetEngineType(document);
+            car.HorsePower = GetHorsePower(document);
+            car.EuroStandard = GetEuroStandard(document);
+            car.Transmision = GetTransmisionType(document);
+            car.CoupeType = GetCoupeType(document);
+            car.TravelledDistance = GetTravelledDistance(document);
+            car.Color = GetColor(document);
+
+            car.SafetyProperties = GetSafetyProps(document);
 
             return null;
         }
@@ -84,7 +95,7 @@
             var titleLine = document.QuerySelector("h1").TextContent;
 
             var brandRegex = new Regex(@"'AdvertBrand':\s?\['([A-z\s]+)'\]");
-            var modelRegex = new Regex(@"'AdvertModel':\s?\['([A-z0-9]+)'\]");
+            var modelRegex = new Regex(@"'AdvertModel':\s?\['(.*?)'\]");
 
             var brandMatch = brandRegex.Match(html);
             var modelMatch = modelRegex.Match(html);
@@ -147,9 +158,102 @@
 
         private static string GetEngineType(IDocument document)
         {
-            var engineType = document.QuerySelectorAll(".dilarData li").Where(x => x.TextContent == "Тип двигател");
+            var html = document.DocumentElement.OuterHtml;
+            var engineType = Regex
+                .Match(html, @"'AdvertEngineType':\s?\['(.*?)'\]")
+                .Groups[1]
+                .Value;
 
-            return "";
+            return engineType;
+        }
+
+        private static int? GetHorsePower(IDocument document)
+        {
+            var hpAsString = document.QuerySelector(".dilarData").TextContent;
+            hpAsString = Regex.Match(hpAsString, @"(\d+)\s? к\.с\.").Groups[1].Value;
+
+            var hp = 0;
+            int.TryParse(hpAsString, out hp);
+
+            if (hp == 0)
+            {
+                return null;
+            }
+
+            return hp;
+        }
+
+        private static string GetEuroStandard(IDocument document)
+        {
+            var dilarData = document.QuerySelector(".dilarData").InnerHtml;
+            var euroStandard = Regex
+                .Match(dilarData, @"<li>Евростандарт<\/li><li>(.* \d)<\/li>")
+                .Groups[1]
+                .Value;
+
+            return euroStandard == "" ? null : euroStandard;
+        }
+
+        private static string GetTransmisionType(IDocument document)
+        {
+            var dilarData = document.QuerySelector(".dilarData").InnerHtml;
+            var transmisionType = Regex
+                .Match(dilarData, @"<li>Скоростна кутия<\/li><li>(.+?)<\/li>")
+                .Groups[1]
+                .Value;
+
+            return transmisionType == "" ? null : transmisionType;
+        }
+
+        private static string GetCoupeType(IDocument document)
+        {
+            var dilarData = document.QuerySelector(".dilarData").InnerHtml;
+            var coupeType = Regex
+                .Match(dilarData, @"<li>Категория<\/li><li>(.+?)<\/li>")
+                .Groups[1]
+                .Value;
+
+            return coupeType == "" ? null : coupeType;
+        }
+
+        private static int? GetTravelledDistance(IDocument document)
+        {
+            var dilarData = document.QuerySelector(".dilarData").InnerHtml;
+            var travelledDistanceAsString = Regex
+                .Match(dilarData, @"<li>Пробег<\/li><li>(.+?)<\/li>")
+                .Groups[1]
+                .Value
+                .Replace("км", "")
+                .Trim('.', ' ');
+
+            var travelledDistance = 0;
+
+            int.TryParse(travelledDistanceAsString, out travelledDistance);
+
+            if (travelledDistance == 0)
+            {
+                return null;
+            }
+
+            return travelledDistance;
+        }
+
+        private static string GetColor(IDocument document)
+        {
+            var dilarData = document.QuerySelector(".dilarData").InnerHtml;
+            var color = Regex
+                .Match(dilarData, @"<li>Цвят<\/li><li>(.+?)<\/li>")
+                .Groups[1]
+                .Value;
+
+            return color == "" ? null : color;
+        }
+
+        private static IEnumerable<string> GetSafetyProps(IDocument document)
+        {
+            var table = document.QuerySelector(".newAdImages + div + div + div + table").InnerHtml;
+
+            return new List<string>();
         }
     }
 }

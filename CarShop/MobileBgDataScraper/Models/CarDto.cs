@@ -36,15 +36,15 @@
 
         public string EngineType { get; set; }
 
-        public int HorsePower { get; set; }
-
+        public int? HorsePower { get; set; }
+        
         public string EuroStandard { get; set; }
 
         public string Transmision { get; set; }
 
         public string CoupeType { get; set; }
 
-        public int TravelledDistance { get; set; }
+        public int? TravelledDistance { get; set; }
 
         public string Color { get; set; }
 
