@@ -1,2 +1,2 @@
 # CarShop
-Basic app for selling and buying cars
+Basic app for selling and buying cars.
