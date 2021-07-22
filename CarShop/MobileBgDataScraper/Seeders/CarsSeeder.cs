@@ -34,20 +34,22 @@
             newCar.TravelledDistance = car.TravelledDistance;
             newCar.Color = car.Color;
             newCar.ImageId = GetImageId(car.ImageUrl);
-            newCar.SafetyProperties = GetSefetyPropsIds(car.SafetyProperties);
-            newCar.ComfortProperties = GetComfortPropsIds(car.ComfortProperties);
-            newCar.OtherProperties = GetOtherPropsId(car.OtherProperties);
-            newCar.ExteriorProperties = GetExteriorPropsIds(car.ExteriorProperties);
-            newCar.InteriorProperties = GetInteriorPropsIds(car.InteriorProperties);
-            newCar.ProtectionProperties = GetProtectionPropsIds(car.ProtectionProperties);
-            newCar.SpecialProperties = GetSpecialPropsIds(car.SpecialProperties);
+            newCar.SafetyProperties = GetSefetyProps(car.SafetyProperties);
+            newCar.ComfortProperties = GetComfortProps(car.ComfortProperties);
+            newCar.OtherProperties = GetOtherProps(car.OtherProperties);
+            newCar.ExteriorProperties = GetExteriorProps(car.ExteriorProperties);
+            newCar.InteriorProperties = GetInteriorProps(car.InteriorProperties);
+            newCar.ProtectionProperties = GetProtectionProps(car.ProtectionProperties);
+            newCar.SpecialProperties = GetSpecialProps(car.SpecialProperties);
 
             db.Cars.Add(newCar);
-            //db.SaveChanges();
+            db.SaveChanges();
         }
 
-        private IEnumerable<Special> GetSpecialPropsIds(ICollection<string> specialProperties)
+        private IEnumerable<Special> GetSpecialProps(ICollection<string> specialProperties)
         {
+            var result = new List<Special>();
+
             foreach (var prop in specialProperties)
             {
                 var newProp = db
@@ -62,12 +64,16 @@
                     newProp = newRecord;
                 }
 
-                yield return newProp;
+                result.Add(newProp);
             }
+
+            return result;
         }
 
-        private IEnumerable<Protection> GetProtectionPropsIds(ICollection<string> protectionProperties)
+        private IEnumerable<Protection> GetProtectionProps(ICollection<string> protectionProperties)
         {
+            var result = new List<Protection>();
+
             foreach (var prop in protectionProperties)
             {
                 var newProp = db
@@ -82,12 +88,16 @@
                     newProp = newRecord;
                 }
 
-                yield return newProp;
+                result.Add(newProp);
             }
+
+            return result;
         }
 
-        private IEnumerable<Interior> GetInteriorPropsIds(ICollection<string> interiorProperties)
+        private IEnumerable<Interior> GetInteriorProps(ICollection<string> interiorProperties)
         {
+            var result = new List<Interior>();
+
             foreach (var prop in interiorProperties)
             {
                 var newProp = db
@@ -102,12 +112,16 @@
                     newProp = newRecord;
                 }
 
-                yield return newProp;
+                result.Add(newProp);
             }
+
+            return result;
         }
 
-        private IEnumerable<Exterior> GetExteriorPropsIds(ICollection<string> exteriorProperties)
+        private IEnumerable<Exterior> GetExteriorProps(ICollection<string> exteriorProperties)
         {
+            var result = new List<Exterior>();
+
             foreach (var prop in exteriorProperties)
             {
                 var newProp = db
@@ -122,12 +136,16 @@
                     newProp = newRecord;
                 }
 
-                yield return newProp;
+                result.Add(newProp);
             }
+
+            return result;
         }
 
-        private IEnumerable<Other> GetOtherPropsId(ICollection<string> otherProperties)
+        private IEnumerable<Other> GetOtherProps(ICollection<string> otherProperties)
         {
+            var result = new List<Other>();
+
             foreach (var prop in otherProperties)
             {
                 var newProp = db
@@ -142,12 +160,16 @@
                     newProp = newRecord;
                 }
 
-                yield return newProp;
+                result.Add(newProp);
             }
+
+            return result;
         }
 
-        private IEnumerable<Comfort> GetComfortPropsIds(ICollection<string> comfortProperties)
+        private IEnumerable<Comfort> GetComfortProps(ICollection<string> comfortProperties)
         {
+            var result = new List<Comfort>();
+
             foreach (var prop in comfortProperties)
             {
                 var newProp = db
@@ -162,12 +184,16 @@
                     newProp = newRecord;
                 }
 
-                yield return newProp;
+                result.Add(newProp);
             }
+
+            return result;
         }
 
-        private IEnumerable<Safety> GetSefetyPropsIds(ICollection<string> safetyProperties)
+        private IEnumerable<Safety> GetSefetyProps(ICollection<string> safetyProperties)
         {
+            var result = new List<Safety>();
+
             foreach (var prop in safetyProperties)
             {
                 var newProp = db
@@ -182,8 +208,10 @@
                     newProp = newRecord;
                 }
 
-                yield return newProp;
+                result.Add(newProp);
             }
+
+            return result;
         }
 
         private int GetImageId(string imageUrl)

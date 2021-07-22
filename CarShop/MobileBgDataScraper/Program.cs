@@ -25,7 +25,7 @@
 
             var carsService = new CarService(config, context);
 
-            var cars = carsService.PopulateCars(1, 5);
+            var cars = carsService.PopulateCars(1, 2);
 
             var carsSeeder = new CarsSeeder(new ApplicationDbContext());
 
