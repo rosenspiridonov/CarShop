@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210726193239_OnDeleteRestrict")]
+    [Migration("20210726200007_OnDeleteRestrict")]
     partial class OnDeleteRestrict
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -254,7 +254,6 @@ namespace CarShop.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

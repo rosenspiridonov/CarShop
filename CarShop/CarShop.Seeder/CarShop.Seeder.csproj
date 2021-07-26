@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MobileBgDataScraper\MobileBgDataScraper.csproj" />
+    <ProjectReference Include="..\CarShop.MobileBgScraper\CarShop.MobileBgScraper.csproj" />
   </ItemGroup>
 
 </Project>

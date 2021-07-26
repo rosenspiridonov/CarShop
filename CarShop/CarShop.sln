@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarShop", "CarShop\CarShop.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarShop.Data", "CarShop.Data\CarShop.Data.csproj", "{C3AF3798-1C74-49DA-AABA-FA3C286F6950}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileBgDataScraper", "MobileBgDataScraper\MobileBgDataScraper.csproj", "{114161D8-1AFC-49F2-9EBC-833CBFE4F0C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileBgDataScraper", "CarShop.MobileBgScraper\CarShop.MobileBgScraper.csproj", "{114161D8-1AFC-49F2-9EBC-833CBFE4F0C3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sandbox", "Sandbox\Sandbox.csproj", "{0F6FDBD4-F61F-4EEC-BA35-3EDA00E8736B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarShop.Seeder", "CarShop.Seeder\CarShop.Seeder.csproj", "{D015FC60-6785-4A1B-B483-CA4BDABDC065}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarShop.Seeder", "CarShop.Seeder\CarShop.Seeder.csproj", "{D015FC60-6785-4A1B-B483-CA4BDABDC065}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
