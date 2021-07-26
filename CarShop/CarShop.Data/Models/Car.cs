@@ -29,33 +29,33 @@
         [MaxLength(CarModificationMaxLength)]
         public string Modification { get; set; }
 
-        public decimal Price { get; set; }//
+        public decimal Price { get; set; }
 
         [MaxLength(CarDescriptionMaxLength)]
-        public string Description { get; set; }//
+        public string Description { get; set; }
 
-        public int ProduceYear { get; set; }//
+        public int ProduceYear { get; set; }
 
         public virtual Engine EngineType { get; set; }
-        public int EngineTypeId { get; set; }//
+        public int EngineTypeId { get; set; }
 
-        public int? HorsePower { get; set; }//
+        public int? HorsePower { get; set; }
 
         public virtual EuroStandard EuroStandard { get; set; }
-        public int? EuroStandardId { get; set; }//
+        public int? EuroStandardId { get; set; }
 
         public virtual Transmision Transmision { get; set; }
-        public int TransmisionId { get; set; }//
+        public int TransmisionId { get; set; }
 
         public virtual Coupe CoupeType { get; set; }
-        public int CoupeTypeId { get; set; }//
+        public int CoupeTypeId { get; set; }
 
-        public int? TravelledDistance { get; set; }//
+        public int? TravelledDistance { get; set; }
 
-        public string Color { get; set; }//
+        public string Color { get; set; }
 
         public virtual Image Image { get; set; }
-        public int ImageId { get; set; }//
+        public int ImageId { get; set; }
 
         public virtual IEnumerable<Safety> SafetyProperties { get; set; }
                 

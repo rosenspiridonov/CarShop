@@ -14,10 +14,10 @@
         private readonly IConfiguration config;
         private readonly IBrowsingContext context;
 
-        public CarService(IConfiguration config, IBrowsingContext context)
+        public CarService()
         {
-            this.config = config;
-            this.context = context;
+            this.config = Configuration.Default.WithDefaultLoader();
+            this.context = BrowsingContext.New(config);
         }
 
         public IEnumerable<CarDto> PopulateCars(int startPage, int endPage)
@@ -27,7 +27,7 @@
             // Iterate through pages with posts
             Parallel.For(startPage, endPage, (i) =>
             {
-                var url = $"https://www.mobile.bg/pcgi/mobile.cgi?act=3&slink=kt4wy4&f1={i}";
+                var url = $"https://www.mobile.bg/pcgi/mobile.cgi?act=3&slink=kwq89j&f1={i}";
                 var postUrls = GetPostUrls(url);
 
                 // Iterate through all post on the page
@@ -37,11 +37,11 @@
                     {
                         var car = GetCar(post);
                         cars.Add(car);
-                        Console.WriteLine("Parsed...");
+                        //Console.WriteLine("Parsed...");
                     }
                     catch (Exception)
                     {
-                        Console.WriteLine("Error...");
+                        //Console.WriteLine("Error...");
                     }
 
                 });

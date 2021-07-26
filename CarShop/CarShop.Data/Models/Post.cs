@@ -15,6 +15,7 @@
         public DateTime PublishedOn { get; set; }
 
         public Car Car { get; set; }
+        public int CarId { get; set; }
 
         public IdentityUser Owner { get; set; }
         public int OwnerId { get; set; }

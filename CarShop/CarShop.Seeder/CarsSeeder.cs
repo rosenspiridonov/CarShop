@@ -1,4 +1,4 @@
-﻿namespace MobileBgDataScraper.Seeders
+﻿namespace CarShop.Seeder
 {
     using CarShop.Data;
     using CarShop.Data.Models;
