@@ -43,6 +43,14 @@
             newCar.SpecialProperties = GetSpecialProps(car.SpecialProperties);
 
             db.Cars.Add(newCar);
+
+            var newPost = new Post
+            {
+                Car = newCar
+            };
+
+            db.Posts.Add(newPost);
+
             db.SaveChanges();
         }
 

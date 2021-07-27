@@ -7,17 +7,19 @@
     using CarShop.Data;
     using MobileBgDataScraper;
     using System;
+    using System.Threading.Tasks;
+    using Microsoft.Extensions.DependencyInjection;
 
     class Program
     {
         private static ApplicationDbContext db;
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             db = new ApplicationDbContext();
 
-            SeedCars(1, 10);
-            SeedRoles();
+            await SeedRoles();
+            SeedCars(1, 3);
         }
 
         private static void SeedCars(int startPage, int endPage)
@@ -44,21 +46,21 @@
             }
         }
 
-        private static void SeedRoles()
+        private static async Task SeedRoles()
         {
             if (db.Roles.Any())
             {
                 return;
             }
 
-            db.Roles.AddRange(new List<IdentityRole>()
+            await db.Roles.AddRangeAsync(new List<IdentityRole>()
             {
                 new IdentityRole() { Name = "User" },
                 new IdentityRole() { Name = "Dealer" },
                 new IdentityRole() { Name = "Admin" },
             });
 
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
     }
 }

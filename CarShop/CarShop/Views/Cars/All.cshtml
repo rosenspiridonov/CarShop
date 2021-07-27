@@ -1,0 +1,17 @@
+﻿@model IEnumerable<CarViewModel>
+
+<h1 class="text-center text-success">All cars</h1>
+
+<div class="card-columns">
+    @foreach (var car in @Model)
+    {
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="@car.ImageUrl" alt="@car.Brand @car.Model (@car.Modification)">
+            <div class="card-body">
+                <h5 class="card-title">@car.Brand @car.Model @car.Modification</h5>
+                <p class="card-text">@car.Price лв</p>
+                <a href="/posts/car?id=@car.Id" class="btn btn-outline-warning">See more</a>
+            </div>
+        </div>
+    }
+</div>
