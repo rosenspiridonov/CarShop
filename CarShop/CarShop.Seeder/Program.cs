@@ -37,9 +37,10 @@
 
             foreach (var car in cars)
             {
+                carsSeeder.SeedCar(car);
+
                 try
                 {
-                    carsSeeder.SeedCar(car);
                 }
                 catch (Exception)
                 { }

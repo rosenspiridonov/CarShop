@@ -5,7 +5,7 @@
 
     using static DataConstants;
 
-    public class Car
+    public class Car : BaseDeletableModel
     {
         public Car()
         {
@@ -52,23 +52,24 @@
 
         public int? TravelledDistance { get; set; }
 
+        [MaxLength(CarColorMaxLength)]
         public string Color { get; set; }
 
         public virtual Image Image { get; set; }
         public int ImageId { get; set; }
 
-        public virtual IEnumerable<Safety> SafetyProperties { get; set; }
+        public virtual ICollection<Safety> SafetyProperties { get; set; }
                 
-        public virtual IEnumerable<Comfort> ComfortProperties { get; set; }
+        public virtual ICollection<Comfort> ComfortProperties { get; set; }
                 
-        public virtual IEnumerable<Other> OtherProperties { get; set; }
+        public virtual ICollection<Other> OtherProperties { get; set; }
                 
-        public virtual IEnumerable<Exterior> ExteriorProperties { get; set; }
+        public virtual ICollection<Exterior> ExteriorProperties { get; set; }
                 
-        public virtual IEnumerable<Interior> InteriorProperties { get; set; }
+        public virtual ICollection<Interior> InteriorProperties { get; set; }
                 
-        public virtual IEnumerable<Protection> ProtectionProperties { get; set; }
+        public virtual ICollection<Protection> ProtectionProperties { get; set; }
                 
-        public virtual IEnumerable<Special> SpecialProperties { get; set; }
+        public virtual ICollection<Special> SpecialProperties { get; set; }
     }
 }

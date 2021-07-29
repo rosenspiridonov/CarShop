@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using static DataConstants;
+
     public class Other
     {
         public Other()
@@ -13,6 +15,7 @@
         public int Id { get; set; }
 
         [Required]
+        [MaxLength(OtherNameMaxLength)]
         public string Name { get; set; }
 
         public virtual ICollection<Car> Cars { get; set; }

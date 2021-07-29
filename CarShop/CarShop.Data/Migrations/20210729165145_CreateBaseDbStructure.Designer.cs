@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210722143813_ModifyCarModificationMaxLength")]
-    partial class ModifyCarModificationMaxLength
+    [Migration("20210729165145_CreateBaseDbStructure")]
+    partial class CreateBaseDbStructure
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -119,7 +119,9 @@ namespace CarShop.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
@@ -137,7 +139,8 @@ namespace CarShop.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Color")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("CoupeTypeId")
                         .HasColumnType("int");
@@ -157,6 +160,9 @@ namespace CarShop.Data.Migrations
 
                     b.Property<int>("ImageId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("ModelId")
                         .HasColumnType("int");
@@ -205,7 +211,9 @@ namespace CarShop.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -220,7 +228,9 @@ namespace CarShop.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
@@ -235,7 +245,9 @@ namespace CarShop.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
@@ -250,7 +262,9 @@ namespace CarShop.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
@@ -265,7 +279,9 @@ namespace CarShop.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -280,6 +296,7 @@ namespace CarShop.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Url")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -295,7 +312,9 @@ namespace CarShop.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -313,7 +332,9 @@ namespace CarShop.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
@@ -330,7 +351,9 @@ namespace CarShop.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -344,16 +367,13 @@ namespace CarShop.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CarId")
+                    b.Property<int>("CarId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int>("OwnerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("OwnerId1")
+                    b.Property<string>("OwnerId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("PublishedOn")
@@ -363,7 +383,7 @@ namespace CarShop.Data.Migrations
 
                     b.HasIndex("CarId");
 
-                    b.HasIndex("OwnerId1");
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Posts");
                 });
@@ -376,7 +396,9 @@ namespace CarShop.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -391,7 +413,9 @@ namespace CarShop.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -406,7 +430,9 @@ namespace CarShop.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -421,7 +447,9 @@ namespace CarShop.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
@@ -736,25 +764,25 @@ namespace CarShop.Data.Migrations
             modelBuilder.Entity("CarShop.Data.Models.Car", b =>
                 {
                     b.HasOne("CarShop.Data.Models.Brand", "Brand")
-                        .WithMany()
+                        .WithMany("Cars")
                         .HasForeignKey("BrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CarShop.Data.Models.Coupe", "CoupeType")
-                        .WithMany()
+                        .WithMany("Cars")
                         .HasForeignKey("CoupeTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CarShop.Data.Models.Engine", "EngineType")
-                        .WithMany()
+                        .WithMany("Cars")
                         .HasForeignKey("EngineTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CarShop.Data.Models.EuroStandard", "EuroStandard")
-                        .WithMany()
+                        .WithMany("Cars")
                         .HasForeignKey("EuroStandardId");
 
                     b.HasOne("CarShop.Data.Models.Image", "Image")
@@ -764,13 +792,13 @@ namespace CarShop.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("CarShop.Data.Models.Model", "Model")
-                        .WithMany()
+                        .WithMany("Cars")
                         .HasForeignKey("ModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CarShop.Data.Models.Transmision", "Transmision")
-                        .WithMany()
+                        .WithMany("Cars")
                         .HasForeignKey("TransmisionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -805,11 +833,13 @@ namespace CarShop.Data.Migrations
                 {
                     b.HasOne("CarShop.Data.Models.Car", "Car")
                         .WithMany()
-                        .HasForeignKey("CarId");
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Owner")
                         .WithMany()
-                        .HasForeignKey("OwnerId1");
+                        .HasForeignKey("OwnerId");
 
                     b.Navigation("Car");
 
@@ -884,7 +914,34 @@ namespace CarShop.Data.Migrations
 
             modelBuilder.Entity("CarShop.Data.Models.Brand", b =>
                 {
+                    b.Navigation("Cars");
+
                     b.Navigation("Models");
+                });
+
+            modelBuilder.Entity("CarShop.Data.Models.Coupe", b =>
+                {
+                    b.Navigation("Cars");
+                });
+
+            modelBuilder.Entity("CarShop.Data.Models.Engine", b =>
+                {
+                    b.Navigation("Cars");
+                });
+
+            modelBuilder.Entity("CarShop.Data.Models.EuroStandard", b =>
+                {
+                    b.Navigation("Cars");
+                });
+
+            modelBuilder.Entity("CarShop.Data.Models.Model", b =>
+                {
+                    b.Navigation("Cars");
+                });
+
+            modelBuilder.Entity("CarShop.Data.Models.Transmision", b =>
+                {
+                    b.Navigation("Cars");
                 });
 #pragma warning restore 612, 618
         }

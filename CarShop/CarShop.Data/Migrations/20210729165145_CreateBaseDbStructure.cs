@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CarShop.Data.Migrations
 {
-    public partial class CreateDbModels : Migration
+    public partial class CreateBaseDbStructure : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,7 +52,7 @@ namespace CarShop.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -65,7 +65,7 @@ namespace CarShop.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -78,7 +78,7 @@ namespace CarShop.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -91,7 +91,7 @@ namespace CarShop.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -104,7 +104,7 @@ namespace CarShop.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,7 +117,7 @@ namespace CarShop.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -130,7 +130,7 @@ namespace CarShop.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Url = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -143,7 +143,7 @@ namespace CarShop.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -156,7 +156,7 @@ namespace CarShop.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -169,7 +169,7 @@ namespace CarShop.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -182,7 +182,7 @@ namespace CarShop.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -195,7 +195,7 @@ namespace CarShop.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -208,7 +208,7 @@ namespace CarShop.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -233,7 +233,7 @@ namespace CarShop.Data.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -254,7 +254,7 @@ namespace CarShop.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -274,7 +274,7 @@ namespace CarShop.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -292,13 +292,13 @@ namespace CarShop.Data.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -318,7 +318,7 @@ namespace CarShop.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -327,7 +327,7 @@ namespace CarShop.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     BrandId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -349,7 +349,7 @@ namespace CarShop.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BrandId = table.Column<int>(type: "int", nullable: false),
                     ModelId = table.Column<int>(type: "int", nullable: false),
-                    Modification = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    Modification = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Price = table.Column<decimal>(type: "decimal(14,2)", precision: 14, scale: 2, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", maxLength: 100000, nullable: true),
                     ProduceYear = table.Column<int>(type: "int", nullable: false),
@@ -359,8 +359,9 @@ namespace CarShop.Data.Migrations
                     TransmisionId = table.Column<int>(type: "int", nullable: false),
                     CoupeTypeId = table.Column<int>(type: "int", nullable: false),
                     TravelledDistance = table.Column<int>(type: "int", nullable: true),
-                    Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageId = table.Column<int>(type: "int", nullable: false)
+                    Color = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    ImageId = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -370,19 +371,19 @@ namespace CarShop.Data.Migrations
                         column: x => x.BrandId,
                         principalTable: "Brands",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Cars_CoupeTypes_CoupeTypeId",
                         column: x => x.CoupeTypeId,
                         principalTable: "CoupeTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Cars_EngineTypes_EngineTypeId",
                         column: x => x.EngineTypeId,
                         principalTable: "EngineTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Cars_EuroStandards_EuroStandardId",
                         column: x => x.EuroStandardId,
@@ -394,19 +395,19 @@ namespace CarShop.Data.Migrations
                         column: x => x.ImageId,
                         principalTable: "Images",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Cars_Models_ModelId",
                         column: x => x.ModelId,
                         principalTable: "Models",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Cars_TransmisionTypes_TransmisionId",
                         column: x => x.TransmisionId,
                         principalTable: "TransmisionTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -424,13 +425,13 @@ namespace CarShop.Data.Migrations
                         column: x => x.CarsId,
                         principalTable: "Cars",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CarComfort_ComfortProperties_ComfortPropertiesId",
                         column: x => x.ComfortPropertiesId,
                         principalTable: "ComfortProperties",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -448,13 +449,13 @@ namespace CarShop.Data.Migrations
                         column: x => x.CarsId,
                         principalTable: "Cars",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CarExterior_ExteriorProperties_ExteriorPropertiesId",
                         column: x => x.ExteriorPropertiesId,
                         principalTable: "ExteriorProperties",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -472,13 +473,13 @@ namespace CarShop.Data.Migrations
                         column: x => x.CarsId,
                         principalTable: "Cars",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CarInterior_InteriorProperties_InteriorPropertiesId",
                         column: x => x.InteriorPropertiesId,
                         principalTable: "InteriorProperties",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -496,13 +497,13 @@ namespace CarShop.Data.Migrations
                         column: x => x.CarsId,
                         principalTable: "Cars",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CarOther_OtherProperties_OtherPropertiesId",
                         column: x => x.OtherPropertiesId,
                         principalTable: "OtherProperties",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -520,13 +521,13 @@ namespace CarShop.Data.Migrations
                         column: x => x.CarsId,
                         principalTable: "Cars",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CarProtection_ProtectionProperties_ProtectionPropertiesId",
                         column: x => x.ProtectionPropertiesId,
                         principalTable: "ProtectionProperties",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -544,13 +545,13 @@ namespace CarShop.Data.Migrations
                         column: x => x.CarsId,
                         principalTable: "Cars",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CarSafety_SafetyProperties_SafetyPropertiesId",
                         column: x => x.SafetyPropertiesId,
                         principalTable: "SafetyProperties",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -568,13 +569,13 @@ namespace CarShop.Data.Migrations
                         column: x => x.CarsId,
                         principalTable: "Cars",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CarSpecial_SpecialProperties_SpecialPropertiesId",
                         column: x => x.SpecialPropertiesId,
                         principalTable: "SpecialProperties",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -584,17 +585,16 @@ namespace CarShop.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PublishedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CarId = table.Column<int>(type: "int", nullable: true),
-                    OwnerId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    OwnerId = table.Column<int>(type: "int", nullable: false),
+                    CarId = table.Column<int>(type: "int", nullable: false),
+                    OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Posts_AspNetUsers_OwnerId1",
-                        column: x => x.OwnerId1,
+                        name: "FK_Posts_AspNetUsers_OwnerId",
+                        column: x => x.OwnerId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -603,7 +603,7 @@ namespace CarShop.Data.Migrations
                         column: x => x.CarId,
                         principalTable: "Cars",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -726,9 +726,9 @@ namespace CarShop.Data.Migrations
                 column: "CarId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_OwnerId1",
+                name: "IX_Posts_OwnerId",
                 table: "Posts",
-                column: "OwnerId1");
+                column: "OwnerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

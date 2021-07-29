@@ -54,7 +54,7 @@
             db.SaveChanges();
         }
 
-        private IEnumerable<Special> GetSpecialProps(ICollection<string> specialProperties)
+        private ICollection<Special> GetSpecialProps(ICollection<string> specialProperties)
         {
             var result = new List<Special>();
 
@@ -78,7 +78,7 @@
             return result;
         }
 
-        private IEnumerable<Protection> GetProtectionProps(ICollection<string> protectionProperties)
+        private ICollection<Protection> GetProtectionProps(ICollection<string> protectionProperties)
         {
             var result = new List<Protection>();
 
@@ -102,7 +102,7 @@
             return result;
         }
 
-        private IEnumerable<Interior> GetInteriorProps(ICollection<string> interiorProperties)
+        private ICollection<Interior> GetInteriorProps(ICollection<string> interiorProperties)
         {
             var result = new List<Interior>();
 
@@ -126,7 +126,7 @@
             return result;
         }
 
-        private IEnumerable<Exterior> GetExteriorProps(ICollection<string> exteriorProperties)
+        private ICollection<Exterior> GetExteriorProps(ICollection<string> exteriorProperties)
         {
             var result = new List<Exterior>();
 
@@ -150,7 +150,7 @@
             return result;
         }
 
-        private IEnumerable<Other> GetOtherProps(ICollection<string> otherProperties)
+        private ICollection<Other> GetOtherProps(ICollection<string> otherProperties)
         {
             var result = new List<Other>();
 
@@ -174,7 +174,7 @@
             return result;
         }
 
-        private IEnumerable<Comfort> GetComfortProps(ICollection<string> comfortProperties)
+        private ICollection<Comfort> GetComfortProps(ICollection<string> comfortProperties)
         {
             var result = new List<Comfort>();
 
@@ -198,7 +198,7 @@
             return result;
         }
 
-        private IEnumerable<Safety> GetSefetyProps(ICollection<string> safetyProperties)
+        private ICollection<Safety> GetSefetyProps(ICollection<string> safetyProperties)
         {
             var result = new List<Safety>();
 
@@ -278,6 +278,11 @@
 
         private int? GetEuroStandardId(string euroStandard)
         {
+            if (euroStandard is null)
+            {
+                return null;
+            }
+
             var id = db
                 .EuroStandards
                 .FirstOrDefault(x => x.Name == euroStandard)

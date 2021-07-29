@@ -1,8 +1,12 @@
 ﻿namespace CarShop.Services.Cars
 {
-    using CarShop.Data;
-    using System.Collections.Generic;
     using System.Linq;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
+    using CarShop.Data;
+    using CarShop.Models.Cars;
+    using CarShop.Data.Models;
 
     public class CarsService : ICarsService
     {
@@ -11,6 +15,39 @@
         public CarsService(ApplicationDbContext db)
         {
             this.db = db;
+        }
+
+        public async Task<Car> CreateCarAsync(CarInputModel input)
+        {
+            var car = new Car
+            {
+                BrandId = input.BrandId,
+                ModelId = input.ModelId,
+                Modification = input.Modification,
+                Price = input.Price,
+                Description = input.Description,
+                ProduceYear = input.ProduceYear,
+                EngineTypeId = input.EngineTypeId,
+                HorsePower = input.HorsePower,
+                EuroStandardId = input.EuroStandardId,
+                TransmisionId = input.TransmisionTypeId,
+                CoupeTypeId = input.CoupeTypeId,
+                TravelledDistance = input.TravelledDistance,
+                Color = input.Color,
+                Image = new Image { Url = input.ImageUrl },
+                SafetyProperties = input.SafetyPropertiesIds.Select(p => db.SafetyProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
+                ComfortProperties = input.ComfortPropertiesIds.Select(p => db.ComfortProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
+                OtherProperties = input.OtherPropertiesIds.Select(p => db.OtherProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
+                ExteriorProperties = input.ExteriorPropertiesIds.Select(p => db.ExteriorProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
+                InteriorProperties = input.InteriorPropertiesIds.Select(p => db.InteriorProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
+                ProtectionProperties = input.ProtectionPropertiesIds.Select(p => db.ProtectionProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
+                SpecialProperties = input.SpecialPropertiesIds is null ? null : input.SpecialPropertiesIds.Select(p => db.SpecialProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
+            };
+
+            await db.Cars.AddAsync(car);
+            await db.SaveChangesAsync();
+
+            return car;
         }
 
         public IEnumerable<CarServiceModel> GetCars(int start, int count)

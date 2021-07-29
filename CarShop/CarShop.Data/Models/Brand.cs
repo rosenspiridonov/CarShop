@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using static DataConstants;
+
     public class Brand
     {
         public Brand()
@@ -14,6 +16,7 @@
         public int Id { get; set; }
 
         [Required]
+        [MaxLength(BrandNameMaxLength)]
         public string Name { get; set; }
 
         public virtual ICollection<Model> Models { get; set; }

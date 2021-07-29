@@ -1,8 +1,10 @@
 ﻿namespace CarShop.Services.Posts
 {
-    using CarShop.Data;
-    using CarShop.Models.Cars;
     using System.Linq;
+    using System.Threading.Tasks;
+    using CarShop.Data;
+    using CarShop.Data.Models;
+    using CarShop.Models.Cars;
 
     public class PostsService : IPostsService
     {
@@ -11,6 +13,18 @@
         public PostsService(ApplicationDbContext db)
         {
             this.db = db;
+        }
+
+        public async Task CreatePostAsync(string ownerId, Car car)
+        {
+            var post = new Post
+            {
+                Car = car,
+                OwnerId = ownerId
+            };
+
+            await db.Posts.AddAsync(post);
+            await db.SaveChangesAsync();
         }
 
         public CreateCarViewData GetCarEntities() 

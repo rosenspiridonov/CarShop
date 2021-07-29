@@ -2,187 +2,210 @@
 
 <h1 class="text-center text-warning">New post</h1>
 
-<form method="post">
-    <div class="form-group">
-        <label asp-for="@Model.Car.BrandId"></label>
-        <select asp-for="@Model.Car.BrandId" class="form-control">
-            <option>--</option>
-            @foreach (var option in Model.Data.Brands)
-            {
-                <option value="@option.Id">@option.Name</option>
-            }
-        </select>
-        <span asp-validation-for="@Model.Car.BrandId" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Car.ModelId"></label>
-        <select asp-for="@Model.Car.ModelId" class="form-control">
-            <option>--</option>
-            @foreach (var option in Model.Data.Models)
-            {
-                <option value="@option.Id">@option.Name</option>
-            }
-        </select>
-        <span asp-validation-for="@Model.Car.ModelId" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Car.Modification"></label>
-        <input asp-for="@Model.Car.Modification" class="form-control" />
-        <span asp-validation-for="@Model.Car.Modification" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Car.HorsePower"></label>
-        <input asp-for="@Model.Car.HorsePower" class="form-control" />
-        <span asp-validation-for="@Model.Car.HorsePower" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Car.EngineTypeId"></label>
-        <select asp-for="@Model.Car.EngineTypeId" class="form-control">
-            @foreach (var option in Model.Data.EngineTypes)
-            {
-                <option value="@option.Id">@option.Name</option>
-            }
-        </select>
-        <span asp-validation-for="@Model.Car.EngineTypeId" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Car.EuroStandardId"></label>
-        <select asp-for="@Model.Car.EuroStandardId" class="form-control">
-            @foreach (var option in Model.Data.EuroStandards)
-            {
-                <option value="@option.Id">@option.Name</option>
-            }
-        </select>
-        <span asp-validation-for="@Model.Car.EuroStandardId" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Car.TransmisionTypeId"></label>
-        <select asp-for="@Model.Car.TransmisionTypeId" class="form-control">
-            @foreach (var option in Model.Data.TransmisionTypes)
-            {
-                <option value="@option.Id">@option.Name</option>
-            }
-        </select>
-        <span asp-validation-for="@Model.Car.TransmisionTypeId" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Car.CoupeTypeId"></label>
-        <select asp-for="@Model.Car.CoupeTypeId" class="form-control">
-            @foreach (var option in Model.Data.CoupeTypes)
-            {
-                <option value="@option.Id">@option.Name</option>
-            }
-        </select>
-        <span asp-validation-for="@Model.Car.CoupeTypeId" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Car.ProduceYear"></label>
-        <input asp-for="@Model.Car.ProduceYear" class="form-control" />
-        <span asp-validation-for="@Model.Car.ProduceYear" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Car.Price"></label>
-        <input asp-for="@Model.Car.Price" class="form-control" />
-        <span asp-validation-for="@Model.Car.Price" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Car.TravelledDistance"></label>
-        <input asp-for="@Model.Car.TravelledDistance" class="form-control" />
-        <span asp-validation-for="@Model.Car.TravelledDistance" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Car.Description"></label>
-        <textarea asp-for="@Model.Car.Description" class="form-control" rows="4"></textarea>
-        <span asp-validation-for="@Model.Car.Description" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Car.Color"></label>
-        <input asp-for="@Model.Car.Color" class="form-control" />
-        <span asp-validation-for="@Model.Car.Color" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Car.ImageUrl"></label>
-        <input asp-for="@Model.Car.ImageUrl" class="form-control" />
-        <span asp-validation-for="@Model.Car.ImageUrl" class="text-danger"></span>
+<form method="post" class="col-12">
+    <div class="form-row">
+        <div class="col">
+            <div class="form-row">
+                <div class="form-group col">
+                    <label asp-for="@Model.Car.BrandId"></label>
+                    <select asp-for="@Model.Car.BrandId" class="form-control">
+                        <option>--</option>
+                        @foreach (var option in Model.Data.Brands)
+                        {
+                            <option value="@option.Id">@option.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.Car.BrandId" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label asp-for="@Model.Car.ModelId"></label>
+                    <select asp-for="@Model.Car.ModelId" class="form-control">
+                        <option>--</option>
+                        @foreach (var option in Model.Data.Models)
+                        {
+                            <option value="@option.Id">@option.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.Car.ModelId" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label asp-for="@Model.Car.Modification"></label>
+                    <input asp-for="@Model.Car.Modification" class="form-control" />
+                    <span asp-validation-for="@Model.Car.Modification" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-3">
+                    <label asp-for="@Model.Car.HorsePower"></label>
+                    <input asp-for="@Model.Car.HorsePower" class="form-control" />
+                    <span asp-validation-for="@Model.Car.HorsePower" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label asp-for="@Model.Car.EngineTypeId"></label>
+                    <select asp-for="@Model.Car.EngineTypeId" class="form-control">
+                        @foreach (var option in Model.Data.EngineTypes)
+                        {
+                            <option value="@option.Id">@option.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.Car.EngineTypeId" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label asp-for="@Model.Car.EuroStandardId"></label>
+                    <select asp-for="@Model.Car.EuroStandardId" class="form-control">
+                        @foreach (var option in Model.Data.EuroStandards)
+                        {
+                            <option value="@option.Id">@option.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.Car.EuroStandardId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label asp-for="@Model.Car.TransmisionTypeId"></label>
+                    <select asp-for="@Model.Car.TransmisionTypeId" class="form-control">
+                        @foreach (var option in Model.Data.TransmisionTypes)
+                        {
+                            <option value="@option.Id">@option.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.Car.TransmisionTypeId" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label asp-for="@Model.Car.CoupeTypeId"></label>
+                    <select asp-for="@Model.Car.CoupeTypeId" class="form-control">
+                        @foreach (var option in Model.Data.CoupeTypes)
+                        {
+                            <option value="@option.Id">@option.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.Car.CoupeTypeId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label asp-for="@Model.Car.ProduceYear"></label>
+                    <input asp-for="@Model.Car.ProduceYear" class="form-control" />
+                    <span asp-validation-for="@Model.Car.ProduceYear" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label asp-for="@Model.Car.Price"></label>
+                    <input asp-for="@Model.Car.Price" class="form-control" />
+                    <span asp-validation-for="@Model.Car.Price" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label asp-for="@Model.Car.TravelledDistance"></label>
+                    <input asp-for="@Model.Car.TravelledDistance" class="form-control" />
+                    <span asp-validation-for="@Model.Car.TravelledDistance" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="form-group">
+                <label asp-for="@Model.Car.Description"></label>
+                <textarea asp-for="@Model.Car.Description" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="@Model.Car.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Car.Color"></label>
+                <input asp-for="@Model.Car.Color" class="form-control" />
+                <span asp-validation-for="@Model.Car.Color" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Car.ImageUrl"></label>
+                <input asp-for="@Model.Car.ImageUrl" class="form-control" />
+                <span asp-validation-for="@Model.Car.ImageUrl" class="text-danger"></span>
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label asp-for="@Model.Car.SafetyProperties"></label>
-        <select asp-for="@Model.Car.SafetyProperties" class="form-control" multiple>
-            <option>--</option>
-            @foreach (var option in Model.Data.SafetyProperties)
-            {
-                <option value="@option.Id">@option.Name</option>
-            }
-        </select>
-        <span asp-validation-for="@Model.Car.SafetyProperties" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Car.ComfortProperties"></label>
-        <select asp-for="@Model.Car.ComfortProperties" class="form-control" multiple>
-            <option>--</option>
-            @foreach (var option in Model.Data.ComfortProperties)
-            {
-                <option value="@option.Id">@option.Name</option>
-            }
-        </select>
-        <span asp-validation-for="@Model.Car.ComfortProperties" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Car.OtherProperties"></label>
-        <select asp-for="@Model.Car.OtherProperties" class="form-control" multiple>
-            <option>--</option>
-            @foreach (var option in Model.Data.OtherProperties)
-            {
-                <option value="@option.Id">@option.Name</option>
-            }
-        </select>
-        <span asp-validation-for="@Model.Car.OtherProperties" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Car.ExteriorProperties"></label>
-        <select asp-for="@Model.Car.ExteriorProperties" class="form-control" multiple>
-            <option>--</option>
-            @foreach (var option in Model.Data.ExteriorProperties)
-            {
-                <option value="@option.Id">@option.Name</option>
-            }
-        </select>
-        <span asp-validation-for="@Model.Car.ExteriorProperties" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Car.InteriorProperties"></label>
-        <select asp-for="@Model.Car.InteriorProperties" class="form-control" multiple>
-            <option>--</option>
-            @foreach (var option in Model.Data.InteriorProperties)
-            {
-                <option value="@option.Id">@option.Name</option>
-            }
-        </select>
-        <span asp-validation-for="@Model.Car.InteriorProperties" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Car.ProtectionProperties"></label>
-        <select asp-for="@Model.Car.ProtectionProperties" class="form-control" multiple>
-            <option>--</option>
-            @foreach (var option in Model.Data.ProtectionProperties)
-            {
-                <option value="@option.Id">@option.Name</option>
-            }
-        </select>
-        <span asp-validation-for="@Model.Car.ProtectionProperties" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="@Model.Car.SpecialProperties"></label>
-        <select asp-for="@Model.Car.SpecialProperties" class="form-control" multiple>
-            <option>--</option>
-            @foreach (var option in Model.Data.SpecialProperties)
-            {
-                <option value="@option.Id">@option.Name</option>
-            }
-        </select>
-        <span asp-validation-for="@Model.Car.SpecialProperties" class="text-danger"></span>
-    </div>
+    <div class="form-row">
+        <div class="col">
+            <div class="form-row">
+                <div class="form-group col">
+                    <label asp-for="@Model.Car.SafetyPropertiesIds"></label>
+                    <select asp-for="@Model.Car.SafetyPropertiesIds" class="form-control" multiple>
+                        <option>--</option>
+                        @foreach (var option in Model.Data.SafetyProperties)
+                        {
+                            <option value="@option.Id">@option.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.Car.SafetyPropertiesIds" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label asp-for="@Model.Car.ComfortPropertiesIds"></label>
+                    <select asp-for="@Model.Car.ComfortPropertiesIds" class="form-control" multiple>
+                        <option>--</option>
+                        @foreach (var option in Model.Data.ComfortProperties)
+                        {
+                            <option value="@option.Id">@option.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.Car.ComfortPropertiesIds" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label asp-for="@Model.Car.OtherPropertiesIds"></label>
+                    <select asp-for="@Model.Car.OtherPropertiesIds" class="form-control" multiple>
+                        <option>--</option>
+                        @foreach (var option in Model.Data.OtherProperties)
+                        {
+                            <option value="@option.Id">@option.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.Car.OtherPropertiesIds" class="text-danger"></span>
+                </div>
+            </div>
 
+            <div class="form-row">
+                <div class="form-group col">
+                    <label asp-for="@Model.Car.ExteriorPropertiesIds"></label>
+                    <select asp-for="@Model.Car.ExteriorPropertiesIds" class="form-control" multiple>
+                        <option>--</option>
+                        @foreach (var option in Model.Data.ExteriorProperties)
+                        {
+                            <option value="@option.Id">@option.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.Car.ExteriorPropertiesIds" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label asp-for="@Model.Car.InteriorPropertiesIds"></label>
+                    <select asp-for="@Model.Car.InteriorPropertiesIds" class="form-control" multiple>
+                        <option>--</option>
+                        @foreach (var option in Model.Data.InteriorProperties)
+                        {
+                            <option value="@option.Id">@option.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.Car.InteriorPropertiesIds" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label asp-for="@Model.Car.ProtectionPropertiesIds"></label>
+                    <select asp-for="@Model.Car.ProtectionPropertiesIds" class="form-control" multiple>
+                        <option>--</option>
+                        @foreach (var option in Model.Data.ProtectionProperties)
+                        {
+                            <option value="@option.Id">@option.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.Car.ProtectionPropertiesIds" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label asp-for="@Model.Car.SpecialPropertiesIds"></label>
+                    <select asp-for="@Model.Car.SpecialPropertiesIds" class="form-control" multiple>
+                        <option>--</option>
+                        @foreach (var option in Model.Data.SpecialProperties)
+                        {
+                            <option value="@option.Id">@option.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.Car.SpecialPropertiesIds" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
     <input type="submit" value="Publish" class="btn btn-warning" />
 </form>
