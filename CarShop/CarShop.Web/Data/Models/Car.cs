@@ -1,5 +1,7 @@
 ﻿namespace CarShop.Web.Data.Models
 {
+    using Microsoft.AspNetCore.Identity;
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -9,6 +11,9 @@
     {
         public Car()
         {
+            IsActive = true;
+            PublishedOn = DateTime.UtcNow;
+
             SafetyProperties = new HashSet<Safety>();
             ComfortProperties = new HashSet<Comfort>();
             OtherProperties = new HashSet<Other>();
@@ -57,6 +62,14 @@
 
         public virtual Image Image { get; set; }
         public int ImageId { get; set; }
+
+        public IdentityUser Owner { get; set; }
+        [Required]
+        public string OwnerId { get; set; }
+
+        public bool IsActive { get; set; }
+
+        public DateTime PublishedOn { get; set; }
 
         public virtual ICollection<Safety> SafetyProperties { get; set; }
                 

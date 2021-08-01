@@ -1,23 +1,18 @@
-using CarShop.Infrastructure;
-using CarShop.Services.Cars;
-using CarShop.Services.Posts;
-using CarShop.Web.Data;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace CarShop.Web
 {
+    using CarShop.Infrastructure;
+    using CarShop.Services.Cars;
+    using CarShop.Web.Data;
+    using CarShop.Web.Data.Models;
+
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -50,7 +45,6 @@ namespace CarShop.Web
 
             services.AddTransient<IDataSeeder, DataSeeder>();
             services.AddTransient<ICarsService, CarsService>();
-            services.AddTransient<IPostsService, PostsService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDataSeeder dataSeeder)

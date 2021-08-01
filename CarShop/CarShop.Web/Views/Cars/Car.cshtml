@@ -1,0 +1,137 @@
+﻿@model CarViewModel
+
+<div class="car-data">
+    <div class="row my-5">
+        <div class="col-md-6 col-sm-12 d-flex flex-column justify-content-between">
+            <div class="car-meta">
+                <h3 class="car-meta__title">@Model.Brand @Model.Model</h3>
+                <h5 class="car-meta__modification">@Model.Modification</h5>
+                <div class="car-meta__year"><b>Produce year:</b> @Model.ProduceYear</div>
+                <div class="car-meta__engine"><b>Engine type:</b> @Model.EngineType</div>
+                <div class="car-meta__hp"><b>Horse power:</b> @Model.HorsePower hp</div>
+                <div class="car-meta__standard"><b>Euro standard:</b> @Model.EuroStandard</div>
+                <div class="car-meta__transmission"><b>Transmission:</b> @Model.TransmisionType</div>
+                <div class="car-meta__coupe"><b>Coupe type:</b> @Model.CoupeType</div>
+                <div class="car-meta__color"><b>Color:</b> @Model.Color</div>
+            </div>
+            <div class="car-price-container">
+                <div class="car__price"><b>Price:</b> @Model.Price лв</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12 car-image-container">
+            <img src="@Model.ImageUrl" alt="@Model.Brand @Model.Model - @Model.Modification" />
+        </div>
+    </div>
+
+    <h4 class="mt-5">Car properties</h4>
+    <div class="row mt-4">
+        @if (Model.SafetyProperties.Any())
+        {
+            <div class="col">
+                <h6>Safety</h6>
+                <ul class="list-group list-group-flush">
+                    @foreach (var item in Model.SafetyProperties)
+                    {
+                        <li class="list-group-item">@item</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        @if (Model.ComfortProperties.Any())
+        {
+            <div class="col">
+                <h6>Comfort</h6>
+                <ul class="list-group list-group-flush">
+                    @foreach (var item in Model.ComfortProperties)
+                    {
+                        <li class="list-group-item">@item</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        @if (Model.ExteriorProperties.Any())
+        {
+            <div class="col">
+                <h6>Exterior</h6>
+                <ul class="list-group list-group-flush">
+                    @foreach (var item in Model.ExteriorProperties)
+                    {
+                        <li class="list-group-item">@item</li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+    <div class="row mt-3">
+        @if (Model.OtherProperties.Any())
+        {
+            <div class="col">
+                <h6>Other</h6>
+                <ul class="list-group list-group-flush">
+                    @foreach (var item in Model.OtherProperties)
+                    {
+                        <li class="list-group-item">@item</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        @if (Model.InteriorProperties.Any())
+        {
+            <div class="col">
+                <h6>Interior</h6>
+                <ul class="list-group list-group-flush">
+                    @foreach (var item in Model.InteriorProperties)
+                    {
+                        <li class="list-group-item">@item</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        @if (Model.ProtectionProperties.Any())
+        {
+            <div class="col">
+                <h6>Protection</h6>
+                <ul class="list-group list-group-flush">
+                    @foreach (var item in Model.ProtectionProperties)
+                    {
+                        <li class="list-group-item">@item</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        @if (Model.SpecialProperties.Any())
+        {
+            <div class="col">
+                <h6>Special</h6>
+                <ul class="list-group list-group-flush">
+                    @foreach (var item in Model.SpecialProperties)
+                    {
+                        <li class="list-group-item">@item</li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .car-data .list-group-item {
+            padding: .01em 0;
+            border-color: rgba(0,0,0,0.05);
+        }
+
+        .car-image-container img {
+            width: 100%;
+        }
+
+        .car__price {
+            font-size: 1.7em;
+        }
+    </style>
+} 

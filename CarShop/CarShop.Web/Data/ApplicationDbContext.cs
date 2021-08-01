@@ -11,7 +11,6 @@ namespace CarShop.Web.Data
         {
         }
 
-        public DbSet<Post> Posts { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<Comfort> ComfortProperties { get; set; }
         public DbSet<Coupe> CoupeTypes { get; set; }
@@ -31,6 +30,7 @@ namespace CarShop.Web.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Car>().Property(x => x.Price).HasPrecision(14, 2);
+
             builder.Entity<Model>()
                 .HasOne(x => x.Brand)
                 .WithMany(x => x.Models)

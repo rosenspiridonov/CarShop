@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - CarShop.Web</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
 </head>
 <body>
     <header>
@@ -22,10 +23,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Cars" asp-action="All">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Cars" asp-action="All">All</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Posts" asp-action="Create">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Cars" asp-action="Create">Create</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
@@ -48,5 +49,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Styles", required: false); 
 </body>
 </html>

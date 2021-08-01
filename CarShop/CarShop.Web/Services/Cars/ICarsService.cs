@@ -8,10 +8,12 @@
 
     public interface ICarsService
     {
-        IEnumerable<CarServiceModel> GetCars(int start, int count);
+        IEnumerable<CarViewModel> GetCars(int start, int count);
 
-        Task<Car> CreateCarAsync(CarInputModel input);
+        Task<Car> CreateCarAsync(string ownerId, CarInputModel input);
 
         CreateCarViewData GetCarEntities();
+
+        CarViewModel GetCar(int id);
     }
 }

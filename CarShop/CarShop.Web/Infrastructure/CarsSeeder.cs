@@ -6,36 +6,39 @@
     using System.Collections.Generic;
     using System.Linq;
     using CarShop.Web.Data.Models;
+    using Microsoft.AspNetCore.Identity;
+    using System.Threading.Tasks;
 
     public class CarsSeeder
     {
         private readonly ApplicationDbContext db;
+        private readonly UserManager<IdentityUser> userManager;
 
-        public CarsSeeder(ApplicationDbContext db)
+        public CarsSeeder(ApplicationDbContext db, UserManager<IdentityUser> userManager)
         {
             this.db = db;
+            this.userManager = userManager;
         }
 
-        public void ProcessCars()
+        public async Task ProcessCars()
         {
             var carsService = new DataScraper();
 
-            var cars = carsService.PopulateCars(1, 10);
+            var cars = carsService.PopulateCars(1, 40);
 
-            var carsSeeder = new CarsSeeder(db);
 
             foreach (var car in cars)
             {
                 try
                 {
-                    carsSeeder.SeedCar(car);
+                    await SeedCar(car);
                 }
                 catch (Exception)
                 { }
             }
         }
 
-        private void SeedCar(CarDto car)
+        private async Task SeedCar(CarDto car)
         {
             var newCar = new Car();
 
@@ -61,15 +64,10 @@
             newCar.ProtectionProperties = GetProtectionProps(car.ProtectionProperties);
             newCar.SpecialProperties = GetSpecialProps(car.SpecialProperties);
 
+            var owner = await userManager.FindByEmailAsync("admin@carshop.com");
+            newCar.Owner = owner;
+
             db.Cars.Add(newCar);
-
-            var newPost = new Post
-            {
-                Car = newCar
-            };
-
-            db.Posts.Add(newPost);
-
             db.SaveChanges();
         }
 

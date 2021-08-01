@@ -1,4 +1,6 @@
-﻿namespace CarShop.Web.Models.Cars
+﻿using System.Collections.Generic;
+
+namespace CarShop.Web.Models.Cars
 {
     public class CarViewModel
     {
@@ -31,5 +33,23 @@
         public string Color { get; set; }
 
         public string ImageUrl { get; set; }
+
+        public string OwnerId { get; set; }
+
+        public bool IsActive { get; set; }
+
+        public IEnumerable<string> SafetyProperties { get; set; }
+
+        public IEnumerable<string> ComfortProperties { get; set; }
+
+        public IEnumerable<string> OtherProperties { get; set; }
+
+        public IEnumerable<string> ExteriorProperties { get; set; }
+
+        public IEnumerable<string> InteriorProperties { get; set; }
+
+        public IEnumerable<string> ProtectionProperties { get; set; }
+
+        public IEnumerable<string> SpecialProperties { get; set; }
     }
 }

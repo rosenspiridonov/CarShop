@@ -4,14 +4,16 @@ using CarShop.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarShop.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210801074629_ChangeConnectionString")]
+    partial class ChangeConnectionString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,9 +161,6 @@ namespace CarShop.Web.Data.Migrations
                     b.Property<int>("ImageId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -172,19 +171,12 @@ namespace CarShop.Web.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("OwnerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<decimal>("Price")
                         .HasPrecision(14, 2)
                         .HasColumnType("decimal(14,2)");
 
                     b.Property<int>("ProduceYear")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("PublishedOn")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("TransmisionId")
                         .HasColumnType("int");
@@ -205,8 +197,6 @@ namespace CarShop.Web.Data.Migrations
                     b.HasIndex("ImageId");
 
                     b.HasIndex("ModelId");
-
-                    b.HasIndex("OwnerId");
 
                     b.HasIndex("TransmisionId");
 
@@ -368,6 +358,34 @@ namespace CarShop.Web.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OtherProperties");
+                });
+
+            modelBuilder.Entity("CarShop.Web.Data.Models.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("PublishedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("CarShop.Web.Data.Models.Protection", b =>
@@ -779,12 +797,6 @@ namespace CarShop.Web.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CarShop.Web.Data.Models.Transmision", "Transmision")
                         .WithMany("Cars")
                         .HasForeignKey("TransmisionId")
@@ -803,8 +815,6 @@ namespace CarShop.Web.Data.Migrations
 
                     b.Navigation("Model");
 
-                    b.Navigation("Owner");
-
                     b.Navigation("Transmision");
                 });
 
@@ -817,6 +827,23 @@ namespace CarShop.Web.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Brand");
+                });
+
+            modelBuilder.Entity("CarShop.Web.Data.Models.Post", b =>
+                {
+                    b.HasOne("CarShop.Web.Data.Models.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
+
+                    b.Navigation("Car");
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("CarSpecial", b =>
