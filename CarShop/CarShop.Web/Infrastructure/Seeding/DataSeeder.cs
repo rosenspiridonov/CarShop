@@ -1,10 +1,13 @@
-﻿namespace CarShop.Infrastructure
+﻿namespace CarShop.Web.Infrastructure.Seeding
 {
-    using CarShop.Web.Data;
-    using Microsoft.AspNetCore.Identity;
-    using System;
     using System.Linq;
     using System.Threading.Tasks;
+
+    using CarShop.Web.Data;
+
+    using Microsoft.AspNetCore.Identity;
+
+    using static WebConstants;
 
     public class DataSeeder : IDataSeeder
     {
@@ -47,9 +50,9 @@
                 return;
             }
 
-            await roleManager.CreateAsync(new IdentityRole() { Name = "User" });
-            await roleManager.CreateAsync(new IdentityRole() { Name = "Dealer" });
-            await roleManager.CreateAsync(new IdentityRole() { Name = "Admin" });
+            await roleManager.CreateAsync(new IdentityRole() { Name = UserRoleName });
+            await roleManager.CreateAsync(new IdentityRole() { Name = DealerRoleName });
+            await roleManager.CreateAsync(new IdentityRole() { Name = AdminRoleName });
         }
 
         private async Task SeedAdministrators()
@@ -62,7 +65,8 @@
             await userManager.CreateAsync(new IdentityUser
             {
                 Email = "admin@carshop.com",
-                UserName = "admin@carshop.com"
+                UserName = "admin@carshop.com",
+                PhoneNumber = "0888121476"
             }, "adminadmin");
 
             var admin = await userManager.FindByEmailAsync("admin@carshop.com");

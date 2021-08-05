@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace CarShop.Web.Models.Cars
+﻿namespace CarShop.Web.Services.Cars
 {
-    public class CarViewModel
+    using System.Collections.Generic;
+
+    public class CarServiceModel
     {
         public int Id { get; set; }
 

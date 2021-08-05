@@ -1,36 +1,37 @@
-﻿@model CarViewModel
+﻿@inject IDealersService DealersService
+@model CarDetailsViewModel
 
 <div class="car-data">
     <div class="row my-5">
         <div class="col-md-6 col-sm-12 d-flex flex-column justify-content-between">
             <div class="car-meta">
-                <h3 class="car-meta__title">@Model.Brand @Model.Model</h3>
-                <h5 class="car-meta__modification">@Model.Modification</h5>
-                <div class="car-meta__year"><b>Produce year:</b> @Model.ProduceYear</div>
-                <div class="car-meta__engine"><b>Engine type:</b> @Model.EngineType</div>
-                <div class="car-meta__hp"><b>Horse power:</b> @Model.HorsePower hp</div>
-                <div class="car-meta__standard"><b>Euro standard:</b> @Model.EuroStandard</div>
-                <div class="car-meta__transmission"><b>Transmission:</b> @Model.TransmisionType</div>
-                <div class="car-meta__coupe"><b>Coupe type:</b> @Model.CoupeType</div>
-                <div class="car-meta__color"><b>Color:</b> @Model.Color</div>
+                <h3 class="car-meta__title">@Model.Car.Brand @Model.Car.Model</h3>
+                <h5 class="car-meta__modification">@Model.Car.Modification</h5>
+                <div class="car-meta__year"><b>Produce year:</b> @Model.Car.ProduceYear</div>
+                <div class="car-meta__engine"><b>Engine type:</b> @Model.Car.EngineType</div>
+                <div class="car-meta__hp"><b>Horse power:</b> @Model.Car.HorsePower hp</div>
+                <div class="car-meta__standard"><b>Euro standard:</b> @Model.Car.EuroStandard</div>
+                <div class="car-meta__transmission"><b>Transmission:</b> @Model.Car.TransmisionType</div>
+                <div class="car-meta__coupe"><b>Coupe type:</b> @Model.Car.CoupeType</div>
+                <div class="car-meta__color"><b>Color:</b> @Model.Car.Color</div>
             </div>
             <div class="car-price-container">
-                <div class="car__price"><b>Price:</b> @Model.Price лв</div>
+                <div class="car__price"><b>Price:</b> @Model.Car.Price лв</div>
             </div>
         </div>
         <div class="col-md-6 col-sm-12 car-image-container">
-            <img src="@Model.ImageUrl" alt="@Model.Brand @Model.Model - @Model.Modification" />
+            <img src="@Model.Car.ImageUrl" alt="@Model.Car.Brand @Model.Car.Model - @Model.Car.Modification" />
         </div>
     </div>
 
     <h4 class="mt-5">Car properties</h4>
     <div class="row mt-4">
-        @if (Model.SafetyProperties.Any())
+        @if (Model.Car.SafetyProperties.Any())
         {
             <div class="col">
                 <h6>Safety</h6>
                 <ul class="list-group list-group-flush">
-                    @foreach (var item in Model.SafetyProperties)
+                    @foreach (var item in Model.Car.SafetyProperties)
                     {
                         <li class="list-group-item">@item</li>
                     }
@@ -38,12 +39,12 @@
             </div>
         }
 
-        @if (Model.ComfortProperties.Any())
+        @if (Model.Car.ComfortProperties.Any())
         {
             <div class="col">
                 <h6>Comfort</h6>
                 <ul class="list-group list-group-flush">
-                    @foreach (var item in Model.ComfortProperties)
+                    @foreach (var item in Model.Car.ComfortProperties)
                     {
                         <li class="list-group-item">@item</li>
                     }
@@ -51,12 +52,12 @@
             </div>
         }
 
-        @if (Model.ExteriorProperties.Any())
+        @if (Model.Car.ExteriorProperties.Any())
         {
             <div class="col">
                 <h6>Exterior</h6>
                 <ul class="list-group list-group-flush">
-                    @foreach (var item in Model.ExteriorProperties)
+                    @foreach (var item in Model.Car.ExteriorProperties)
                     {
                         <li class="list-group-item">@item</li>
                     }
@@ -65,12 +66,12 @@
         }
     </div>
     <div class="row mt-3">
-        @if (Model.OtherProperties.Any())
+        @if (Model.Car.OtherProperties.Any())
         {
             <div class="col">
                 <h6>Other</h6>
                 <ul class="list-group list-group-flush">
-                    @foreach (var item in Model.OtherProperties)
+                    @foreach (var item in Model.Car.OtherProperties)
                     {
                         <li class="list-group-item">@item</li>
                     }
@@ -78,12 +79,12 @@
             </div>
         }
 
-        @if (Model.InteriorProperties.Any())
+        @if (Model.Car.InteriorProperties.Any())
         {
             <div class="col">
                 <h6>Interior</h6>
                 <ul class="list-group list-group-flush">
-                    @foreach (var item in Model.InteriorProperties)
+                    @foreach (var item in Model.Car.InteriorProperties)
                     {
                         <li class="list-group-item">@item</li>
                     }
@@ -91,12 +92,12 @@
             </div>
         }
 
-        @if (Model.ProtectionProperties.Any())
+        @if (Model.Car.ProtectionProperties.Any())
         {
             <div class="col">
                 <h6>Protection</h6>
                 <ul class="list-group list-group-flush">
-                    @foreach (var item in Model.ProtectionProperties)
+                    @foreach (var item in Model.Car.ProtectionProperties)
                     {
                         <li class="list-group-item">@item</li>
                     }
@@ -104,18 +105,31 @@
             </div>
         }
 
-        @if (Model.SpecialProperties.Any())
+        @if (Model.Car.SpecialProperties.Any())
         {
             <div class="col">
                 <h6>Special</h6>
                 <ul class="list-group list-group-flush">
-                    @foreach (var item in Model.SpecialProperties)
+                    @foreach (var item in Model.Car.SpecialProperties)
                     {
                         <li class="list-group-item">@item</li>
                     }
                 </ul>
             </div>
         }
+    </div>
+</div>
+<div class="row my-5">
+    <div class="dealer-data col border border-dark rounded p-3">
+        <div><b>Dealer</b>: @Model.Dealer.Name</div>
+        <div><b>Phone number</b>: @Model.Dealer.PhoneNumber</div>
+    </div>
+    <div class="col">
+        @if ((this.User.IsDealer() && DealersService.OwnsCar(this.User.GetId(), Model.Car.Id)) || this.User.IsAdmin())
+        {
+            <a asp-action="Edit" asp-route-id="@Model.Car.Id" class="float-md-right btn btn-warning">Edit car</a>
+        }
+
     </div>
 </div>
 

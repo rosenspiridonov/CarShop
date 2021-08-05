@@ -1,4 +1,4 @@
-﻿namespace CarShop
+﻿namespace CarShop.Web
 {
     public class DataConstants
     {

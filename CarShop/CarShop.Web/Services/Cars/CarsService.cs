@@ -7,6 +7,8 @@
     using CarShop.Web.Data.Models;
     using CarShop.Web.Data;
     using CarShop.Web.Models.Cars;
+    using CarShop.Web.Services.Cars;
+    using Microsoft.Data.Sql;
 
     public class CarsService : ICarsService
     {
@@ -17,7 +19,7 @@
             this.db = db;
         }
 
-        public async Task<Car> CreateCarAsync(string ownerId, CarInputModel input)
+        public async Task<int> CreateCarAsync(string ownerId, CarInputModel input)
         {
             var car = new Car
             {
@@ -35,13 +37,13 @@
                 TravelledDistance = input.TravelledDistance,
                 Color = input.Color,
                 Image = new Image { Url = input.ImageUrl },
-                SafetyProperties = input.SafetyPropertiesIds is null ? null : input.SafetyPropertiesIds.Select(p => db.SafetyProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
-                ComfortProperties = input.ComfortPropertiesIds is null ? null : input.ComfortPropertiesIds.Select(p => db.ComfortProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
-                OtherProperties = input.OtherPropertiesIds is null ? null : input.OtherPropertiesIds.Select(p => db.OtherProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
-                ExteriorProperties = input.ExteriorPropertiesIds is null ? null : input.ExteriorPropertiesIds.Select(p => db.ExteriorProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
-                InteriorProperties = input.InteriorPropertiesIds is null ? null : input.InteriorPropertiesIds.Select(p => db.InteriorProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
-                ProtectionProperties = input.ProtectionPropertiesIds is null ? null : input.ProtectionPropertiesIds.Select(p => db.ProtectionProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
-                SpecialProperties = input.SpecialPropertiesIds is null ? null : input.SpecialPropertiesIds.Select(p => db.SpecialProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
+                SafetyProperties = input.SafetyPropertiesIds?.Select(p => db.SafetyProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
+                ComfortProperties = input.ComfortPropertiesIds?.Select(p => db.ComfortProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
+                OtherProperties = input.OtherPropertiesIds?.Select(p => db.OtherProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
+                ExteriorProperties = input.ExteriorPropertiesIds?.Select(p => db.ExteriorProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
+                InteriorProperties = input.InteriorPropertiesIds?.Select(p => db.InteriorProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
+                ProtectionProperties = input.ProtectionPropertiesIds?.Select(p => db.ProtectionProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
+                SpecialProperties = input.SpecialPropertiesIds?.Select(p => db.SpecialProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
             };
 
             car.OwnerId = ownerId;
@@ -49,15 +51,13 @@
             await db.Cars.AddAsync(car);
             await db.SaveChangesAsync();
 
-            return car;
+            return car.Id;
         }
 
-        public IEnumerable<CarViewModel> GetCars(int start, int count)
+        public IEnumerable<CarServiceModel> GetCars(int start, int count)
         {
             return db.Cars
-                .Skip(start)
-                .Take(count)
-                .Select(x => new CarViewModel
+                .Select(x => new CarServiceModel
                 {
                     Id = x.Id,
                     Brand = x.Brand.Name,
@@ -82,14 +82,16 @@
                     ProtectionProperties = x.ProtectionProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
                     SpecialProperties = x.SpecialProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
                 })
+                .Skip(start)
+                .Take(count)
                 .OrderBy(x => x.Brand)
                 .ThenBy(x => x.Model)
                 .ThenBy(x => x.Modification)
                 .ToList();
         }
 
-        public CreateCarViewData GetCarEntities()
-            => new CreateCarViewData
+        public CarFormData AllCarOptions()
+            => new CarFormData
             {
                 Brands = db.Brands.OrderBy(x => x.Name).ToList(),
                 Models = db.Models.OrderBy(x => x.Name).ToList(),
@@ -106,10 +108,10 @@
                 SpecialProperties = db.SpecialProperties.OrderBy(x => x.Name).ToList(),
             };
 
-        public CarViewModel GetCar(int id)
+        public CarServiceModel GetCarViewModel(int id)
             => db.Cars
                 .Where(x => x.Id == id)
-                .Select(x => new CarViewModel
+                .Select(x => new CarServiceModel
                 {
                     Id = x.Id,
                     Brand = x.Brand.Name,
@@ -136,5 +138,68 @@
                     ProtectionProperties = x.ProtectionProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
                     SpecialProperties = x.SpecialProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
                 }).FirstOrDefault();
+
+        public CarInputModel CarInputModelInfo(int id)
+            => db
+                .Cars
+                .Where(x => x.Id == id)
+                .Select(x => new CarInputModel()
+                {
+                    Id = x.Id,
+                    BrandId = x.BrandId,
+                    ModelId = x.ModelId,
+                    Modification = x.Modification,
+                    Price = x.Price,
+                    Description = x.Description,
+                    ProduceYear = x.ProduceYear,
+                    EngineTypeId = x.EngineTypeId,
+                    HorsePower = x.HorsePower,
+                    EuroStandardId = x.EuroStandardId,
+                    TransmisionTypeId = x.TransmisionId,
+                    CoupeTypeId = x.CoupeTypeId,
+                    TravelledDistance = x.TravelledDistance,
+                    Color = x.Color,
+                    ImageUrl = x.Image.Url,
+                    SafetyPropertiesIds = x.SafetyProperties.Select(x => x.Id).ToList(),
+                    ComfortPropertiesIds = x.ComfortProperties.Select(x => x.Id).ToList(),
+                    OtherPropertiesIds = x.OtherProperties.Select(x => x.Id).ToList(),
+                    ExteriorPropertiesIds = x.ExteriorProperties.Select(x => x.Id).ToList(),
+                    InteriorPropertiesIds = x.InteriorProperties.Select(x => x.Id).ToList(),
+                    ProtectionPropertiesIds = x.ProtectionProperties.Select(x => x.Id).ToList(),
+                    SpecialPropertiesIds = x.SpecialProperties.Select(x => (int?)x.Id).ToList(),
+                    OwnerId = x.OwnerId
+                }).FirstOrDefault();
+
+        public async Task<int> EditCarAsync(CarInputModel input)
+        {
+            var car = db.Cars.Find(input.Id);
+            db.Cars.Remove(car);
+
+            int carId = await CreateCarAsync(input.OwnerId, input);
+            return carId;
+            //car.BrandId = input.BrandId;
+            //car.ModelId = input.ModelId;
+            //car.Modification = input.Modification;
+            //car.Price = input.Price;
+            //car.Description = input.Description;
+            //car.ProduceYear = input.ProduceYear;
+            //car.EngineTypeId = input.EngineTypeId;
+            //car.HorsePower = input.HorsePower;
+            //car.EuroStandardId = input.EuroStandardId;
+            //car.TransmisionId = input.TransmisionTypeId;
+            //car.CoupeTypeId = input.CoupeTypeId;
+            //car.TravelledDistance = input.TravelledDistance;
+            //car.Color = input.Color;
+            //car.Image = new Image { Url = input.ImageUrl };
+            //car.SafetyProperties = input.SafetyPropertiesIds?.Select(p => db.SafetyProperties.FirstOrDefault(pp => pp.Id == p)).ToList();
+            //car.ComfortProperties = input.ComfortPropertiesIds?.Select(p => db.ComfortProperties.FirstOrDefault(pp => pp.Id == p)).ToList();
+            //car.OtherProperties = input.OtherPropertiesIds?.Select(p => db.OtherProperties.FirstOrDefault(pp => pp.Id == p)).ToList();
+            //car.ExteriorProperties = input.ExteriorPropertiesIds?.Select(p => db.ExteriorProperties.FirstOrDefault(pp => pp.Id == p)).ToList();
+            //car.InteriorProperties = input.InteriorPropertiesIds?.Select(p => db.InteriorProperties.FirstOrDefault(pp => pp.Id == p)).ToList();
+            //car.ProtectionProperties = input.ProtectionPropertiesIds?.Select(p => db.ProtectionProperties.FirstOrDefault(pp => pp.Id == p)).ToList();
+            //car.SpecialProperties = input.SpecialPropertiesIds?.Select(p => db.SpecialProperties.FirstOrDefault(pp => pp.Id == p)).ToList();
+
+            //await db.SaveChangesAsync();
+        }
     }
 }

@@ -1,0 +1,12 @@
+﻿@model CarFormModel
+
+@{ 
+    ViewData["Title"] = "Edit car";
+} 
+
+<form method="post">
+    <partial name="_CarFormPartial" />
+    <input asp-for="@Model.Car.Id" type="hidden" value="@Model.Car.Id"/>
+    <input asp-for="@Model.Car.OwnerId" type="hidden" value="@Model.Car.OwnerId"/>
+    <input type="submit" class="btn btn-warning" value="Edit"/>
+</form>

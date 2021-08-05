@@ -1,6 +1,6 @@
 namespace CarShop.Web
 {
-    using CarShop.Infrastructure;
+    using CarShop.Web.Infrastructure.Seeding;
     using CarShop.Services.Cars;
     using CarShop.Web.Data;
     using CarShop.Web.Data.Models;
@@ -12,6 +12,7 @@ namespace CarShop.Web
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using CarShop.Web.Services.Dealers;
 
     public class Startup
     {
@@ -29,6 +30,8 @@ namespace CarShop.Web
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddDefaultIdentity<IdentityUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
@@ -45,6 +48,7 @@ namespace CarShop.Web
 
             services.AddTransient<IDataSeeder, DataSeeder>();
             services.AddTransient<ICarsService, CarsService>();
+            services.AddTransient<IDealersService, DealersService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDataSeeder dataSeeder)

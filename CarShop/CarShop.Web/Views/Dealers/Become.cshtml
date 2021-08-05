@@ -1,0 +1,21 @@
+﻿@model DealerFormModel
+
+@{
+    ViewData["Title"] = "Become dealer";
+}
+
+<h1 class="text-center mb-5">@ViewData["Title"]</h1>
+
+<form method="post" class="col-md-6 offset-3">
+    <div class="form-group">
+        <label asp-for="@Model.PhoneNumber"></label>
+        <input asp-for="@Model.PhoneNumber" class="form-control" />
+        <span asp-validation-for="@Model.PhoneNumber" class="text-danger"></span>
+    </div>
+
+    <input type="submit" value="Become dealer" class="btn btn-success" />
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
