@@ -8,7 +8,6 @@
     using CarShop.Web.Data;
     using CarShop.Web.Models.Cars;
     using CarShop.Web.Services.Cars;
-    using Microsoft.Data.Sql;
     using Microsoft.EntityFrameworkCore;
 
     public class CarsService : ICarsService
@@ -45,6 +44,7 @@
                 InteriorProperties = input.InteriorPropertiesIds?.Select(p => db.InteriorProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
                 ProtectionProperties = input.ProtectionPropertiesIds?.Select(p => db.ProtectionProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
                 SpecialProperties = input.SpecialPropertiesIds?.Select(p => db.SpecialProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
+                IsDeleted = false
             };
 
             car.OwnerId = ownerId;
@@ -58,6 +58,7 @@
         public IEnumerable<CarServiceModel> GetCars(int start, int count)
         {
             return db.Cars
+                .Where(x => x.IsDeleted == false)
                 .Select(x => new CarServiceModel
                 {
                     Id = x.Id,
@@ -92,7 +93,7 @@
         }
 
         public CarFormData AllCarOptions()
-            => new CarFormData
+            => new()
             {
                 Brands = db.Brands.OrderBy(x => x.Name).ToList(),
                 Models = db.Models.OrderBy(x => x.Name).ToList(),
@@ -143,7 +144,7 @@
         public CarInputModel CarInputModelInfo(int id)
             => db
                 .Cars
-                .Where(x => x.Id == id)
+                .Where(x => x.Id == id && x.IsDeleted == false)
                 .Select(x => new CarInputModel()
                 {
                     Id = x.Id,
@@ -184,13 +185,13 @@
         {
             var car = db.Cars.Find(id);
 
-            db.Cars.Remove(car);
+            car.IsDeleted = true;
 
             try
             {
                 await db.SaveChangesAsync();
             }
-            catch (DbUpdateException due)
+            catch (DbUpdateException)
             {
                 return false;
             }
