@@ -127,7 +127,8 @@
     <div class="col">
         @if ((this.User.IsDealer() && DealersService.OwnsCar(this.User.GetId(), Model.Car.Id)) || this.User.IsAdmin())
         {
-            <a asp-action="Edit" asp-route-id="@Model.Car.Id" class="float-md-right btn btn-warning">Edit car</a>
+            <a asp-action="Delete" asp-controller="Cars" asp-route-id="@Model.Car.Id" class="float-md-right btn btn-outline-danger ml-2">Delete car</a>
+            <a asp-action="Edit" asp-controller="Cars" asp-route-id="@Model.Car.Id" class="float-md-right btn btn-warning">Edit car</a>
         }
 
     </div>

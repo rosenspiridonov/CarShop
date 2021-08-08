@@ -40,7 +40,7 @@
             return this.View(cars);
         }
 
-        [Authorize(Roles = "Admin, Dealer")]
+        [Authorize(Roles = DealerRoleName + ", " + AdminRoleName)]
         public IActionResult Create()
         {
             var model = new CarFormModel()
@@ -52,7 +52,7 @@
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin, Dealer")]
+        [Authorize(Roles = DealerRoleName + ", " + AdminRoleName)]
         public async Task<IActionResult> Create(CarFormModel input)
         {
             input.Data = carsService.AllCarOptions();
@@ -113,9 +113,34 @@
                 return View(input);
             }
 
+            if (!dealersService.OwnsCar(this.User.GetId(), input.Car.Id) && !this.User.IsAdmin())
+            {
+                return Unauthorized();
+            }
+
             var carId = await carsService.EditCarAsync(input.Car);
 
             return RedirectToAction("Details", "Cars", new { id = carId });
+        }
+
+        [Authorize(Roles = DealerRoleName + ", " + AdminRoleName)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (!dealersService.OwnsCar(this.User.GetId(), id) && !this.User.IsAdmin())
+            {
+                return Unauthorized();
+            }
+
+            var ownerId = carsService.OwnerId(id);
+
+            var isDeleted = await carsService.Delete(id);
+
+            if (!isDeleted)
+            {
+                return BadRequest("An error occured while deleting the car.");
+            }
+
+            return RedirectToAction("Cars", "Dealers", new { id = ownerId });
         }
     }
 }

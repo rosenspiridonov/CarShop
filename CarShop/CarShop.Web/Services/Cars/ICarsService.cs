@@ -19,6 +19,10 @@
 
         CarServiceModel GetCarViewModel(int id);
 
-        public CarInputModel CarInputModelInfo(int id);
+        CarInputModel CarInputModelInfo(int id);
+
+        Task<bool> Delete(int id);
+
+        string OwnerId(int carId);
     }
 }

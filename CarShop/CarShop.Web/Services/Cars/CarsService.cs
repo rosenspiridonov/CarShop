@@ -9,6 +9,7 @@
     using CarShop.Web.Models.Cars;
     using CarShop.Web.Services.Cars;
     using Microsoft.Data.Sql;
+    using Microsoft.EntityFrameworkCore;
 
     public class CarsService : ICarsService
     {
@@ -177,29 +178,27 @@
 
             int carId = await CreateCarAsync(input.OwnerId, input);
             return carId;
-            //car.BrandId = input.BrandId;
-            //car.ModelId = input.ModelId;
-            //car.Modification = input.Modification;
-            //car.Price = input.Price;
-            //car.Description = input.Description;
-            //car.ProduceYear = input.ProduceYear;
-            //car.EngineTypeId = input.EngineTypeId;
-            //car.HorsePower = input.HorsePower;
-            //car.EuroStandardId = input.EuroStandardId;
-            //car.TransmisionId = input.TransmisionTypeId;
-            //car.CoupeTypeId = input.CoupeTypeId;
-            //car.TravelledDistance = input.TravelledDistance;
-            //car.Color = input.Color;
-            //car.Image = new Image { Url = input.ImageUrl };
-            //car.SafetyProperties = input.SafetyPropertiesIds?.Select(p => db.SafetyProperties.FirstOrDefault(pp => pp.Id == p)).ToList();
-            //car.ComfortProperties = input.ComfortPropertiesIds?.Select(p => db.ComfortProperties.FirstOrDefault(pp => pp.Id == p)).ToList();
-            //car.OtherProperties = input.OtherPropertiesIds?.Select(p => db.OtherProperties.FirstOrDefault(pp => pp.Id == p)).ToList();
-            //car.ExteriorProperties = input.ExteriorPropertiesIds?.Select(p => db.ExteriorProperties.FirstOrDefault(pp => pp.Id == p)).ToList();
-            //car.InteriorProperties = input.InteriorPropertiesIds?.Select(p => db.InteriorProperties.FirstOrDefault(pp => pp.Id == p)).ToList();
-            //car.ProtectionProperties = input.ProtectionPropertiesIds?.Select(p => db.ProtectionProperties.FirstOrDefault(pp => pp.Id == p)).ToList();
-            //car.SpecialProperties = input.SpecialPropertiesIds?.Select(p => db.SpecialProperties.FirstOrDefault(pp => pp.Id == p)).ToList();
-
-            //await db.SaveChangesAsync();
         }
+
+        public async Task<bool> Delete(int id)
+        {
+            var car = db.Cars.Find(id);
+
+            db.Cars.Remove(car);
+
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (DbUpdateException due)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public string OwnerId(int carId) 
+            => db.Cars.Find(carId).OwnerId;
     }
 }
