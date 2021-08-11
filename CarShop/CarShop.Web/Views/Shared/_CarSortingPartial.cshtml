@@ -1,0 +1,17 @@
+﻿@model CarSortingViewModel
+
+<div class="col">
+    <label asp-for="@Model.Sorting"></label>
+    <select class="form-control" asp-for="@Model.Sorting">
+        <option value="1">Year</option>
+        <option value="2" selected>Price</option>
+        <option value="3">Brand</option>
+    </select>
+</div>
+<div class="col">
+    <label asp-for="@Model.Order"></label>
+    <select class="form-control" asp-for="@Model.Order">
+        <option value="1" selected>Ascending</option>
+        <option value="2">Descending</option>
+    </select>
+</div>

@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using CarShop.Web.Data.Models;
+    using CarShop.Web.Models.Sorting;
     using CarShop.Web.Models.Cars;
-    using CarShop.Web.Services.Cars;
+    using CarShop.Web.Services.Cars.Models;
 
     public interface ICarsService
     {
@@ -24,5 +24,12 @@
         Task<bool> Delete(int id);
 
         string OwnerId(int carId);
+
+        IEnumerable<CarListingServiceModel> SortCars(
+            IEnumerable<CarListingServiceModel> collection,
+            CarSorting sorting = CarSorting.Price,
+            SortingOrder sortingOrder = SortingOrder.Ascending);
+
+        AllCarsServiceModel All(int currentPage = 1, int carsPerPage = 20, string ownerId = null);
     }
 }

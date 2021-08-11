@@ -1,0 +1,47 @@
+﻿@model IList<CarListingServiceModel>
+@inject IImagesService Image
+@inject IDealersService Dealer 
+
+
+<div class="cars__wrapper">
+    @foreach (var car in @Model)
+    {
+        <div class="car__wrapper row mb-3">
+            <div class="col-md-4">
+                @{
+                    var imageUrl = "";
+
+                    if (Image.IsValid(car.ImageUrl))
+                    {
+                        imageUrl = car.ImageUrl;
+                    }
+                    else
+                    {
+                        imageUrl = "/img/car-placeholder.jpg";
+                    }
+                }
+                <img src="@imageUrl" alt="@car.Brand @car.Model (@car.Modification)">
+            </div>
+            <div class="col-md-8 car__content">
+                <h5 class="m-0">@car.Brand @car.Model</h5>
+                <h6>@car.Modification</h6>
+                <p class="car-text">
+                    <div class="text-muted">Travelled distance: @car.TravelledDistance km</div>
+                    <div class="text-muted">Year: @car.Year</div>
+                    <div class="card-price"><b>Price:</b> @car.Price лв</div>
+                </p>
+                <div class="car-btns">
+                    <a asp-action="Details" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-outline-info">Details</a>
+                    @if (User.Identity.IsAuthenticated && (User.IsDealer() || User.IsAdmin()))
+                    {
+                        @if (Dealer.OwnsCar(User.GetId(), car.Id) || User.IsAdmin())
+                        {
+                            <a asp-action="Delete" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-danger">Delete</a>
+                            <a asp-action="Edit" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-warning">Edit</a>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

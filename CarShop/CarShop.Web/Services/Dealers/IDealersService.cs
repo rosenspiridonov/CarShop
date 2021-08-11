@@ -4,6 +4,6 @@
     {
         DealerServiceModel GetInfo(string userId);
 
-        bool OwnsCar(string userId,     int carId);
+        bool OwnsCar(string userId, int carId);
     }
 }

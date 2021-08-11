@@ -13,6 +13,8 @@ namespace CarShop.Web
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using CarShop.Web.Services.Dealers;
+    using Microsoft.AspNetCore.Mvc;
+    using CarShop.Web.Services.Images;
 
     public class Startup
     {
@@ -44,11 +46,15 @@ namespace CarShop.Web
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+            });
 
             services.AddTransient<IDataSeeder, DataSeeder>();
             services.AddTransient<ICarsService, CarsService>();
             services.AddTransient<IDealersService, DealersService>();
+            services.AddTransient<IImagesService, ImagesService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDataSeeder dataSeeder)

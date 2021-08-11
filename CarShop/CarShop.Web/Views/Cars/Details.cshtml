@@ -1,5 +1,6 @@
-﻿@inject IDealersService DealersService
-@model CarDetailsViewModel
+﻿@model CarDetailsViewModel
+@inject IDealersService DealersService
+@inject IImagesService Image
 
 <div class="car-data">
     <div class="row my-5">
@@ -20,7 +21,20 @@
             </div>
         </div>
         <div class="col-md-6 col-sm-12 car-image-container">
-            <img src="@Model.Car.ImageUrl" alt="@Model.Car.Brand @Model.Car.Model - @Model.Car.Modification" />
+            @{
+                var imageUrl = "";
+
+                if (Image.IsValid(Model.Car.ImageUrl))
+                {
+                    imageUrl = Model.Car.ImageUrl;
+                }
+                else
+                {
+                    imageUrl = "/img/car-placeholder.jpg";
+                }
+            }
+
+            <img src="@imageUrl" alt="@Model.Car.Brand @Model.Car.Model - @Model.Car.Modification" />
         </div>
     </div>
 

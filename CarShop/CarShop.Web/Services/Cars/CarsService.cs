@@ -7,8 +7,9 @@
     using CarShop.Web.Data.Models;
     using CarShop.Web.Data;
     using CarShop.Web.Models.Cars;
-    using CarShop.Web.Services.Cars;
+    using CarShop.Web.Services.Cars.Models;
     using Microsoft.EntityFrameworkCore;
+    using CarShop.Web.Models.Sorting;
 
     public class CarsService : ICarsService
     {
@@ -199,7 +200,76 @@
             return true;
         }
 
-        public string OwnerId(int carId) 
+        public string OwnerId(int carId)
             => db.Cars.Find(carId).OwnerId;
+
+        public IEnumerable<CarListingServiceModel> SortCars(
+            IEnumerable<CarListingServiceModel> collection, 
+            CarSorting sorting = CarSorting.Price, 
+            SortingOrder sortingOrder = SortingOrder.Ascending)
+        {
+            var result = new List<CarListingServiceModel>();
+
+            if (sortingOrder is SortingOrder.Ascending)
+            {
+                result = sorting switch
+                {
+                    CarSorting.Year => collection.OrderBy(x => x.Year).ThenBy(x => x.Price).ToList(),
+                    CarSorting.Brand => collection.OrderBy(x => x.Brand).ThenBy(x => x.Price).ToList(),
+                    CarSorting.Price => collection.OrderBy(x => x.Price).ToList(),
+                    _ => result,
+                };
+            }
+            else
+            {
+                result = sorting switch
+                {
+                    CarSorting.Year => collection.OrderByDescending(x => x.Year).ThenByDescending(x => x.Price).ToList(),
+                    CarSorting.Brand => collection.OrderByDescending(x => x.Brand).ThenByDescending(x => x.Price).ToList(),
+                    CarSorting.Price => collection.OrderByDescending(x => x.Price).ToList(),
+                    _ => result,
+                };
+            }
+
+            return result;
+        }
+
+        public AllCarsServiceModel All(int currentPage = 1, int carsPerPage = 20, string ownerId = null)
+        {
+            var query = this.db
+                .Cars
+                .Where(x => !x.IsDeleted)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(ownerId))
+            {
+                query = query.Where(x => x.OwnerId == ownerId);
+            }
+
+            var totalCars = query.Count();
+
+            query = query
+                .Skip((currentPage - 1) * carsPerPage)
+                .Take(carsPerPage);
+
+            return new()
+            {
+                TotalCars = totalCars,
+                Cars = query
+                        .Select(x => new CarListingServiceModel()
+                        {
+                            Id = x.Id,
+                            Brand = x.Brand.Name,
+                            Model = x.Model.Name,
+                            Modification = x.Modification,
+                            Year = x.ProduceYear,
+                            Price = x.Price,
+                            TravelledDistance = x.TravelledDistance.Value,
+                            OwnerId = x.OwnerId,
+                            ImageUrl = x.Image.Url
+                        }).ToList()
+            };
+
+        }
     }
 }

@@ -1,5 +1,34 @@
-﻿*, 
-::before, 
+﻿*,
+::before,
 ::after {
     box-sizing: border-box;
+}
+
+.dealer-btn {
+    border-radius: 50px;
+    padding: 0.25em .75em !important;
+}
+
+.car__wrapper {
+    box-shadow: 0 0  10px 1px #00000010;
+    padding: 1em 0;
+    border-radius: 5px;
+}
+
+.car__wrapper img{
+    width: 100%;
+}
+
+.car__wrapper .car__content {
+    position: relative;
+}
+
+.car__content .card-price {
+    font-size: 1.25rem;
+}
+
+.car__wrapper .car-btns {
+    height: 50px;
+    position: absolute;
+    bottom: 0;
 }

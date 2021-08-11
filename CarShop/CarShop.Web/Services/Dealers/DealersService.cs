@@ -3,10 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
 
     using CarShop.Services.Cars;
     using CarShop.Web.Data;
+    using CarShop.Web.Services.Cars.Models;
 
     using static WebConstants;
 

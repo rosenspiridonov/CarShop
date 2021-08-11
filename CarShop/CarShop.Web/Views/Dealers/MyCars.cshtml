@@ -1,6 +1,8 @@
 ﻿@model AllCarsViewModel
 
-<h1 class="text-center text-success">All cars</h1>
+@{
+    ViewData["Title"] = "My Cars";
+}
 
 @if (!Model.Cars.Any())
 {
@@ -15,13 +17,14 @@ else
             <input type="submit" value="Sort" class="btn btn-primary" />
         </div>
     </form>
+
     <div class="cars__wrapper mt-5">
         <partial name="../Cars/_CarsListingPartial" model="@Model.Cars" />
     </div>
 }
 
-<vc:pagination conroller-name="Cars"
-               action-name="All"
+<vc:pagination conroller-name="Dealers"
+               action-name="MyCars"
                current-page="@Model.CurrentPage"
                cars-per-page="@Model.CarsPerPage"
                total-cars="@Model.TotalCars">

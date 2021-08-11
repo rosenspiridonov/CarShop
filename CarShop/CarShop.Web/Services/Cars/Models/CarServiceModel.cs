@@ -1,4 +1,4 @@
-﻿namespace CarShop.Web.Services.Cars
+﻿namespace CarShop.Web.Services.Cars.Models
 {
     using System.Collections.Generic;
 

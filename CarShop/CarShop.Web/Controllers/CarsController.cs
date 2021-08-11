@@ -1,48 +1,60 @@
 ﻿namespace CarShop.Web.Controllers
 {
+    using System.Linq;
+    using System.Threading.Tasks;
+
     using CarShop.Services.Cars;
-    using CarShop.Web.Data.Models;
     using CarShop.Web.Infrastructure;
     using CarShop.Web.Models.Cars;
+    using CarShop.Web.Models.Sorting;
     using CarShop.Web.Services.Dealers;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
-
     using static WebConstants;
 
     public class CarsController : Controller
     {
         private readonly ICarsService carsService;
-        private readonly UserManager<IdentityUser> userManager;
         private readonly IDealersService dealersService;
 
         public CarsController(
             ICarsService carsService, 
-            UserManager<IdentityUser> userManager,
             IDealersService dealersService)
         {
             this.carsService = carsService;
-            this.userManager = userManager;
             this.dealersService = dealersService;
         }
 
-        public IActionResult All()
+        public IActionResult All(int page = 1, CarSorting sorting = CarSorting.Year, SortingOrder order = SortingOrder.Ascending)
         {
-            var cars = carsService.GetCars(0, 10);
+            const int carsPerPage = 30;
 
-            return this.View(cars);
+            var result = carsService.All(currentPage: page);
+
+            result.Cars = carsService.SortCars(result.Cars, sorting, order);
+
+            var model = new AllCarsViewModel
+            {
+                CurrentPage = page,
+                TotalCars = result.TotalCars,
+                CarsPerPage = carsPerPage,
+                Cars = result.Cars.ToList()
+            };
+
+            return this.View(model);
         }
 
-        [Authorize(Roles = DealerRoleName + ", " + AdminRoleName)]
+        [Authorize]
         public IActionResult Create()
         {
+            if (!User.IsDealer() && !User.IsAdmin())
+            {
+                return this.RedirectToAction("Become", "Dealers");
+            }
+
             var model = new CarFormModel()
             {
                 Data = carsService.AllCarOptions(),
@@ -140,7 +152,7 @@
                 return BadRequest("An error occured while deleting the car.");
             }
 
-            return RedirectToAction("Cars", "Dealers", new { id = ownerId });
+            return RedirectToAction("MyCars", "Dealers", new { id = ownerId });
         }
     }
 }
