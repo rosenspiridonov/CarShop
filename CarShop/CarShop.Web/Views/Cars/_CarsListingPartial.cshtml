@@ -1,5 +1,4 @@
 ﻿@model IList<CarListingServiceModel>
-@inject IImagesService Image
 @inject IDealersService Dealer 
 
 
@@ -8,19 +7,7 @@
     {
         <div class="car__wrapper row mb-3">
             <div class="col-md-4">
-                @{
-                    var imageUrl = "";
-
-                    if (Image.IsValid(car.ImageUrl))
-                    {
-                        imageUrl = car.ImageUrl;
-                    }
-                    else
-                    {
-                        imageUrl = "/img/car-placeholder.jpg";
-                    }
-                }
-                <img src="@imageUrl" alt="@car.Brand @car.Model (@car.Modification)">
+                <img src="@car.ImageUrl" alt="@car.Brand @car.Model (@car.Modification)">
             </div>
             <div class="col-md-8 car__content">
                 <h5 class="m-0">@car.Brand @car.Model</h5>

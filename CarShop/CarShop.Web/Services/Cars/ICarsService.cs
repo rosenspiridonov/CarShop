@@ -30,6 +30,6 @@
             CarSorting sorting = CarSorting.Price,
             SortingOrder sortingOrder = SortingOrder.Ascending);
 
-        AllCarsServiceModel All(int currentPage = 1, int carsPerPage = 20, string ownerId = null);
+        AllCarsServiceModel All(int currentPage = 1, int carsPerPage = 20, string ownerId = null, CarSearchServiceModel searchModel = null);
     }
 }

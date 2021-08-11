@@ -47,6 +47,11 @@
             return this.View(model);
         }
 
+        public IActionResult Search()
+        {
+            return View();
+        }
+
         [Authorize]
         public IActionResult Create()
         {

@@ -10,14 +10,17 @@
     using CarShop.Web.Services.Cars.Models;
     using Microsoft.EntityFrameworkCore;
     using CarShop.Web.Models.Sorting;
+    using CarShop.Web.Services.Images;
 
     public class CarsService : ICarsService
     {
         private readonly ApplicationDbContext db;
+        private readonly IImagesService imageService;
 
-        public CarsService(ApplicationDbContext db)
+        public CarsService(ApplicationDbContext db, IImagesService imageService)
         {
             this.db = db;
+            this.imageService = imageService;
         }
 
         public async Task<int> CreateCarAsync(string ownerId, CarInputModel input)
@@ -47,6 +50,11 @@
                 SpecialProperties = input.SpecialPropertiesIds?.Select(p => db.SpecialProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
                 IsDeleted = false
             };
+
+            if (!imageService.IsValid(car.Image.Url))
+            {
+                car.Image.Url = "/img/car-placeholder.jpg";
+            }
 
             car.OwnerId = ownerId;
 
@@ -204,8 +212,8 @@
             => db.Cars.Find(carId).OwnerId;
 
         public IEnumerable<CarListingServiceModel> SortCars(
-            IEnumerable<CarListingServiceModel> collection, 
-            CarSorting sorting = CarSorting.Price, 
+            IEnumerable<CarListingServiceModel> collection,
+            CarSorting sorting = CarSorting.Price,
             SortingOrder sortingOrder = SortingOrder.Ascending)
         {
             var result = new List<CarListingServiceModel>();
@@ -234,12 +242,12 @@
             return result;
         }
 
-        public AllCarsServiceModel All(int currentPage = 1, int carsPerPage = 20, string ownerId = null)
+        public AllCarsServiceModel All(int currentPage = 1, int carsPerPage = 20, string ownerId = null, CarSearchServiceModel searchModel = null)
         {
-            var query = this.db
+            var query = searchModel is null ? this.db
                 .Cars
                 .Where(x => !x.IsDeleted)
-                .AsQueryable();
+                .AsQueryable() : this.Search(searchModel);
 
             if (!string.IsNullOrWhiteSpace(ownerId))
             {
@@ -262,14 +270,43 @@
                             Brand = x.Brand.Name,
                             Model = x.Model.Name,
                             Modification = x.Modification,
-                            Year = x.ProduceYear,
                             Price = x.Price,
                             TravelledDistance = x.TravelledDistance.Value,
-                            OwnerId = x.OwnerId,
-                            ImageUrl = x.Image.Url
+                            Year = x.ProduceYear,
+                            EngineType = x.EngineType.Name,
+                            ImageUrl = x.Image.Url,
+                            OwnerId = x.OwnerId
                         }).ToList()
             };
+        }
 
+        private IQueryable<Car> Search(CarSearchServiceModel model)
+        {
+            var query = this.db
+               .Cars
+               .Where(x => !x.IsDeleted)
+               .AsQueryable();
+
+            query = model.BrandId is null ? query : query.Where(x => x.BrandId == model.BrandId);
+            query = model.ModelId is null ? query : query.Where(x => x.ModelId == model.ModelId);
+            query = model.PriceFrom is null ? query : query.Where(x => x.Price >= model.PriceFrom);
+            query = model.PriceTo is null ? query : query.Where(x => x.Price <= model.PriceTo);
+            query = model.YearFrom is null ? query : query.Where(x => x.ProduceYear >= model.YearFrom);
+            query = model.YearTo is null ? query : query.Where(x => x.ProduceYear <= model.YearTo);
+            query = model.HorsePowerFrom is null ? query : query.Where(x => x.HorsePower >= model.HorsePowerFrom);
+            query = model.HorsePowerTo is null ? query : query.Where(x => x.HorsePower <= model.HorsePowerTo);
+            query = model.EngineTypeId is null ? query : query.Where(x => x.EngineTypeId == model.EngineTypeId);
+            query = model.TransmisionTypeId is null ? query : query.Where(x => x.TransmisionId == model.TransmisionTypeId);
+            query = model.MaxTravelledDistance is null ? query : query.Where(x => x.TravelledDistance <= model.MaxTravelledDistance);
+            query = model.SafetyProperties is null ? query : query.Where(x => x.SafetyProperties.Any(p => model.SafetyProperties.Any(m => m.Id == p.Id)));
+            query = model.ComfortProperties is null ? query : query.Where(x => x.ComfortProperties.Any(p => model.ComfortProperties.Any(m => m.Id == p.Id)));
+            query = model.OtherProperties is null ? query : query.Where(x => x.OtherProperties.Any(p => model.OtherProperties.Any(m => m.Id == p.Id)));
+            query = model.ExteriorProperties is null ? query : query.Where(x => x.ExteriorProperties.Any(p => model.ExteriorProperties.Any(m => m.Id == p.Id)));
+            query = model.InteriorProperties is null ? query : query.Where(x => x.InteriorProperties.Any(p => model.InteriorProperties.Any(m => m.Id == p.Id)));
+            query = model.ProtectionProperties is null ? query : query.Where(x => x.ProtectionProperties.Any(p => model.ProtectionProperties.Any(m => m.Id == p.Id)));
+            query = model.SpecialProperties is null ? query : query.Where(x => x.SpecialProperties.Any(p => model.SpecialProperties.Any(m => m.Id == p.Id)));
+
+            return query;
         }
     }
 }

@@ -16,6 +16,8 @@
 
         public int TravelledDistance { get; set; }
 
+        public string EngineType { get; set; }
+
         public string ImageUrl { get; set; }
 
         public string OwnerId { get; set; }
