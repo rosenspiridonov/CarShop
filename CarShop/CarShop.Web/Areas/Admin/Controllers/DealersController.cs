@@ -27,6 +27,7 @@
             return View(requests);
         }
 
+        [HttpPost]
         public async Task<IActionResult> Requests(string userId)
         {
             var user = await userManager.FindByIdAsync(userId);
@@ -38,6 +39,7 @@
             }
 
             await userManager.AddToRoleAsync(user, DealerRoleName);
+            adminService.ApproveDealer(userId);
 
             return Redirect("/");
         }

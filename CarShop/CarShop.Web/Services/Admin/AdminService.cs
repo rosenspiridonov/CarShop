@@ -19,7 +19,12 @@
 
         public void ApproveDealer(string userId)
         {
-            throw new System.NotImplementedException();
+            var request = db.DealerRequests.FirstOrDefault(x => x.UserId == userId);
+
+            request.Pending = false;
+            request.IsAccepted = true;
+
+            db.SaveChanges();
         }
 
         public IEnumerable<DealerServiceModel> DealersPendingRequests()
