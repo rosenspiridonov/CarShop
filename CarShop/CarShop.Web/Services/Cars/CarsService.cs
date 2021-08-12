@@ -242,7 +242,11 @@
             return result;
         }
 
-        public AllCarsServiceModel All(int currentPage = 1, int carsPerPage = 20, string ownerId = null, CarSearchServiceModel searchModel = null)
+        public AllCarsServiceModel All(
+            int currentPage = 1,
+            int carsPerPage = 20,
+            string ownerId = null,
+            CarSearchServiceModel searchModel = null)
         {
             var query = searchModel is null ? this.db
                 .Cars
@@ -257,6 +261,7 @@
             var totalCars = query.Count();
 
             query = query
+                .OrderByDescending(x => x.Id)
                 .Skip((currentPage - 1) * carsPerPage)
                 .Take(carsPerPage);
 
@@ -273,10 +278,13 @@
                             Price = x.Price,
                             TravelledDistance = x.TravelledDistance,
                             Year = x.ProduceYear,
+                            HorsePower = x.HorsePower,
                             EngineType = x.EngineType.Name,
                             ImageUrl = x.Image.Url,
-                            OwnerId = x.OwnerId
-                        }).ToList()
+                            OwnerId = x.OwnerId,
+                            OwnerName = x.Owner.UserName
+                        })
+                        .ToList()
             };
         }
 

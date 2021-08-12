@@ -16,10 +16,14 @@
 
         public int? TravelledDistance { get; set; }
 
+        public int? HorsePower { get; set; }
+
         public string EngineType { get; set; }
 
         public string ImageUrl { get; set; }
 
         public string OwnerId { get; set; }
+
+        public string OwnerName { get; set; }
     }
 }

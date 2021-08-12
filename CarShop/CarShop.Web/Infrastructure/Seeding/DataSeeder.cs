@@ -65,7 +65,7 @@
             await userManager.CreateAsync(new IdentityUser
             {
                 Email = "admin@carshop.com",
-                UserName = "admin@carshop.com",
+                UserName = "admin1",
                 PhoneNumber = "0888121476"
             }, "adminadmin");
 

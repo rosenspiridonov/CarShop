@@ -1,0 +1,49 @@
+﻿@model AllCarsViewModel
+
+@{
+    ViewData["Title"] = "All cars";
+}
+
+<form method="get" class="row col-md-6 offset-6 sorting mb-3">
+    <partial name="_CarSortingPartial" model="@Model.SortingModel" />
+    <div class="col">
+        <input type="submit" value="Sort" class="btn btn-primary" />
+    </div>
+</form>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Car name</th>
+            <th scope="col">Owner name</th>
+            <th scope="col">Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var car in Model.Cars)
+        {
+            <tr>
+                <th>@car.Id</th>
+                <td scope="row">
+                    <div>@car.Brand @car.Model</div>
+                    <small><b>Price:</b> @car.Price</small>
+                    <small><b>Year:</b> @car.Year</small>
+                </td>
+                <td>@car.OwnerName</td>
+                <td scope="row">
+                    <a asp-action="Details" asp-area="" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-info">Details</a>
+                    <a asp-action="Edit" asp-area="" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-area="" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<vc:pagination conroller-name="Cars"
+               action-name="All"
+               current-page="@Model.CurrentPage"
+               cars-per-page="@Model.CarsPerPage"
+               total-cars="@Model.TotalCars">
+</vc:pagination>

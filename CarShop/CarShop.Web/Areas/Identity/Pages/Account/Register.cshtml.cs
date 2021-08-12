@@ -38,6 +38,9 @@
             [Display(Name = "Email")]
             public string Email { get; set; }
 
+            [StringLength(30, MinimumLength = 2)]
+            public string Username { get; set; }
+
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
@@ -61,7 +64,7 @@
 
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new IdentityUser { UserName = Input.Username ?? Input.Email, Email = Input.Email, };
                 var result = await userManager.CreateAsync(user, Input.Password);
                 // Add new user to 'user' role
                 await userManager.AddToRoleAsync(user, UserRoleName);

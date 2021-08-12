@@ -1,0 +1,28 @@
+﻿@model IEnumerable<DealerServiceModel> 
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Phone number</th>
+            <th scope="col">Email</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Name</td>
+                <td>@user.PhoneNumber</td>
+                <td>@user.Email</td>
+                <td scope="row">
+                <form method="post">
+                    <input type="hidden" asp-for="@user.Id" />
+                    <input type="submit" class="btn btn-info" value="Approve"/>
+                </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

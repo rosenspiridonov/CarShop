@@ -60,6 +60,18 @@
         <div class="col">
             <div class="form-row">
                 <div class="form-group col">
+                    <label asp-for="@Model.YearFrom"></label>
+                    <input asp-for="@Model.YearFrom" class="form-control" />
+                    <span asp-validation-for="@Model.YearFrom" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label asp-for="@Model.YearTo"></label>
+                    <input asp-for="@Model.YearTo" class="form-control" />
+                    <span asp-validation-for="@Model.YearTo" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
                     <label asp-for="@Model.EngineTypeId"></label>
                     <select asp-for="@Model.EngineTypeId" class="form-control">
                         <option>--</option>

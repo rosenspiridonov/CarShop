@@ -27,6 +27,8 @@ namespace CarShop.Web.Data
         public DbSet<Model> Models { get; set; }
         public DbSet<Image> Images { get; set; }
 
+        public DbSet<DealerRequest> DealerRequests { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Car>().Property(x => x.Price).HasPrecision(14, 2);

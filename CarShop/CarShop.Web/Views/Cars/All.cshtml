@@ -5,15 +5,14 @@
 @if (!Model.Cars.Any())
 {
     <h3 class="text-center">No cars found!</h3>
-    <h6 class="text-center">Try adding a new car  <a asp-action="Create" asp-controller="Cars" class="text-info"><b>here</b>.</a></h6>
+    <h6 class="text-center">Try adding a new car <a asp-action="Create" asp-controller="Cars" class="text-info"><b>here</b>.</a></h6>
 }
 else
 {
     <form method="get" class="row col-md-6 offset-6 sorting">
         <partial name="_CarSortingPartial" model="@Model.SortingModel" />
-        <input type="hidden" class="query-parameters" value="" />
         <div class="col">
-            <input type="submit" name="params" value="Sort" class="btn btn-primary" />
+            <input type="submit" value="Sort" class="btn btn-primary" />
         </div>
     </form>
     <div class="cars__wrapper mt-5">

@@ -14,27 +14,28 @@
     using Microsoft.AspNetCore.Mvc;
 
     using static WebConstants;
+    using CarShop.Web.Services.Dealers;
 
     public class DealersController : Controller
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly ICarsService carsService;
+        private readonly IDealersService dealersService;
 
         public DealersController(
             UserManager<IdentityUser> userManager,
-            ICarsService carsService)
+            ICarsService carsService,
+            IDealersService dealersService)
         {
             this.userManager = userManager;
             this.carsService = carsService;
+            this.dealersService = dealersService;
         }
 
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> BecomeAsync()
+        public IActionResult Become()
         {
-            var user = await userManager.FindByIdAsync(this.User.GetId());
-            var isDealer = await userManager.IsInRoleAsync(user, DealerRoleName);
-
-            if (isDealer)
+            if (this.User.IsDealer())
             {
                 return Redirect("/");
             }
@@ -44,19 +45,16 @@
 
         [HttpPost]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> Become(DealerFormModel model)
+        public IActionResult Become(DealerFormModel model)
         {
-            var user = await userManager.FindByIdAsync(this.User.GetId());
-
             if (!ModelState.IsValid)
             {
                 return this.View(model);
             }
 
-            await userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
-            await userManager.AddToRoleAsync(user, DealerRoleName);
+            dealersService.ProcessRequest(this.User.GetId(), model.PhoneNumber);
 
-            return Redirect("/");
+            return RedirectToAction("ThankYou", "Dealers");
         }
 
         [Authorize(Roles = DealerRoleName + ", " + AdminRoleName)]

@@ -5,5 +5,9 @@
         DealerServiceModel GetInfo(string userId);
 
         bool OwnsCar(string userId, int carId);
+
+        void ProcessRequest(string userId, string phoneNumber);
+
+        DealerServiceModel GetById(string userId);
     }
 }

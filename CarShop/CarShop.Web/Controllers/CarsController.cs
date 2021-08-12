@@ -166,8 +166,8 @@
             {
                 return BadRequest("An error occured while deleting the car.");
             }
-
-            return RedirectToAction("MyCars", "Dealers", new { id = ownerId });
+           
+            return RedirectToAction("Index", controllerName: "Home");
         }
     }
 }

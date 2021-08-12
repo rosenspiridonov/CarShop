@@ -11,15 +11,14 @@
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                {
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        return true;
-                    }
+                using HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-                    return false;
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    return true;
                 }
+
+                return false;
             }
             catch (Exception)
             {

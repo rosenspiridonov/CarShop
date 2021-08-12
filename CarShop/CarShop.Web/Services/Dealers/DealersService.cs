@@ -6,6 +6,7 @@
 
     using CarShop.Services.Cars;
     using CarShop.Web.Data;
+    using CarShop.Web.Data.Models;
     using CarShop.Web.Services.Cars.Models;
 
     using static WebConstants;
@@ -23,6 +24,18 @@
             this.carsService = carsService;
         }
 
+        public DealerServiceModel GetById(string userId)
+            => db.Users
+                .Where(x => x.Id == userId)
+                .Select(x => new DealerServiceModel
+                {
+                    Id = x.Id,
+                    Name = x.UserName,
+                    PhoneNumber = x.PhoneNumber,
+                    Email = x.Email,
+                })
+                .FirstOrDefault();
+
         public DealerServiceModel GetInfo(string userId)
         {
             var user = db.Users.FirstOrDefault(x => x.Id == userId);
@@ -38,6 +51,22 @@
         {
             var carOwnerId = carsService.GetCarViewModel(carId).OwnerId;
             return carOwnerId == userId;
+        }
+
+        public void ProcessRequest(string userId, string phoneNumber)
+        {
+            var user = db.Users.FirstOrDefault(x => x.Id == userId);
+
+            user.PhoneNumber = phoneNumber;
+
+            db.DealerRequests.Add(new DealerRequest
+            {
+                UserId = userId,
+                IsAccepted = false,
+                Pending = true,
+            });
+
+            db.SaveChanges();
         }
     }
 }

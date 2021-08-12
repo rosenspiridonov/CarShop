@@ -15,6 +15,7 @@ namespace CarShop.Web
     using CarShop.Web.Services.Dealers;
     using Microsoft.AspNetCore.Mvc;
     using CarShop.Web.Services.Images;
+    using CarShop.Web.Services.Admin;
 
     public class Startup
     {
@@ -55,6 +56,7 @@ namespace CarShop.Web
             services.AddTransient<ICarsService, CarsService>();
             services.AddTransient<IDealersService, DealersService>();
             services.AddTransient<IImagesService, ImagesService>();
+            services.AddTransient<IAdminService, AdminService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDataSeeder dataSeeder)
@@ -69,6 +71,7 @@ namespace CarShop.Web
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -80,9 +83,10 @@ namespace CarShop.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    name: "Areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
             });
 

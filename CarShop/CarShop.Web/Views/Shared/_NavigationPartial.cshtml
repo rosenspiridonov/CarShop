@@ -30,6 +30,13 @@
                             <a class="nav-link text-light btn btn-info d-inline-block dealer-btn" asp-controller="Dealers" asp-action="MyCars" asp-route-id="@User.GetId()">My cars</a>
                         </li>
                     }
+
+                    if (User.IsAdmin())
+                    {
+                        <li class="nav-item dashboard-link">
+                            <a class="nav-link text-light" asp-area="Admin" asp-controller="Cars" asp-action="All">Dashboard</a>
+                        </li>
+                    }
                 }
             </ul>
             <partial name="_LoginPartial" />
