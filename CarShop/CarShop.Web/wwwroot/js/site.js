@@ -1,4 +1,19 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$('.sorting input[type="submit"]').click(function (e) {
+    e.preventDefault();
 
-// Write your JavaScript code.
+    let queryData = window.location.search;
+    queryData = queryData.replace(/&Sorting=\d&Order=\d/g, '');
+    const formQuery = $('.sorting').serialize();
+    const queryString = queryData + '&' + formQuery;
+    const pathName = window.location.pathname;
+    const hostName = window.location.host;
+
+    const url = 'https://' + hostName + pathName + queryString;
+    window.location = url;
+});
+
+$(document).ready(() => {
+    $('.pagination .page-link').each(function () {
+        $(this).attr('href', $(this).attr('href') + window.location.search.replace('?', '&').replace(/&page=\d+?/g, ''))
+    });
+});

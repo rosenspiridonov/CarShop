@@ -300,6 +300,15 @@
             query = model.EuroStandardId is null ? query : query.Where(x => x.EuroStandardId == model.EuroStandardId);
             query = model.CoupeTypeId is null ? query : query.Where(x => x.CoupeTypeId == model.CoupeTypeId);
             query = model.MaxTravelledDistance is null ? query : query.Where(x => x.TravelledDistance <= model.MaxTravelledDistance);
+
+            model.SafetyProperties = model.SafetyProperties?.Any() == false ? null : model.SafetyProperties;
+            model.ComfortProperties = model.ComfortProperties?.Any() == false ? null : model.ComfortProperties;
+            model.OtherProperties = model.OtherProperties?.Any() == false ? null : model.OtherProperties;
+            model.ExteriorProperties = model.ExteriorProperties?.Any() == false ? null : model.ExteriorProperties;
+            model.InteriorProperties = model.InteriorProperties?.Any() == false ? null : model.InteriorProperties;
+            model.ProtectionProperties = model.ProtectionProperties?.Any() == false ? null : model.ProtectionProperties;
+            model.SpecialProperties = model.SpecialProperties?.Any() == false ? null : model.SpecialProperties;
+
             query = model.SafetyProperties is null ? query : query.Where(x => x.SafetyProperties.Any(p => model.SafetyProperties.Any(m => m == p.Id)));
             query = model.ComfortProperties is null ? query : query.Where(x => x.ComfortProperties.Any(p => model.ComfortProperties.Any(m => m == p.Id)));
             query = model.OtherProperties is null ? query : query.Where(x => x.OtherProperties.Any(p => model.OtherProperties.Any(m => m == p.Id)));

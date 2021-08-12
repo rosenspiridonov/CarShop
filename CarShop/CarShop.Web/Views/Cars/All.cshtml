@@ -9,10 +9,11 @@
 }
 else
 {
-    <form method="get" class="row col-md-6 offset-6">
+    <form method="get" class="row col-md-6 offset-6 sorting">
         <partial name="_CarSortingPartial" model="@Model.SortingModel" />
+        <input type="hidden" class="query-parameters" value="" />
         <div class="col">
-            <input type="submit" value="Sort" class="btn btn-primary" />
+            <input type="submit" name="params" value="Sort" class="btn btn-primary" />
         </div>
     </form>
     <div class="cars__wrapper mt-5">
@@ -26,3 +27,7 @@ else
                cars-per-page="@Model.CarsPerPage"
                total-cars="@Model.TotalCars">
 </vc:pagination>
+
+@section Scripts {
+    
+}

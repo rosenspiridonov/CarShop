@@ -1,19 +1,14 @@
 ﻿@model PaginationViewModel 
 
-@{
-    var routeId = ViewContext.RouteData.Values["id"];
-    
-}
+
 
 <div class="pagination justify-content-end mt-4">
-    <a class="page-link" aria-label="Next >>>"
+    <a class="page-link next" aria-label="Next >>>"
        asp-controller="@Model.ControllerName"
        asp-action="@Model.ActionName"
-       asp-route-id="@routeId"
        asp-route-page="@Model.PreviousPage">Previous</a>
-    <a class="page-link" aria-label="<<< Previous"
+    <a class="page-link prev" aria-label="<<< Previous"
        asp-controller="@Model.ControllerName"
        asp-action="@Model.ActionName"
-       asp-route-id="@routeId"
        asp-route-page="@Model.NextPage">Next</a>
 </div>
