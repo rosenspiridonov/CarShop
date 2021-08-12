@@ -14,7 +14,7 @@
 
         public int Year { get; set; }
 
-        public int TravelledDistance { get; set; }
+        public int? TravelledDistance { get; set; }
 
         public string EngineType { get; set; }
 

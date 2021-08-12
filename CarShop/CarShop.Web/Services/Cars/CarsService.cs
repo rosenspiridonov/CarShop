@@ -260,7 +260,7 @@
                 .Skip((currentPage - 1) * carsPerPage)
                 .Take(carsPerPage);
 
-            return new()
+            return new AllCarsServiceModel()
             {
                 TotalCars = totalCars,
                 Cars = query
@@ -271,7 +271,7 @@
                             Model = x.Model.Name,
                             Modification = x.Modification,
                             Price = x.Price,
-                            TravelledDistance = x.TravelledDistance.Value,
+                            TravelledDistance = x.TravelledDistance,
                             Year = x.ProduceYear,
                             EngineType = x.EngineType.Name,
                             ImageUrl = x.Image.Url,
@@ -297,14 +297,16 @@
             query = model.HorsePowerTo is null ? query : query.Where(x => x.HorsePower <= model.HorsePowerTo);
             query = model.EngineTypeId is null ? query : query.Where(x => x.EngineTypeId == model.EngineTypeId);
             query = model.TransmisionTypeId is null ? query : query.Where(x => x.TransmisionId == model.TransmisionTypeId);
+            query = model.EuroStandardId is null ? query : query.Where(x => x.EuroStandardId == model.EuroStandardId);
+            query = model.CoupeTypeId is null ? query : query.Where(x => x.CoupeTypeId == model.CoupeTypeId);
             query = model.MaxTravelledDistance is null ? query : query.Where(x => x.TravelledDistance <= model.MaxTravelledDistance);
-            query = model.SafetyProperties is null ? query : query.Where(x => x.SafetyProperties.Any(p => model.SafetyProperties.Any(m => m.Id == p.Id)));
-            query = model.ComfortProperties is null ? query : query.Where(x => x.ComfortProperties.Any(p => model.ComfortProperties.Any(m => m.Id == p.Id)));
-            query = model.OtherProperties is null ? query : query.Where(x => x.OtherProperties.Any(p => model.OtherProperties.Any(m => m.Id == p.Id)));
-            query = model.ExteriorProperties is null ? query : query.Where(x => x.ExteriorProperties.Any(p => model.ExteriorProperties.Any(m => m.Id == p.Id)));
-            query = model.InteriorProperties is null ? query : query.Where(x => x.InteriorProperties.Any(p => model.InteriorProperties.Any(m => m.Id == p.Id)));
-            query = model.ProtectionProperties is null ? query : query.Where(x => x.ProtectionProperties.Any(p => model.ProtectionProperties.Any(m => m.Id == p.Id)));
-            query = model.SpecialProperties is null ? query : query.Where(x => x.SpecialProperties.Any(p => model.SpecialProperties.Any(m => m.Id == p.Id)));
+            query = model.SafetyProperties is null ? query : query.Where(x => x.SafetyProperties.Any(p => model.SafetyProperties.Any(m => m == p.Id)));
+            query = model.ComfortProperties is null ? query : query.Where(x => x.ComfortProperties.Any(p => model.ComfortProperties.Any(m => m == p.Id)));
+            query = model.OtherProperties is null ? query : query.Where(x => x.OtherProperties.Any(p => model.OtherProperties.Any(m => m == p.Id)));
+            query = model.ExteriorProperties is null ? query : query.Where(x => x.ExteriorProperties.Any(p => model.ExteriorProperties.Any(m => m == p.Id)));
+            query = model.InteriorProperties is null ? query : query.Where(x => x.InteriorProperties.Any(p => model.InteriorProperties.Any(m => m == p.Id)));
+            query = model.ProtectionProperties is null ? query : query.Where(x => x.ProtectionProperties.Any(p => model.ProtectionProperties.Any(m => m == p.Id)));
+            query = model.SpecialProperties is null ? query : query.Where(x => x.SpecialProperties.Any(p => model.SpecialProperties.Any(m => m == p.Id)));
 
             return query;
         }

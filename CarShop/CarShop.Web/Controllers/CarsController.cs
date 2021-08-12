@@ -7,6 +7,7 @@
     using CarShop.Web.Infrastructure;
     using CarShop.Web.Models.Cars;
     using CarShop.Web.Models.Sorting;
+    using CarShop.Web.Services.Cars.Models;
     using CarShop.Web.Services.Dealers;
 
     using Microsoft.AspNetCore.Authorization;
@@ -21,18 +22,22 @@
         private readonly IDealersService dealersService;
 
         public CarsController(
-            ICarsService carsService, 
+            ICarsService carsService,
             IDealersService dealersService)
         {
             this.carsService = carsService;
             this.dealersService = dealersService;
         }
 
-        public IActionResult All(int page = 1, CarSorting sorting = CarSorting.Year, SortingOrder order = SortingOrder.Ascending)
+        public IActionResult All(
+                int page = 1,
+                CarSorting sorting = CarSorting.Year,
+                SortingOrder order = SortingOrder.Ascending,
+                CarSearchServiceModel searchModel = null)
         {
             const int carsPerPage = 30;
 
-            var result = carsService.All(currentPage: page);
+            var result = carsService.All(currentPage: page, carsPerPage: carsPerPage, searchModel: searchModel is null ? null : searchModel);
 
             result.Cars = carsService.SortCars(result.Cars, sorting, order);
 
@@ -49,7 +54,12 @@
 
         public IActionResult Search()
         {
-            return View();
+            var model = new CarSearchServiceModel
+            {
+                ViewData = carsService.AllCarOptions()
+            };
+
+            return View(model);
         }
 
         [Authorize]

@@ -13,6 +13,9 @@
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Cars" asp-action="Create">Create</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark text" asp-area="" asp-controller="Cars" asp-action="Search">Search</a>
+                </li>
                 @if (this.User.Identity.IsAuthenticated)
                 {
                     if (!User.IsInRole(WebConstants.DealerRoleName) && !User.IsAdmin())
@@ -26,7 +29,6 @@
                         <li class="nav-item">
                             <a class="nav-link text-light btn btn-info d-inline-block dealer-btn" asp-controller="Dealers" asp-action="MyCars" asp-route-id="@User.GetId()">My cars</a>
                         </li>
-
                     }
                 }
             </ul>
