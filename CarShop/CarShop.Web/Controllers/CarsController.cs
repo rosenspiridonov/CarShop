@@ -163,8 +163,6 @@
                 return Unauthorized();
             }
 
-            var ownerId = carsService.OwnerId(id);
-
             var isDeleted = await carsService.Delete(id);
 
             if (!isDeleted)
