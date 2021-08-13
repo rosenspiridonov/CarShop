@@ -43,3 +43,37 @@
     background: var( --dark );
     padding: .5em 1.75em !important;
 }
+
+.thank-you-heading {
+    position: fixed;
+    width: 60vw;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.banner {
+    background-image: url("/img/home-banner.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.banner h1{
+    text-shadow: 0 0 6px #000;
+    font-weight: 600;
+    margin: 30vh 0;
+}
+
+.home-row.row {
+    height: 50vh;
+    font-size: 1.8rem;
+}
+
+.sorting {
+    position: relative;
+}
+
+.sort-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}

@@ -97,5 +97,10 @@
 
             return View(model);
         }
+
+        public IActionResult ThankYou()
+        {
+            return View();
+        }
     }
 }

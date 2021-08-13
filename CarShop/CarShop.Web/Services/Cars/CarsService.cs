@@ -148,6 +148,7 @@
                     InteriorProperties = x.InteriorProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
                     ProtectionProperties = x.ProtectionProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
                     SpecialProperties = x.SpecialProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
+                    IsDeleted = x.IsDeleted
                 }).FirstOrDefault();
 
         public CarInputModel CarInputModelInfo(int id)
@@ -327,5 +328,8 @@
 
             return query;
         }
+
+        public int CarsCount()
+            => db.Cars.Where(x => !x.IsDeleted).Count();
     }
 }

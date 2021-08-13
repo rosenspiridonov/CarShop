@@ -51,5 +51,7 @@
         public IEnumerable<string> ProtectionProperties { get; set; }
 
         public IEnumerable<string> SpecialProperties { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

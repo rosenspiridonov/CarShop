@@ -1,8 +1,14 @@
-﻿@{
+﻿@model IndexViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="d-flex align-items-center justify-content-center h-100 banner">
+    <h1 class="display-4 text-light">Welcome to the simple car shop app</h1>
+</div>
+<div class="row home-row">
+    <div class="col d-flex align-items-center justify-content-center">
+        <div class="text-center">We currently have @Model.CarsCount cars you can browse through. You can check them out <a asp-controller="Cars" asp-action="All" class="text-info">here</a>.</div>
+    </div>
 </div>

@@ -1,14 +1,16 @@
-﻿@model PaginationViewModel 
+﻿@model PaginationViewModel
 
+@if (Model.PreviousPage != Model.NextPage)
+{
+    <div class="pagination justify-content-end mt-4">
+        <a class="page-link next" aria-label="Next >>>"
+           asp-controller="@Model.ControllerName"
+           asp-action="@Model.ActionName"
+           asp-route-page="@Model.PreviousPage">Previous</a>
+        <a class="page-link prev" aria-label="<<< Previous"
+           asp-controller="@Model.ControllerName"
+           asp-action="@Model.ActionName"
+           asp-route-page="@Model.NextPage">Next</a>
+    </div>
+}
 
-
-<div class="pagination justify-content-end mt-4">
-    <a class="page-link next" aria-label="Next >>>"
-       asp-controller="@Model.ControllerName"
-       asp-action="@Model.ActionName"
-       asp-route-page="@Model.PreviousPage">Previous</a>
-    <a class="page-link prev" aria-label="<<< Previous"
-       asp-controller="@Model.ControllerName"
-       asp-action="@Model.ActionName"
-       asp-route-page="@Model.NextPage">Next</a>
-</div>

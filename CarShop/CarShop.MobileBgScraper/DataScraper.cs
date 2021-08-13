@@ -26,7 +26,7 @@
             // Iterate through pages with posts
             Parallel.For(startPage, endPage, (i) =>
             {
-                var url = $"https://www.mobile.bg/pcgi/mobile.cgi?act=3&slink=kwq89j&f1={i}";
+                var url = $"https://www.mobile.bg/pcgi/mobile.cgi?act=3&slink=l3zntn&f1={i}";
                 var postUrls = GetPostUrls(url);
 
                 // Iterate through all post on the page
@@ -34,8 +34,14 @@
                 {
                     try
                     {
+                        
                         var car = GetCar(post);
-                        cars.Add(car);
+
+                        if (car is not null)
+                        {
+                            cars.Add(car);
+                        }
+
                         //Console.WriteLine("Parsed...");
                     }
                     catch (Exception)
@@ -55,28 +61,40 @@
                 .GetAwaiter()
                 .GetResult();
 
+            if (document.DocumentElement.TextContent == "")
+            {
+                return null;
+            }
+
             var car = new CarDto();
 
             // Get Brand, Model and Modification
-            var (brand, model, modification) = GetModelBrandAndModification(document);
-            car.Model = model;
-            car.Brand = brand;
-            car.Modification = modification;
+            try
+            {
+                var (brand, model, modification) = GetModelBrandAndModification(document);
+                car.Model = model;
+                car.Brand = brand;
+                car.Modification = modification;
 
-            car.Price = GetPrice(document);
-            car.Description = GetDescription(document);
+                car.Price = GetPrice(document);
+                car.Description = GetDescription(document);
 
-            car.ProduceYear = GetYear(document);
-            car.EngineType = GetEngineType(document);
-            car.HorsePower = GetHorsePower(document);
-            car.EuroStandard = GetEuroStandard(document);
-            car.Transmision = GetTransmisionType(document);
-            car.CoupeType = GetCoupeType(document);
-            car.TravelledDistance = GetTravelledDistance(document);
-            car.Color = GetColor(document);
-            car.ImageUrl = GetImageUrl(document);
+                car.ProduceYear = GetYear(document);
+                car.EngineType = GetEngineType(document);
+                car.HorsePower = GetHorsePower(document);
+                car.EuroStandard = GetEuroStandard(document);
+                car.Transmision = GetTransmisionType(document);
+                car.CoupeType = GetCoupeType(document);
+                car.TravelledDistance = GetTravelledDistance(document);
+                car.Color = GetColor(document);
+                car.ImageUrl = GetImageUrl(document);
 
-            car = GetProps(car, document);
+                car = GetProps(car, document);
+            }
+            catch (Exception)
+            {
+
+            }
 
             return car;
         }
@@ -98,7 +116,7 @@
         private (string brand, string model, string modification) GetModelBrandAndModification(IDocument document)
         {
             var html = document.DocumentElement.OuterHtml;
-            var titleLine = document.QuerySelector("h1").TextContent;
+            var titleLine = document.QuerySelector("h1")?.TextContent;
 
             var brandRegex = new Regex(@"'AdvertBrand':\s?\['([A-z\s]+)'\]");
             var modelRegex = new Regex(@"'AdvertModel':\s?\['(.*?)'\]");
@@ -108,7 +126,7 @@
 
             string brand = brandMatch.Groups[1].ToString();
             string model = modelMatch.Groups[1].ToString();
-            string modification = titleLine
+            string modification = titleLine?
                 .Replace(brand, "")
                 .Replace(model, "")
                 .Trim();

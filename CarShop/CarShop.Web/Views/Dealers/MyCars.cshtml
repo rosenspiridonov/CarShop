@@ -11,14 +11,16 @@
 }
 else
 {
-    <form method="get" class="row col-md-6 offset-6">
-        <partial name="_CarSortingPartial" model="@Model.SortingModel" />
-        <div class="col">
-            <input type="submit" value="Sort" class="btn btn-primary" />
+    <div class="row">
+        <div class="col-md-5 d-flex align-items-end">
+            <h3 class="text-dark">@User.Identity.Name's cars</h3>
         </div>
-    </form>
-
-    <div class="cars__wrapper mt-5">
+        <form method="get" class="row col-md-6 offset-1 sorting">
+            <partial name="_CarSortingPartial" model="@Model.SortingModel" />
+        </form>
+    </div>
+    <hr />
+    <div class="cars__wrapper mt-3">
         <partial name="../Cars/_CarsListingPartial" model="@Model.Cars" />
     </div>
 }

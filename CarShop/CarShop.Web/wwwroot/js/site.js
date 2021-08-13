@@ -24,3 +24,4 @@ $(document).ready(() => {
         $(this).attr('href', $(this).attr('href') + window.location.search.replace('?', '&').replace(/&page=\d+/g, '').replaceAll('&&', '&'));
     });
 });
+

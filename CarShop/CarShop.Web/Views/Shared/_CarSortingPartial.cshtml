@@ -8,10 +8,13 @@
         <option value="3">Brand</option>
     </select>
 </div>
-<div class="col">
+<div class="col mr-5">
     <label asp-for="@Model.Order"></label>
     <select class="form-control" asp-for="@Model.Order">
         <option value="1" selected>Ascending</option>
         <option value="2">Descending</option>
     </select>
+</div>
+<div class="sort-btn">
+    <input type="submit" value="Sort" class="btn btn-info" />
 </div>

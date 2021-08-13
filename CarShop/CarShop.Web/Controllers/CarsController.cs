@@ -35,7 +35,7 @@
                 SortingOrder order = SortingOrder.Ascending,
                 CarSearchServiceModel searchModel = null)
         {
-            const int carsPerPage = 30;
+            const int carsPerPage = 10;
 
             var result = carsService.All(currentPage: page, carsPerPage: carsPerPage, searchModel: searchModel is null ? null : searchModel);
 
@@ -103,6 +103,11 @@
             {
                 Car = carsService.GetCarViewModel(id)
             };
+
+            if (model.Car.IsDeleted && !User.IsAdmin())
+            {
+                return NotFound("Car does not exists!");
+            }
 
             model.Dealer = dealersService.GetInfo(model.Car.OwnerId);
 

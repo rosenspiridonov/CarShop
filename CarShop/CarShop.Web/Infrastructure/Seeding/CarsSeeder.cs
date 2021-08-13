@@ -24,8 +24,8 @@
         {
             var carsService = new DataScraper();
 
-            var cars = carsService.PopulateCars(1, 40);
-
+            var cars = carsService.PopulateCars(1, 50);
+            ;
 
             foreach (var car in cars)
             {
@@ -33,7 +33,7 @@
                 {
                     await SeedCar(car);
                 }
-                catch (Exception)
+                catch (Exception e)
                 { }
             }
         }
