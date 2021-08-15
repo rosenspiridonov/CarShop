@@ -11,7 +11,6 @@
     using CarShop.Web.Services.Dealers;
 
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     using static WebConstants;

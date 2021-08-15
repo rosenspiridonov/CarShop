@@ -8,13 +8,13 @@
     using CarShop.Web.Models.Sorting;
     using CarShop.Web.Models.Cars;
     using CarShop.Web.Models.Dealers;
+    using CarShop.Web.Services.Dealers;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     using static WebConstants;
-    using CarShop.Web.Services.Dealers;
 
     public class DealersController : Controller
     {
@@ -35,7 +35,7 @@
         [Authorize(Roles = "User")]
         public IActionResult Become()
         {
-            if (this.User.IsDealer())
+            if (this.User.IsDealer() || this.User.IsAdmin())
             {
                 return Redirect("/");
             }

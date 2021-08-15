@@ -53,7 +53,7 @@
             return carOwnerId == userId;
         }
 
-        public void ProcessRequest(string userId, string phoneNumber)
+        public virtual void ProcessRequest(string userId, string phoneNumber)
         {
             var user = db.Users.FirstOrDefault(x => x.Id == userId);
 

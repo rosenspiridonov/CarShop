@@ -1,4 +1,4 @@
-﻿namespace CarShop.Tests.Controllers
+﻿namespace CarShop.Tests.Pipeline
 {
     using System.Collections.Generic;
 
