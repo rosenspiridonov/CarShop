@@ -13,7 +13,7 @@
 
         Task<int> CreateCarAsync(string ownerId, CarInputModel input);
 
-        Task<int> EditCarAsync(CarInputModel input); 
+        void EditCar(CarInputModel input); 
 
         CarFormData AllCarOptions();
 
@@ -30,7 +30,12 @@
             CarSorting sorting = CarSorting.Price,
             SortingOrder sortingOrder = SortingOrder.Ascending);
 
-        AllCarsServiceModel All(int currentPage = 1, int carsPerPage = 20, string ownerId = null, CarSearchServiceModel searchModel = null);
+        AllCarsServiceModel All(
+            int currentPage = 1, 
+            int carsPerPage = 20, 
+            string ownerId = null, 
+            CarSearchServiceModel searchModel = null, 
+            bool returnDeleted = false);
 
         int CarsCount();
     }

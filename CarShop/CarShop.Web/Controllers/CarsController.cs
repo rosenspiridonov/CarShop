@@ -61,10 +61,10 @@
             return View(model);
         }
 
-        [Authorize]
+        [Authorize(Roles = DealerRoleName + ", " + AdminRoleName)]
         public IActionResult Create()
         {
-            if (!User.IsDealer() && !User.IsAdmin())
+            if (!User.IsDealer() && !User.IsAdmin())    
             {
                 return this.RedirectToAction("Become", "Dealers");
             }
@@ -103,7 +103,7 @@
                 Car = carsService.GetCarViewModel(id)
             };
 
-            if (model.Car.IsDeleted && !User.IsAdmin())
+            if (model.Car.IsDeleted && User?.IsAdmin() == false)
             {
                 return NotFound("Car does not exists!");
             }
@@ -149,9 +149,9 @@
                 return Unauthorized();
             }
 
-            var carId = await carsService.EditCarAsync(input.Car);
+            carsService.EditCar(input.Car);
 
-            return RedirectToAction("Details", "Cars", new { id = carId });
+            return RedirectToAction("Details", "Cars", new { id = input.Car.Id });
         }
 
         [Authorize(Roles = DealerRoleName + ", " + AdminRoleName)]

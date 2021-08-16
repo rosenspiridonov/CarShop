@@ -17,10 +17,12 @@
             this.carsService = carsService;
         }
 
-        public IActionResult All(int page = 1, CarSorting sorting = CarSorting.Year, SortingOrder order = SortingOrder.Ascending)
+        public IActionResult All(int page = 1, 
+            CarSorting sorting = CarSorting.Year,
+            SortingOrder order = SortingOrder.Ascending)
         {
             const int carsPerPage = 10;
-            var result = carsService.All(page, carsPerPage);
+            var result = carsService.All(page, carsPerPage, returnDeleted: true);
 
             result.Cars = carsService.SortCars(result.Cars, sorting, order);
 

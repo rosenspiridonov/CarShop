@@ -48,15 +48,14 @@
                 InteriorProperties = input.InteriorPropertiesIds?.Select(p => db.InteriorProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
                 ProtectionProperties = input.ProtectionPropertiesIds?.Select(p => db.ProtectionProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
                 SpecialProperties = input.SpecialPropertiesIds?.Select(p => db.SpecialProperties.FirstOrDefault(pp => pp.Id == p)).ToList(),
-                IsDeleted = false
+                IsDeleted = false,
+                OwnerId = ownerId
             };
 
             if (!imageService.IsValid(car.Image.Url))
             {
                 car.Image.Url = "/img/car-placeholder.jpg";
             }
-
-            car.OwnerId = ownerId;
 
             await db.Cars.AddAsync(car);
             await db.SaveChangesAsync();
@@ -182,13 +181,130 @@
                     OwnerId = x.OwnerId
                 }).FirstOrDefault();
 
-        public async Task<int> EditCarAsync(CarInputModel input)
+        public void EditCar(CarInputModel input)
         {
-            var car = db.Cars.Find(input.Id);
-            db.Cars.Remove(car);
+            var car = db
+                .Cars
+                .Include(x => x.Image)
+                .Include(x => x.SafetyProperties)
+                .Include(x => x.ComfortProperties)
+                .Include(x => x.OtherProperties)
+                .Include(x => x.ExteriorProperties)
+                .Include(x => x.InteriorProperties)
+                .Include(x => x.ProtectionProperties)
+                .Include(x => x.SpecialProperties)
+                .FirstOrDefault(x => x.Id == input.Id);
 
-            int carId = await CreateCarAsync(input.OwnerId, input);
-            return carId;
+            car.BrandId = input.BrandId;
+            car.ModelId = input.ModelId;
+            car.Modification = input.Modification;
+            car.Price = input.Price;
+            car.Description = input.Description;
+            car.ProduceYear = input.ProduceYear;
+            car.EngineTypeId = input.EngineTypeId;
+            car.HorsePower = input.HorsePower;
+            car.EuroStandardId = input.EuroStandardId;
+            car.TransmisionId = input.TransmisionTypeId;
+            car.CoupeTypeId = input.CoupeTypeId;
+            car.TravelledDistance = input.TravelledDistance;
+            car.Color = input.Color;
+            car.Image.Url = input.ImageUrl;
+            car.OwnerId = input.OwnerId;
+
+            
+            foreach (var propId in input.SafetyPropertiesIds ?? new())
+            {
+                if (!car.SafetyProperties.Any(x => x.Id == propId))
+                {
+                    car.SafetyProperties.Add(db.SafetyProperties.FirstOrDefault(x => x.Id == propId));
+                }
+            }
+            
+            car.SafetyProperties?
+                .Where(p => !(input.SafetyPropertiesIds ?? new()).Any(id => id == p.Id))
+                .ToList()
+                .ForEach(p => car.SafetyProperties.Remove(p));
+
+            foreach (var propId in input.ComfortPropertiesIds ?? new())
+            {
+                if (!car.ComfortProperties.Any(x => x.Id == propId))
+                {
+                    car.ComfortProperties.Add(db.ComfortProperties.FirstOrDefault(x => x.Id == propId));
+                }
+            }
+
+            car.ComfortProperties?
+                .Where(p => !(input.ComfortPropertiesIds ?? new()).Any(id => id == p.Id))
+                .ToList()
+                .ForEach(p => car.ComfortProperties.Remove(p));
+
+            foreach (var propId in input.OtherPropertiesIds ?? new())
+            {
+                if (!car.OtherProperties.Any(x => x.Id == propId))
+                {
+                    car.OtherProperties.Add(db.OtherProperties.FirstOrDefault(x => x.Id == propId));
+                }
+            }
+
+            car.OtherProperties?
+                .Where(p => !(input.OtherPropertiesIds ?? new()).Any(id => id == p.Id))
+                .ToList()
+                .ForEach(p => car.OtherProperties.Remove(p));
+
+            foreach (var propId in input.ExteriorPropertiesIds ?? new())
+            {
+                if (!car.ExteriorProperties.Any(x => x.Id == propId))
+                {
+                    car.ExteriorProperties.Add(db.ExteriorProperties.FirstOrDefault(x => x.Id == propId));
+                }
+            }
+
+            car.ExteriorProperties?
+                .Where(p => !(input.ExteriorPropertiesIds ?? new()).Any(id => id == p.Id))
+                .ToList()
+                .ForEach(p => car.ExteriorProperties.Remove(p));
+
+            foreach (var propId in input.InteriorPropertiesIds ?? new())
+            {
+                if (!car.InteriorProperties.Any(x => x.Id == propId))
+                {
+                    car.InteriorProperties.Add(db.InteriorProperties.FirstOrDefault(x => x.Id == propId));
+                }
+            }
+
+            car.InteriorProperties?
+                .Where(p => !(input.InteriorPropertiesIds ?? new()).Any(id => id == p.Id))
+                .ToList()
+                .ForEach(p => car.InteriorProperties.Remove(p));
+
+            foreach (var propId in input.ProtectionPropertiesIds ?? new())
+            {
+                if (!car.ProtectionProperties.Any(x => x.Id == propId))
+                {
+                    car.ProtectionProperties.Add(db.ProtectionProperties.FirstOrDefault(x => x.Id == propId));
+                }
+            }
+
+            car.ProtectionProperties?
+                .Where(p => !(input.ProtectionPropertiesIds ?? new()).Any(id => id == p.Id))
+                .ToList()
+                .ForEach(p => car.ProtectionProperties.Remove(p));
+
+            foreach (var propId in input.SpecialPropertiesIds ?? new())
+            {
+                if (!car.SpecialProperties.Any(x => x.Id == propId))
+                {
+                    car.SpecialProperties.Add(db.SpecialProperties.FirstOrDefault(x => x.Id == propId));
+                }
+            }
+
+            car.SpecialProperties?
+                .Where(p => !(input.SpecialPropertiesIds ?? new()).Any(id => id == p.Id))
+                .ToList()
+                .ForEach(p => car.SpecialProperties.Remove(p));
+
+            db.Update(car);
+            db.SaveChanges();
         }
 
         public async Task<bool> Delete(int id)
@@ -247,11 +363,12 @@
             int currentPage = 1,
             int carsPerPage = 20,
             string ownerId = null,
-            CarSearchServiceModel searchModel = null)
+            CarSearchServiceModel searchModel = null,
+            bool returnDeleted = false)
         {
             var query = searchModel is null ? this.db
                 .Cars
-                .Where(x => !x.IsDeleted)
+                .Where(x => x.IsDeleted == returnDeleted)
                 .AsQueryable() : this.Search(searchModel);
 
             if (!string.IsNullOrWhiteSpace(ownerId))
