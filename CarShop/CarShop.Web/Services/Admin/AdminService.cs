@@ -48,5 +48,12 @@
 
             return result;
         }
+
+        public void RestoreCar(int carId)
+        {
+            var car = db.Cars.Find(carId);
+            car.IsDeleted = false;
+            db.SaveChanges();
+        }
     }
 }

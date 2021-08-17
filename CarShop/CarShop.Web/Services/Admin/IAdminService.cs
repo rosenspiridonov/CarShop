@@ -9,5 +9,7 @@
         IEnumerable<DealerServiceModel> DealersPendingRequests();
 
         void ApproveDealer(string userId);
+
+        void RestoreCar(int carId);
     }
 }

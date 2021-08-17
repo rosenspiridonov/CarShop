@@ -14,6 +14,7 @@
             <th scope="col">Id</th>
             <th scope="col">Car name</th>
             <th scope="col">Owner name</th>
+            <th scope="col">Is deleted</th>
             <th scope="col">Options</th>
         </tr>
     </thead>
@@ -28,10 +29,20 @@
                     <small><b>Year:</b> @car.Year</small>
                 </td>
                 <td>@car.OwnerName</td>
+                <td>
+                    @(car.IsDeleted ? "Yes" : "No")
+                </td>
                 <td scope="row">
                     <a asp-action="Details" asp-area="" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-info">Details</a>
                     <a asp-action="Edit" asp-area="" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-warning">Edit</a>
-                    <a asp-action="Delete" asp-area="" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-outline-danger">Delete</a>
+                    @if (car.IsDeleted)
+                    {
+                        <a asp-action="Restore" asp-area="Admin" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-success">Restore</a>
+                    }
+                    else
+                    {
+                        <a asp-action="Delete" asp-area="" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-outline-danger">Delete</a>
+                    }
                 </td>
             </tr>
         }

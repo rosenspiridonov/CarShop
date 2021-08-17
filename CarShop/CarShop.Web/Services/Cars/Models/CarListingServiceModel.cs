@@ -25,5 +25,7 @@
         public string OwnerId { get; set; }
 
         public string OwnerName { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

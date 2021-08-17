@@ -5,16 +5,21 @@
     using CarShop.Services.Cars;
     using CarShop.Web.Models.Cars;
     using CarShop.Web.Models.Sorting;
+    using CarShop.Web.Services.Admin;
 
     using Microsoft.AspNetCore.Mvc;
 
     public class CarsController : AdminController
     {
         private readonly ICarsService carsService;
+        private readonly IAdminService adminService;
 
-        public CarsController(ICarsService carsService)
+        public CarsController(
+            ICarsService carsService,
+            IAdminService adminService)
         {
             this.carsService = carsService;
+            this.adminService = adminService;
         }
 
         public IActionResult All(int page = 1, 
@@ -35,6 +40,13 @@
             };
 
             return View(model);
+        }
+
+        public IActionResult Restore(int id)
+        {
+            adminService.RestoreCar(id);
+            ;
+            return RedirectToAction("All");
         }
     }
 }

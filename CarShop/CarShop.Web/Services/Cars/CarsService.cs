@@ -368,8 +368,12 @@
         {
             var query = searchModel is null ? this.db
                 .Cars
-                .Where(x => x.IsDeleted == returnDeleted)
                 .AsQueryable() : this.Search(searchModel);
+
+            if (!returnDeleted)
+            {
+                query.Where(x => x.IsDeleted == false);
+            }
 
             if (!string.IsNullOrWhiteSpace(ownerId))
             {
@@ -400,7 +404,8 @@
                             EngineType = x.EngineType.Name,
                             ImageUrl = x.Image.Url,
                             OwnerId = x.OwnerId,
-                            OwnerName = x.Owner.UserName
+                            OwnerName = x.Owner.UserName,
+                            IsDeleted = x.IsDeleted
                         })
                         .ToList()
             };

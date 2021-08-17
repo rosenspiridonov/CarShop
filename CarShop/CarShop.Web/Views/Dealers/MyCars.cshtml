@@ -23,11 +23,11 @@ else
     <div class="cars__wrapper mt-3">
         <partial name="../Cars/_CarsListingPartial" model="@Model.Cars" />
     </div>
+    <vc:pagination conroller-name="Dealers"
+                   action-name="MyCars"
+                   current-page="@Model.CurrentPage"
+                   cars-per-page="@Model.CarsPerPage"
+                   total-cars="@Model.TotalCars">
+    </vc:pagination>
 }
 
-<vc:pagination conroller-name="Dealers"
-               action-name="MyCars"
-               current-page="@Model.CurrentPage"
-               cars-per-page="@Model.CarsPerPage"
-               total-cars="@Model.TotalCars">
-</vc:pagination>
