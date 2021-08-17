@@ -134,7 +134,7 @@
 
         [HttpPost]
         [Authorize(Roles = DealerRoleName + ", " + AdminRoleName)]
-        public async Task<IActionResult> Edit(CarFormModel input)
+        public IActionResult Edit(CarFormModel input)
         {
             input.Data = carsService.AllCarOptions();
 

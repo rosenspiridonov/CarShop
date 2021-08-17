@@ -14,7 +14,7 @@
             => Enumerable.Range(0, 5).Select(x => new Car());
 
         public static CarFormModel ValidCarFormModel
-            => new CarFormModel
+            => new()
             {
                 Car = new CarInputModel()
                 {

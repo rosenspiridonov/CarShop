@@ -41,7 +41,9 @@
             await userManager.AddToRoleAsync(user, DealerRoleName);
             adminService.ApproveDealer(userId);
 
-            return Redirect("/");
-        }
+            var requests = adminService.DealersPendingRequests();
+
+            return View(requests);  
+            }
     }
 }

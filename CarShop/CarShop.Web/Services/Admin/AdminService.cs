@@ -17,7 +17,7 @@
             this.dealersService = dealersService;
         }
 
-        public void ApproveDealer(string userId)
+        public virtual void ApproveDealer(string userId)
         {
             var request = db.DealerRequests.FirstOrDefault(x => x.UserId == userId);
 
@@ -27,7 +27,7 @@
             db.SaveChanges();
         }
 
-        public IEnumerable<DealerServiceModel> DealersPendingRequests()
+        public virtual IEnumerable<DealerServiceModel> DealersPendingRequests()
         {
             var result = db
                 .DealerRequests

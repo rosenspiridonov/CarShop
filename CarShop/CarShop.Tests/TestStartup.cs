@@ -3,6 +3,7 @@
     using CarShop.Tests.Mocks;
     using CarShop.Web;
     using CarShop.Web.Data;
+    using CarShop.Web.Services.Admin;
     using CarShop.Web.Services.Dealers;
 
     using Microsoft.Extensions.Configuration;
@@ -24,6 +25,7 @@
             base.ConfigureServices(services);
 
             services.ReplaceTransient<IDealersService, DealersServiceMock>();
+            services.ReplaceTransient<IAdminService, AdminServiceMock>();
         }
     }
 }
