@@ -4,6 +4,6 @@
     {
         Year = 1,
         Price = 2,
-        Brand = 3
+        Brand = 3,
     }
 }

@@ -30,7 +30,7 @@
 
         public IActionResult All(
                 int page = 1,
-                CarSorting sorting = CarSorting.Year,
+                CarSorting sorting = CarSorting.Price,
                 SortingOrder order = SortingOrder.Ascending,
                 CarSearchServiceModel searchModel = null)
         {
