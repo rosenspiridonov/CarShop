@@ -372,7 +372,7 @@
 
             if (!returnDeleted)
             {
-                query.Where(x => x.IsDeleted == false);
+                query = query.Where(x => x.IsDeleted == false);
             }
 
             if (!string.IsNullOrWhiteSpace(ownerId))

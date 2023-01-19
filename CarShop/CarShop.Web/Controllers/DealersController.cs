@@ -78,7 +78,7 @@
                 return NotFound();
             }
 
-            var result = carsService.All(currentPage: page, carsPerPage: carsPerPage, ownerId: id);
+            var result = carsService.All(currentPage: page, carsPerPage: carsPerPage, ownerId: id, returnDeleted: false);
 
             result.Cars = carsService.SortCars(result.Cars, sort, order);
 
