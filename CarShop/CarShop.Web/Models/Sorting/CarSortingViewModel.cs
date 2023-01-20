@@ -1,7 +1,7 @@
-﻿namespace CarShop.Web.Models.Sorting
-{
-    using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
+namespace CarShop.Web.Models.Sorting
+{
     public class CarSortingViewModel
     {
         [Display(Name = "Sort by:")]

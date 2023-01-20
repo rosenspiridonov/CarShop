@@ -1,13 +1,13 @@
-﻿namespace CarShop.Tests.Data
+﻿using System.Collections.Generic;
+using System.Linq;
+
+using CarShop.Web.Data.Models;
+using CarShop.Web.Models.Cars;
+
+using MyTested.AspNetCore.Mvc;
+
+namespace CarShop.Tests.Data
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using CarShop.Web.Data.Models;
-    using CarShop.Web.Models.Cars;
-
-    using MyTested.AspNetCore.Mvc;
-
     public static class Cars
     {
         public static IEnumerable<Car> FiveCars

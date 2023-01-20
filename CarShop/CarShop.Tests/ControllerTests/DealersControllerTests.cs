@@ -1,21 +1,21 @@
-﻿namespace CarShop.Tests.ControllerTests
+﻿using System.Linq;
+
+using CarShop.Web.Controllers;
+using CarShop.Web.Data;
+using CarShop.Web.Models.Dealers;
+using CarShop.Web.Data.Models;
+
+using Microsoft.AspNetCore.Identity;
+
+using Xunit;
+using MyTested.AspNetCore.Mvc;
+
+using static CarShop.Web.WebConstants;
+using CarShop.Web.Models.Sorting;
+using System.Threading.Tasks;
+
+namespace CarShop.Tests.ControllerTests
 {
-    using System.Linq;
-
-    using CarShop.Web.Controllers;
-    using CarShop.Web.Data;
-    using CarShop.Web.Models.Dealers;
-    using CarShop.Web.Data.Models;
-
-    using Microsoft.AspNetCore.Identity;
-
-    using Xunit;
-    using MyTested.AspNetCore.Mvc;
-
-    using static CarShop.Web.WebConstants;
-    using CarShop.Web.Models.Sorting;
-    using System.Threading.Tasks;
-
     public class DealersControllerTests
     {
         [Fact]

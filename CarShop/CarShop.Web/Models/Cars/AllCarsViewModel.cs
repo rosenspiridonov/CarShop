@@ -1,11 +1,11 @@
-﻿namespace CarShop.Web.Models.Cars
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+using CarShop.Web.Models.Sorting;
+using CarShop.Web.Services.Cars.Models;
+
+namespace CarShop.Web.Models.Cars
 {
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
-    using CarShop.Web.Models.Sorting;
-    using CarShop.Web.Services.Cars.Models;
-
     public class AllCarsViewModel
     {
         public int CurrentPage { get; set; }

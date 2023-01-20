@@ -1,14 +1,14 @@
-﻿namespace CarShop.Web.Infrastructure.Seeding
-{
-    using CarShop.Web.Data;
-    using MobileBgDataScraper;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using CarShop.Web.Data.Models;
-    using Microsoft.AspNetCore.Identity;
-    using System.Threading.Tasks;
+﻿using CarShop.Web.Data;
+using MobileBgDataScraper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using CarShop.Web.Data.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
+namespace CarShop.Web.Infrastructure.Seeding
+{
     public class CarsSeeder
     {
         private readonly ApplicationDbContext db;
@@ -83,7 +83,7 @@
 
         private async Task AddCarsAsync(IEnumerable<Car> cars)
         {
-            db.Cars.AddRange(cars);
+            await db.Cars.AddRangeAsync(cars);
             await db.SaveChangesAsync();
         }
 

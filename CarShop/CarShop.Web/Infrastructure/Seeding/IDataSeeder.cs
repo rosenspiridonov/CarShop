@@ -1,7 +1,7 @@
-﻿namespace CarShop.Web.Infrastructure.Seeding
-{
-    using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
+namespace CarShop.Web.Infrastructure.Seeding
+{
     public interface IDataSeeder
     {
         Task PopulateDb();

@@ -1,7 +1,7 @@
-﻿namespace CarShop.Web.Services.Cars.Models
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
+namespace CarShop.Web.Services.Cars.Models
+{
     public class AllCarsServiceModel
     {
         public int TotalCars { get; set; }

@@ -1,12 +1,13 @@
-﻿namespace CarShop.Web.Data.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+using static CarShop.Web.DataConstants;
+
+namespace CarShop.Web.Data.Models
 {
-    using Microsoft.AspNetCore.Identity;
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
-    using static DataConstants;
-
     public class Car : BaseDeletableModel
     {
         public Car()

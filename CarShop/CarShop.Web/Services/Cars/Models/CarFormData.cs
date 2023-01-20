@@ -1,9 +1,9 @@
-﻿namespace CarShop.Web.Services.Cars.Models
+﻿using System.Collections.Generic;
+
+using CarShop.Web.Data.Models;
+
+namespace CarShop.Web.Services.Cars.Models
 {
-    using System.Collections.Generic;
-
-    using CarShop.Web.Data.Models;
-
     public class CarFormData
     {
         public ICollection<Brand> Brands { get; set; }

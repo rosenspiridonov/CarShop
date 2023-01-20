@@ -1,22 +1,22 @@
+using CarShop.Web.Infrastructure.Seeding;
+using CarShop.Services.Cars;
+using CarShop.Web.Data;
+using CarShop.Web.Data.Models;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using CarShop.Web.Services.Dealers;
+using Microsoft.AspNetCore.Mvc;
+using CarShop.Web.Services.Images;
+using CarShop.Web.Services.Admin;
+
 namespace CarShop.Web
 {
-    using CarShop.Web.Infrastructure.Seeding;
-    using CarShop.Services.Cars;
-    using CarShop.Web.Data;
-    using CarShop.Web.Data.Models;
-
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-    using CarShop.Web.Services.Dealers;
-    using Microsoft.AspNetCore.Mvc;
-    using CarShop.Web.Services.Images;
-    using CarShop.Web.Services.Admin;
-
     public class Startup
     {
         public Startup(IConfiguration configuration)

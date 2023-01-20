@@ -1,14 +1,14 @@
-﻿namespace CarShop.Web.Areas.Admin.Controllers
+﻿using System.Threading.Tasks;
+
+using CarShop.Web.Services.Admin;
+
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+
+using static CarShop.Web.WebConstants;
+
+namespace CarShop.Web.Areas.Admin.Controllers
 {
-    using System.Threading.Tasks;
-
-    using CarShop.Web.Services.Admin;
-
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Mvc;
-
-    using static WebConstants;
-
     public class DealersController : AdminController
     {
         private readonly IAdminService adminService;

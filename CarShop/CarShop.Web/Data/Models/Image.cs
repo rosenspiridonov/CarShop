@@ -1,7 +1,7 @@
-﻿namespace CarShop.Web.Data.Models
-{
-    using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
+namespace CarShop.Web.Data.Models
+{
     public class Image
     {
         public int Id { get; set; }

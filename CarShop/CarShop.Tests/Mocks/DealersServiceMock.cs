@@ -1,10 +1,10 @@
-﻿namespace CarShop.Tests.Mocks
-{
-    using CarShop.Services.Cars;
-    using CarShop.Web.Data;
-    using CarShop.Web.Data.Models;
-    using CarShop.Web.Services.Dealers;
+﻿using CarShop.Services.Cars;
+using CarShop.Web.Data;
+using CarShop.Web.Data.Models;
+using CarShop.Web.Services.Dealers;
 
+namespace CarShop.Tests.Mocks
+{
     public class DealersServiceMock : DealersService
     {
         private readonly ApplicationDbContext db;

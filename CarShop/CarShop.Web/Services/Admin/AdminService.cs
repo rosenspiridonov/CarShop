@@ -1,11 +1,11 @@
-﻿namespace CarShop.Web.Services.Admin
+﻿using System.Collections.Generic;
+using System.Linq;
+
+using CarShop.Web.Data;
+using CarShop.Web.Services.Dealers;
+
+namespace CarShop.Web.Services.Admin
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using CarShop.Web.Data;
-    using CarShop.Web.Services.Dealers;
-
     public class AdminService : IAdminService
     {
         private readonly ApplicationDbContext db;

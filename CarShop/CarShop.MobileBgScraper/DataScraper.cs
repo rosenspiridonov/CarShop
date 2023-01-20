@@ -1,14 +1,14 @@
-﻿namespace MobileBgDataScraper
+﻿using AngleSharp;
+using AngleSharp.Dom;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace MobileBgDataScraper
 {
-    using AngleSharp;
-    using AngleSharp.Dom;
-
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text.RegularExpressions;
-    using System.Threading.Tasks;
-
     public class DataScraper
     {
         private const string MOBILE_BG_SEARCH_URL = "https://www.mobile.bg/pcgi/mobile.cgi?act=3&slink=r1yqba&f1={0}";

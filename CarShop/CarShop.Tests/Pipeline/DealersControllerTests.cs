@@ -1,13 +1,13 @@
-﻿namespace CarShop.Tests.Pipeline
+﻿using Xunit;
+
+using MyTested.AspNetCore.Mvc;
+using CarShop.Web.Controllers;
+
+using static CarShop.Web.WebConstants;
+using CarShop.Web.Models.Dealers;
+
+namespace CarShop.Tests.Pipeline
 {
-    using Xunit;
-
-    using MyTested.AspNetCore.Mvc;
-    using CarShop.Web.Controllers;
-
-    using static CarShop.Web.WebConstants;
-    using CarShop.Web.Models.Dealers;
-
     public class DealersControllerTests
     {
         //[Fact]

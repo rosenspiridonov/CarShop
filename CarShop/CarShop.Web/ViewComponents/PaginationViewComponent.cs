@@ -1,11 +1,11 @@
-﻿namespace CarShop.Web.ViewComponents
+﻿using System;
+
+using CarShop.Web.Models;
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace CarShop.Web.ViewComponents
 {
-    using System;
-
-    using CarShop.Web.Models;
-
-    using Microsoft.AspNetCore.Mvc;
-
     [ViewComponent(Name = "Pagination")]
     public class PaginationViewComponent : ViewComponent
     {

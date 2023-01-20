@@ -1,17 +1,17 @@
-﻿namespace CarShop.Services.Cars
+﻿using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using CarShop.Web.Data.Models;
+using CarShop.Web.Data;
+using CarShop.Web.Models.Cars;
+using CarShop.Web.Services.Cars.Models;
+using Microsoft.EntityFrameworkCore;
+using CarShop.Web.Models.Sorting;
+using CarShop.Web.Services.Images;
+
+namespace CarShop.Services.Cars
 {
-    using System.Linq;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using CarShop.Web.Data.Models;
-    using CarShop.Web.Data;
-    using CarShop.Web.Models.Cars;
-    using CarShop.Web.Services.Cars.Models;
-    using Microsoft.EntityFrameworkCore;
-    using CarShop.Web.Models.Sorting;
-    using CarShop.Web.Services.Images;
-
     public class CarsService : ICarsService
     {
         private readonly ApplicationDbContext db;
@@ -52,7 +52,7 @@
                 OwnerId = ownerId
             };
 
-            if (!imageService.IsValid(car.Image.Url))
+            if (!await imageService.IsValidAsync(car.Image.Url))
             {
                 car.Image.Url = "/img/car-placeholder.jpg";
             }
@@ -451,7 +451,7 @@
             return query;
         }
 
-        public int CarsCount()
-            => db.Cars.Where(x => !x.IsDeleted).Count();
+        public async Task<int> CarsCountAsync()
+            => await db.Cars.CountAsync(x => !x.IsDeleted);
     }
 }

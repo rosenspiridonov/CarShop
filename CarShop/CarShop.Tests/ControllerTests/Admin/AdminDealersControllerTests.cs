@@ -1,14 +1,14 @@
-﻿namespace CarShop.Tests.ControllerTests.Admin
+﻿using Xunit;
+using MyTested.AspNetCore.Mvc;
+using CarShop.Web.Areas.Admin.Controllers;
+
+using static CarShop.Web.WebConstants;
+using CarShop.Web.Services.Dealers;
+using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
+
+namespace CarShop.Tests.ControllerTests.Admin
 {
-    using Xunit;
-    using MyTested.AspNetCore.Mvc;
-    using CarShop.Web.Areas.Admin.Controllers;
-
-    using static CarShop.Web.WebConstants;
-    using CarShop.Web.Services.Dealers;
-    using Microsoft.AspNetCore.Identity;
-    using System.Collections.Generic;
-
     public class AdminRequestControllerTests
     {
         [Fact]

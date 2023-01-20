@@ -1,10 +1,12 @@
-﻿namespace CarShop.Web.Controllers
+﻿using System.Threading.Tasks;
+
+using CarShop.Services.Cars;
+using CarShop.Web.Models.Home;
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace CarShop.Web.Controllers
 {
-    using CarShop.Services.Cars;
-    using CarShop.Web.Models.Home;
-
-    using Microsoft.AspNetCore.Mvc;
-
     public class HomeController : Controller
     {
         private readonly ICarsService carsService;
@@ -14,11 +16,11 @@
             this.carsService = carsService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var model = new IndexViewModel
             {
-                CarsCount = carsService.CarsCount()
+                CarsCount = await carsService.CarsCountAsync()
             };
 
             return View(model);

@@ -1,7 +1,7 @@
-﻿namespace CarShop.Web.Models.Cars
-{
-    using CarShop.Web.Services.Cars.Models;
+﻿using CarShop.Web.Services.Cars.Models;
 
+namespace CarShop.Web.Models.Cars
+{
     public class CarFormModel
     {
         public CarFormData Data { get; set; }

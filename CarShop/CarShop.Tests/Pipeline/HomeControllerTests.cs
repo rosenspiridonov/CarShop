@@ -1,16 +1,16 @@
-﻿namespace CarShop.Tests.Pipeline
+﻿using System.Collections.Generic;
+
+using CarShop.Web.Controllers;
+using CarShop.Web.Models.Home;
+
+using MyTested.AspNetCore.Mvc;
+
+using Xunit;
+
+using static CarShop.Tests.Data.Cars;
+
+namespace CarShop.Tests.Pipeline
 {
-    using System.Collections.Generic;
-
-    using CarShop.Web.Controllers;
-    using CarShop.Web.Models.Home;
-
-    using MyTested.AspNetCore.Mvc;
-
-    using Xunit;
-
-    using static Data.Cars;
-
     public class HomeControllerTests
     {
         [Fact]

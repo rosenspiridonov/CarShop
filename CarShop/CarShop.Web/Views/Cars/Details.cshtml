@@ -25,7 +25,7 @@
             @{
                 var imageUrl = "";
 
-                if (Image.IsValid(Model.Car.ImageUrl))
+                if (await Image.IsValidAsync(Model.Car.ImageUrl))
                 {
                     imageUrl = Model.Car.ImageUrl;
                 }

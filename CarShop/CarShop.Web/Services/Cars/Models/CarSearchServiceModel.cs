@@ -1,12 +1,12 @@
-﻿namespace CarShop.Web.Services.Cars.Models
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+using CarShop.Web.Data.Models;
+
+using static CarShop.Web.DataConstants;
+
+namespace CarShop.Web.Services.Cars.Models
 {
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
-    using CarShop.Web.Data.Models;
-
-    using static DataConstants;
-
     public class CarSearchServiceModel
     {
         [Display(Name = "Brand")]

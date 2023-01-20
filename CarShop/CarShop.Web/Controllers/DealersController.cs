@@ -1,21 +1,21 @@
-﻿namespace CarShop.Web.Controllers
+﻿using System.Linq;
+using System.Threading.Tasks;
+
+using CarShop.Services.Cars;
+using CarShop.Web.Models.Sorting;
+using CarShop.Web.Models.Cars;
+using CarShop.Web.Models.Dealers;
+using CarShop.Web.Services.Dealers;
+using CarShop.Web.Extensions;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+
+using static CarShop.Web.WebConstants;
+
+namespace CarShop.Web.Controllers
 {
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using CarShop.Services.Cars;
-    using CarShop.Web.Infrastructure;
-    using CarShop.Web.Models.Sorting;
-    using CarShop.Web.Models.Cars;
-    using CarShop.Web.Models.Dealers;
-    using CarShop.Web.Services.Dealers;
-
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Mvc;
-
-    using static WebConstants;
-
     public class DealersController : Controller
     {
         private readonly UserManager<IdentityUser> userManager;
@@ -32,7 +32,7 @@
             this.dealersService = dealersService;
         }
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = UserRoleName)]
         public IActionResult Become()
         {
             if (this.User.IsDealer() || this.User.IsAdmin())
@@ -44,7 +44,7 @@
         }
 
         [HttpPost]
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = UserRoleName)]
         public IActionResult Become(DealerFormModel model)
         {
             if (!ModelState.IsValid)

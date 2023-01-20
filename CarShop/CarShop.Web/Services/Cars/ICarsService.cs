@@ -1,12 +1,12 @@
-﻿namespace CarShop.Services.Cars
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using CarShop.Web.Models.Sorting;
+using CarShop.Web.Models.Cars;
+using CarShop.Web.Services.Cars.Models;
+
+namespace CarShop.Services.Cars
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using CarShop.Web.Models.Sorting;
-    using CarShop.Web.Models.Cars;
-    using CarShop.Web.Services.Cars.Models;
-
     public interface ICarsService
     {
         IEnumerable<CarServiceModel> GetCars(int start, int count);
@@ -37,6 +37,6 @@
             CarSearchServiceModel searchModel = null, 
             bool returnDeleted = false);
 
-        int CarsCount();
+        Task<int> CarsCountAsync();
     }
 }

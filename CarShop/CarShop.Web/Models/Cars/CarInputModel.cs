@@ -1,10 +1,10 @@
-﻿namespace CarShop.Web.Models.Cars
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+using static CarShop.Web.DataConstants;
+
+namespace CarShop.Web.Models.Cars
 {
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
-    using static CarShop.Web.DataConstants;
-
     public class CarInputModel
     {
         public int Id { get; set; }

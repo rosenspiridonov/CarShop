@@ -1,14 +1,14 @@
-﻿namespace CarShop.Web.Infrastructure.Seeding
+﻿using System.Linq;
+using System.Threading.Tasks;
+
+using CarShop.Web.Data;
+
+using Microsoft.AspNetCore.Identity;
+
+using static CarShop.Web.WebConstants;
+
+namespace CarShop.Web.Infrastructure.Seeding
 {
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using CarShop.Web.Data;
-
-    using Microsoft.AspNetCore.Identity;
-
-    using static WebConstants;
-
     public class DataSeeder : IDataSeeder
     {
         private readonly ApplicationDbContext db;

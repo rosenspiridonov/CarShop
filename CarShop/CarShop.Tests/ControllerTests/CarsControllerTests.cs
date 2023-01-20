@@ -1,16 +1,16 @@
-﻿namespace CarShop.Tests.ControllerTests
+﻿using CarShop.Web.Controllers;
+using CarShop.Web.Services.Cars.Models;
+using CarShop.Web.Models.Cars;
+
+using Xunit;
+using MyTested.AspNetCore.Mvc;
+
+using static CarShop.Web.WebConstants;
+using static CarShop.Tests.Data.Cars;
+using Microsoft.AspNetCore.Identity;
+
+namespace CarShop.Tests.ControllerTests
 {
-    using CarShop.Web.Controllers;
-    using CarShop.Web.Services.Cars.Models;
-    using CarShop.Web.Models.Cars;
-
-    using Xunit;
-    using MyTested.AspNetCore.Mvc;
-
-    using static CarShop.Web.WebConstants;
-    using static Data.Cars;
-    using Microsoft.AspNetCore.Identity;
-
     public class CarsControllerTests
     {
         [Fact]

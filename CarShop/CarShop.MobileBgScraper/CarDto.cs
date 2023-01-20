@@ -1,8 +1,8 @@
-﻿namespace MobileBgDataScraper
-{
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
+namespace MobileBgDataScraper
+{
     public class CarDto
     {
         public CarDto()

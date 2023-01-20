@@ -1,20 +1,20 @@
-﻿namespace CarShop.Web.Controllers
+﻿using System.Linq;
+using System.Threading.Tasks;
+
+using CarShop.Services.Cars;
+using CarShop.Web.Extensions;
+using CarShop.Web.Models.Cars;
+using CarShop.Web.Models.Sorting;
+using CarShop.Web.Services.Cars.Models;
+using CarShop.Web.Services.Dealers;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+using static CarShop.Web.WebConstants;
+
+namespace CarShop.Web.Controllers
 {
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using CarShop.Services.Cars;
-    using CarShop.Web.Infrastructure;
-    using CarShop.Web.Models.Cars;
-    using CarShop.Web.Models.Sorting;
-    using CarShop.Web.Services.Cars.Models;
-    using CarShop.Web.Services.Dealers;
-
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-
-    using static WebConstants;
-
     public class CarsController : Controller
     {
         private readonly ICarsService carsService;
@@ -36,7 +36,7 @@
         {
             const int carsPerPage = 10;
 
-            var result = carsService.All(currentPage: page, carsPerPage: carsPerPage, searchModel: searchModel is null ? null : searchModel);
+            var result = carsService.All(currentPage: page, carsPerPage: carsPerPage, searchModel: searchModel);
 
             result.Cars = carsService.SortCars(result.Cars, sorting, order);
 

@@ -1,14 +1,14 @@
-﻿namespace CarShop.Web.Areas.Admin.Controllers
+﻿using System.Linq;
+
+using CarShop.Services.Cars;
+using CarShop.Web.Models.Cars;
+using CarShop.Web.Models.Sorting;
+using CarShop.Web.Services.Admin;
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace CarShop.Web.Areas.Admin.Controllers
 {
-    using System.Linq;
-
-    using CarShop.Services.Cars;
-    using CarShop.Web.Models.Cars;
-    using CarShop.Web.Models.Sorting;
-    using CarShop.Web.Services.Admin;
-
-    using Microsoft.AspNetCore.Mvc;
-
     public class CarsController : AdminController
     {
         private readonly ICarsService carsService;

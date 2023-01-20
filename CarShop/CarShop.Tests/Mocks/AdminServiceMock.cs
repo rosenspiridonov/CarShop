@@ -1,13 +1,13 @@
-﻿namespace CarShop.Tests.Mocks
+﻿using System.Collections.Generic;
+
+using CarShop.Web.Data;
+using CarShop.Web.Services.Admin;
+using CarShop.Web.Services.Dealers;
+
+using MyTested.AspNetCore.Mvc;
+
+namespace CarShop.Tests.Mocks
 {
-    using System.Collections.Generic;
-
-    using CarShop.Web.Data;
-    using CarShop.Web.Services.Admin;
-    using CarShop.Web.Services.Dealers;
-
-    using MyTested.AspNetCore.Mvc;
-
     public class AdminServiceMock : AdminService
     {
         public AdminServiceMock(ApplicationDbContext db, IDealersService dealersService)

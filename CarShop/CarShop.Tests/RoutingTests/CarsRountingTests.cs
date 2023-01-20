@@ -1,11 +1,11 @@
-﻿namespace CarShop.Tests.RoutingTests
+﻿using Xunit;
+
+using MyTested.AspNetCore.Mvc;
+using CarShop.Web.Controllers;
+using CarShop.Web.Models.Cars;
+
+namespace CarShop.Tests.RoutingTests
 {
-    using Xunit;
-
-    using MyTested.AspNetCore.Mvc;
-    using CarShop.Web.Controllers;
-    using CarShop.Web.Models.Cars;
-
     public class CarsRountingTests
     {
         [Fact]

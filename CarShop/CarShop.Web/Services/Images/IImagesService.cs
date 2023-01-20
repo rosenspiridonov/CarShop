@@ -1,7 +1,9 @@
-﻿namespace CarShop.Web.Services.Images
+﻿using System.Threading.Tasks;
+
+namespace CarShop.Web.Services.Images
 {
     public interface IImagesService
     {
-        bool IsValid(string url);
+        Task<bool> IsValidAsync(string url);
     }
 }
