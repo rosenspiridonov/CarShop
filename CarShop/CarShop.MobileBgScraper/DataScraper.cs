@@ -2,6 +2,7 @@
 {
     using AngleSharp;
     using AngleSharp.Dom;
+
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -10,6 +11,8 @@
 
     public class DataScraper
     {
+        private const string MOBILE_BG_SEARCH_URL = "https://www.mobile.bg/pcgi/mobile.cgi?act=3&slink=r1yqba&f1={0}";
+
         private readonly IConfiguration config;
         private readonly IBrowsingContext context;
 
@@ -26,16 +29,16 @@
             // Iterate through pages with posts
             Parallel.For(startPage, endPage, (i) =>
             {
-                var url = $"https://www.mobile.bg/pcgi/mobile.cgi?act=3&slink=l3zntn&f1={i}";
-                var postUrls = GetPostUrls(url);
+                var url = string.Format(MOBILE_BG_SEARCH_URL, i);
+                var postUrls = GetPostUrlsAsync(url).GetAwaiter().GetResult();
 
                 // Iterate through all post on the page
                 Parallel.ForEach(postUrls, (post) =>
                 {
                     try
                     {
-                        
-                        var car = GetCar(post);
+
+                        var car = GetCarAsync(post).GetAwaiter().GetResult();
 
                         if (car is not null)
                         {
@@ -55,26 +58,22 @@
             return cars;
         }
 
-        private CarDto GetCar(string url)
+        private async Task<CarDto> GetCarAsync(string url)
         {
-            var document = context.OpenAsync(url)
-                .GetAwaiter()
-                .GetResult();
+            var document = await context.OpenAsync(url);
 
-            if (document.DocumentElement.TextContent == "")
+            if (document.DocumentElement.TextContent == string.Empty)
             {
                 return null;
             }
 
             var car = new CarDto();
 
-            // Get Brand, Model and Modification
             try
             {
-                var (brand, model, modification) = GetModelBrandAndModification(document);
-                car.Model = model;
-                car.Brand = brand;
-                car.Modification = modification;
+                car.Model = GetModel(document);
+                car.Brand = GetBrand(document);
+                car.Modification = GetModification(document);
 
                 car.Price = GetPrice(document);
                 car.Description = GetDescription(document);
@@ -99,11 +98,9 @@
             return car;
         }
 
-        private IEnumerable<string> GetPostUrls(string url)
+        private async Task<IEnumerable<string>> GetPostUrlsAsync(string url)
         {
-            var document = context.OpenAsync(url)
-                .GetAwaiter()
-                .GetResult();
+            var document = await context.OpenAsync(url);
 
             var postsUrls = document.QuerySelectorAll(".photoLink")
                 .Select(x => x.GetAttribute("href"))
@@ -113,30 +110,35 @@
             return postsUrls;
         }
 
-        private (string brand, string model, string modification) GetModelBrandAndModification(IDocument document)
+        private string GetBrand(IDocument document)
         {
             var html = document.DocumentElement.OuterHtml;
-            var titleLine = document.QuerySelector("h1")?.TextContent;
-
             var brandRegex = new Regex(@"'AdvertBrand':\s?\['([A-z\s]+)'\]");
-            var modelRegex = new Regex(@"'AdvertModel':\s?\['(.*?)'\]");
-
             var brandMatch = brandRegex.Match(html);
+
+            return brandMatch.Groups[1].ToString();
+        }
+
+        private string GetModel(IDocument document)
+        {
+            var html = document.DocumentElement.OuterHtml;
+            var modelRegex = new Regex(@"'AdvertModel':\s?\['(.*?)'\]");
             var modelMatch = modelRegex.Match(html);
 
-            string brand = brandMatch.Groups[1].ToString();
-            string model = modelMatch.Groups[1].ToString();
-            string modification = titleLine?
-                .Replace(brand, "")
-                .Replace(model, "")
-                .Trim();
+            return modelMatch.Groups[1].ToString();
+        }
 
-            if (modification == "")
-            {
-                modification = null;
-            }
+        private string GetModification(IDocument document)
+        {
+            var titleLine = document.QuerySelector("h1")?.TextContent;
+            var brand = GetBrand(document);
+            var model = GetModel(document);
+            var modification = titleLine?
+            .Replace(brand, string.Empty)
+            .Replace(model, string.Empty)
+            .Trim();
 
-            return (brand, model, modification);
+            return string.IsNullOrEmpty(modification) ? null : modification;
         }
 
         private decimal GetPrice(IDocument document)
@@ -146,7 +148,7 @@
 
             priceAsString = Regex.Match(priceAsString, @"[0-9\s]+")
                 .Value
-                .Replace(" ", "");
+                .Replace(" ", string.Empty);
 
             var price = decimal.Parse(priceAsString);
 
@@ -157,14 +159,8 @@
         {
             var description = document.QuerySelectorAll("td").Where(x =>
             {
-                var styleContent = x.GetAttribute("style") ?? "";
-
-                if (styleContent.Contains("line-height:24px; font-size:14px; color: #444;"))
-                {
-                    return true;
-                }
-
-                return false;
+                var styleContent = x.GetAttribute("style") ?? string.Empty;
+                return styleContent.Contains("line-height:24px; font-size:14px; color: #444;");
             }).FirstOrDefault()?.TextContent;
 
             return description;
@@ -215,7 +211,7 @@
                 .Groups[1]
                 .Value;
 
-            return euroStandard == "" ? null : euroStandard;
+            return string.IsNullOrEmpty(euroStandard) ? null : euroStandard;
         }
 
         private string GetTransmisionType(IDocument document)
@@ -226,7 +222,7 @@
                 .Groups[1]
                 .Value;
 
-            return transmisionType == "" ? null : transmisionType;
+            return string.IsNullOrEmpty(transmisionType) ? null : transmisionType;
         }
 
         private string GetCoupeType(IDocument document)
@@ -237,17 +233,17 @@
                 .Groups[1]
                 .Value;
 
-            return coupeType == "" ? null : coupeType;
+            return string.IsNullOrEmpty(coupeType) ? null : coupeType;
         }
 
         private int? GetTravelledDistance(IDocument document)
         {
             var dilarData = document.QuerySelector(".dilarData").InnerHtml;
             var travelledDistanceAsString = Regex
-                .Match(dilarData, @"<li>Пробег<\/li><li>(.+?)<\/li>")
+                .Match(dilarData, @"<li>Пробег[^<]*<\/li><li>(.+?)<\/li>")
                 .Groups[1]
                 .Value
-                .Replace("км", "")
+                .Replace("км", string.Empty)
                 .Trim('.', ' ');
 
             var travelledDistance = 0;
@@ -270,7 +266,7 @@
                 .Groups[1]
                 .Value;
 
-            return color == "" ? null : color;
+            return string.IsNullOrEmpty(color) ? null : color;
         }
 
         private CarDto GetProps(CarDto car, IDocument document)
@@ -286,16 +282,15 @@
                 return car;
             }
 
-            var currPropName = "";
+            var currPropName = string.Empty;
 
             foreach (var line in propLines)
             {
                 if (line.StartsWith("•"))
                 {
                     var prop = line
-                        .Replace("•", "")
+                        .Replace("•", string.Empty)
                         .Trim();
-
 
                     car = AddPropToCorrectArray(prop, currPropName, car);
                 }

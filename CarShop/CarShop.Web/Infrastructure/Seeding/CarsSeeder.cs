@@ -25,53 +25,69 @@
             var carsService = new DataScraper();
 
             var cars = carsService.PopulateCars(1, 50);
-            ;
+
+            var carEntites = await CreateCarsAsync(cars);
+            await AddCarsAsync(carEntites);
+        }
+
+        private async Task<IEnumerable<Car>> CreateCarsAsync(IEnumerable<CarDto> cars)
+        {
+            var entities = new List<Car>();
+            var owner = await userManager.FindByEmailAsync("admin@carshop.com");
 
             foreach (var car in cars)
             {
+
                 try
                 {
-                    await SeedCar(car);
+                    var newCar = await CreateCarAsync(car, owner);
+                    entities.Add(newCar);
                 }
-                catch (Exception e)
+                catch (ArgumentNullException)
                 { }
+
             }
+
+            return entities;
         }
 
-        private async Task SeedCar(CarDto car)
+        private async Task<Car> CreateCarAsync(CarDto car, IdentityUser owner)
         {
             var newCar = new Car();
 
-            newCar.BrandId = GetBrandId(car.Brand);
-            newCar.ModelId = GetModelId(car.Model, newCar.BrandId);
             newCar.Modification = car.Modification;
             newCar.Price = car.Price;
             newCar.Description = car.Description;
             newCar.ProduceYear = car.ProduceYear;
-            newCar.EngineTypeId = GetEngineTypeId(car.EngineType);
             newCar.HorsePower = car.HorsePower;
-            newCar.EuroStandardId = GetEuroStandardId(car.EuroStandard);
-            newCar.TransmisionId = GetTransmisionId(car.Transmision);
-            newCar.CoupeTypeId = GetCoupeTypeId(car.CoupeType);
-            newCar.TravelledDistance = car.TravelledDistance;
             newCar.Color = car.Color;
-            newCar.ImageId = GetImageId(car.ImageUrl);
-            newCar.SafetyProperties = GetSefetyProps(car.SafetyProperties);
-            newCar.ComfortProperties = GetComfortProps(car.ComfortProperties);
-            newCar.OtherProperties = GetOtherProps(car.OtherProperties);
-            newCar.ExteriorProperties = GetExteriorProps(car.ExteriorProperties);
-            newCar.InteriorProperties = GetInteriorProps(car.InteriorProperties);
-            newCar.ProtectionProperties = GetProtectionProps(car.ProtectionProperties);
-            newCar.SpecialProperties = GetSpecialProps(car.SpecialProperties);
-
-            var owner = await userManager.FindByEmailAsync("admin@carshop.com");
+            newCar.TravelledDistance = car.TravelledDistance;
+            newCar.BrandId = await GetBrandIdAsync(car.Brand);
+            newCar.ModelId = await GetModelIdAsync(car.Model, newCar.BrandId);
+            newCar.EngineTypeId = await GetEngineTypeIdAsync(car.EngineType);
+            newCar.EuroStandardId = await GetEuroStandardIdAsync(car.EuroStandard);
+            newCar.TransmisionId = await GetTransmisionIdAsync(car.Transmision);
+            newCar.CoupeTypeId = await GetCoupeTypeIdAsync(car.CoupeType);
+            newCar.ImageId = await GetImageIdAsync(car.ImageUrl);
+            newCar.SafetyProperties = await GetSefetyPropsAsync(car.SafetyProperties);
+            newCar.ComfortProperties = await GetComfortPropsAsync(car.ComfortProperties);
+            newCar.OtherProperties = await GetOtherPropsAsync(car.OtherProperties);
+            newCar.ExteriorProperties = await GetExteriorPropsAsync(car.ExteriorProperties);
+            newCar.InteriorProperties = await GetInteriorPropsAsync(car.InteriorProperties);
+            newCar.ProtectionProperties = await GetProtectionPropsAsync(car.ProtectionProperties);
+            newCar.SpecialProperties = await GetSpecialPropsAsync(car.SpecialProperties);
             newCar.Owner = owner;
 
-            db.Cars.Add(newCar);
-            db.SaveChanges();
+            return newCar;
         }
 
-        private ICollection<Special> GetSpecialProps(ICollection<string> specialProperties)
+        private async Task AddCarsAsync(IEnumerable<Car> cars)
+        {
+            db.Cars.AddRange(cars);
+            await db.SaveChangesAsync();
+        }
+
+        private async Task<ICollection<Special>> GetSpecialPropsAsync(ICollection<string> specialProperties)
         {
             var result = new List<Special>();
 
@@ -81,11 +97,11 @@
                 .SpecialProperties
                 .FirstOrDefault(x => x.Name == prop);
 
-                if (newProp is null)
+                if (newProp == null)
                 {
                     var newRecord = new Special() { Name = prop };
                     db.SpecialProperties.Add(newRecord);
-                    db.SaveChanges();
+                    await db.SaveChangesAsync();
                     newProp = newRecord;
                 }
 
@@ -95,7 +111,7 @@
             return result;
         }
 
-        private ICollection<Protection> GetProtectionProps(ICollection<string> protectionProperties)
+        private async Task<ICollection<Protection>> GetProtectionPropsAsync(ICollection<string> protectionProperties)
         {
             var result = new List<Protection>();
 
@@ -105,11 +121,11 @@
                 .ProtectionProperties
                 .FirstOrDefault(x => x.Name == prop);
 
-                if (newProp is null)
+                if (newProp == null)
                 {
                     var newRecord = new Protection() { Name = prop };
                     db.ProtectionProperties.Add(newRecord);
-                    db.SaveChanges();
+                    await db.SaveChangesAsync();
                     newProp = newRecord;
                 }
 
@@ -119,7 +135,7 @@
             return result;
         }
 
-        private ICollection<Interior> GetInteriorProps(ICollection<string> interiorProperties)
+        private async Task<ICollection<Interior>> GetInteriorPropsAsync(ICollection<string> interiorProperties)
         {
             var result = new List<Interior>();
 
@@ -129,11 +145,11 @@
                 .InteriorProperties
                 .FirstOrDefault(x => x.Name == prop);
 
-                if (newProp is null)
+                if (newProp == null)
                 {
                     var newRecord = new Interior() { Name = prop };
                     db.InteriorProperties.Add(newRecord);
-                    db.SaveChanges();
+                    await db.SaveChangesAsync();
                     newProp = newRecord;
                 }
 
@@ -143,7 +159,7 @@
             return result;
         }
 
-        private ICollection<Exterior> GetExteriorProps(ICollection<string> exteriorProperties)
+        private async Task<ICollection<Exterior>> GetExteriorPropsAsync(ICollection<string> exteriorProperties)
         {
             var result = new List<Exterior>();
 
@@ -153,11 +169,11 @@
                 .ExteriorProperties
                 .FirstOrDefault(x => x.Name == prop);
 
-                if (newProp is null)
+                if (newProp == null)
                 {
                     var newRecord = new Exterior() { Name = prop };
                     db.ExteriorProperties.Add(newRecord);
-                    db.SaveChanges();
+                    await db.SaveChangesAsync();
                     newProp = newRecord;
                 }
 
@@ -167,7 +183,7 @@
             return result;
         }
 
-        private ICollection<Other> GetOtherProps(ICollection<string> otherProperties)
+        private async Task<ICollection<Other>> GetOtherPropsAsync(ICollection<string> otherProperties)
         {
             var result = new List<Other>();
 
@@ -177,11 +193,11 @@
                 .OtherProperties
                 .FirstOrDefault(x => x.Name == prop);
 
-                if (newProp is null)
+                if (newProp == null)
                 {
                     var newRecord = new Other() { Name = prop };
                     db.OtherProperties.Add(newRecord);
-                    db.SaveChanges();
+                    await db.SaveChangesAsync();
                     newProp = newRecord;
                 }
 
@@ -191,7 +207,7 @@
             return result;
         }
 
-        private ICollection<Comfort> GetComfortProps(ICollection<string> comfortProperties)
+        private async Task<ICollection<Comfort>> GetComfortPropsAsync(ICollection<string> comfortProperties)
         {
             var result = new List<Comfort>();
 
@@ -201,11 +217,11 @@
                 .ComfortProperties
                 .FirstOrDefault(x => x.Name == prop);
 
-                if (newProp is null)
+                if (newProp == null)
                 {
                     var newRecord = new Comfort() { Name = prop };
                     db.ComfortProperties.Add(newRecord);
-                    db.SaveChanges();
+                    await db.SaveChangesAsync();
                     newProp = newRecord;
                 }
 
@@ -215,7 +231,7 @@
             return result;
         }
 
-        private ICollection <Safety> GetSefetyProps(ICollection<string> safetyProperties)
+        private async Task<ICollection<Safety>> GetSefetyPropsAsync(ICollection<string> safetyProperties)
         {
             var result = new List<Safety>();
 
@@ -225,11 +241,11 @@
                 .SafetyProperties
                 .FirstOrDefault(x => x.Name == prop);
 
-                if (newProp is null)
+                if (newProp == null)
                 {
                     var newRecord = new Safety() { Name = prop };
                     db.SafetyProperties.Add(newRecord);
-                    db.SaveChanges();
+                    await db.SaveChangesAsync();
                     newProp = newRecord;
                 }
 
@@ -239,63 +255,78 @@
             return result;
         }
 
-        private int GetImageId(string imageUrl)
+        private async Task<int> GetImageIdAsync(string imageUrl)
         {
+            if (imageUrl == null)
+            {
+                throw new ArgumentNullException(nameof(imageUrl));
+            }
+
             var id = db
                 .Images
                 .FirstOrDefault(x => x.Url == imageUrl)
                 ?.Id;
 
-            if (id is null)
+            if (id == null)
             {
                 var newRecord = new Image() { Url = imageUrl };
                 db.Images.Add(newRecord);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 id = newRecord.Id;
             }
 
-            return (int)id;
+            return id.Value;
         }
 
-        private int GetCoupeTypeId(string coupeType)
+        private async Task<int> GetCoupeTypeIdAsync(string coupeType)
         {
+            if (coupeType == null)
+            {
+                throw new ArgumentNullException(nameof(coupeType));
+            }
+
             var id = db
                 .CoupeTypes
                 .FirstOrDefault(x => x.Name == coupeType)
                 ?.Id;
 
-            if (id is null)
+            if (id == null)
             {
                 var newRecord = new Coupe() { Name = coupeType };
                 db.CoupeTypes.Add(newRecord);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 id = newRecord.Id;
             }
 
-            return (int)id;
+            return id.Value;
         }
 
-        private int GetTransmisionId(string transmision)
+        private async Task<int> GetTransmisionIdAsync(string transmision)
         {
+            if (transmision == null)
+            {
+                throw new ArgumentNullException(nameof(transmision));
+            }
+
             var id = db
                 .TransmisionTypes
                 .FirstOrDefault(x => x.Name == transmision)
                 ?.Id;
 
-            if (id is null)
+            if (id == null)
             {
                 var newRecord = new Transmision() { Name = transmision };
                 db.TransmisionTypes.Add(newRecord);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 id = newRecord.Id;
             }
 
-            return (int)id;
+            return id.Value;
         }
 
-        private int? GetEuroStandardId(string euroStandard)
+        private async Task<int?> GetEuroStandardIdAsync(string euroStandard)
         {
-            if (euroStandard is null)
+            if (euroStandard == null)
             {
                 return null;
             }
@@ -305,69 +336,84 @@
                 .FirstOrDefault(x => x.Name == euroStandard)
                 ?.Id;
 
-            if (id is null)
+            if (id == null)
             {
                 var newRecord = new EuroStandard() { Name = euroStandard };
                 db.EuroStandards.Add(newRecord);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 id = newRecord.Id;
             }
 
-            return (int)id;
+            return id.Value;
         }
 
-        private int GetEngineTypeId(string engineType)
+        private async Task<int> GetEngineTypeIdAsync(string engineType)
         {
+            if (engineType == null)
+            {
+                throw new ArgumentNullException(nameof(engineType));
+            }
+
             var id = db
                 .EngineTypes
                 .FirstOrDefault(x => x.Name == engineType)
                 ?.Id;
 
-            if (id is null)
+            if (id == null)
             {
                 var newRecord = new Engine() { Name = engineType };
                 db.EngineTypes.Add(newRecord);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 id = newRecord.Id;
             }
 
-            return (int)id;
+            return id.Value;
         }
 
-        private int GetModelId(string model, int brandId)
+        private async Task<int> GetModelIdAsync(string model, int brandId)
         {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
             var id = db
                 .Models
                 .FirstOrDefault(x => x.Name == model && x.BrandId == brandId)
                 ?.Id;
 
-            if (id is null)
+            if (id == null)
             {
                 var newRecord = new Model() { Name = model, BrandId = brandId };
                 db.Models.Add(newRecord);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 id = newRecord.Id;
             }
 
-            return (int)id;
+            return id.Value;
         }
 
-        private int GetBrandId(string brand)
+        private async Task<int> GetBrandIdAsync(string brand)
         {
+            if (brand == null)
+            {
+                throw new ArgumentNullException(nameof(brand));
+            }
+
             var id = db
                 .Brands
                 .FirstOrDefault(x => x.Name == brand)
                 ?.Id;
 
-            if (id is null)
+            if (id == null)
             {
                 var newRecord = new Brand() { Name = brand };
                 db.Brands.Add(newRecord);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
                 id = newRecord.Id;
             }
             
-            return (int)id;
+            return id.Value;
         }
     }
 }
