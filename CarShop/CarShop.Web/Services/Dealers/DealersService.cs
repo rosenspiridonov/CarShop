@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading.Tasks;
 
 using CarShop.Services.Cars;
 using CarShop.Web.Data;
 using CarShop.Web.Data.Models;
-using CarShop.Web.Services.Cars.Models;
 
-using static CarShop.Web.WebConstants;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace CarShop.Web.Services.Dealers
 {
@@ -24,8 +23,8 @@ namespace CarShop.Web.Services.Dealers
             this.carsService = carsService;
         }
 
-        public DealerServiceModel GetById(string userId)
-            => db.Users
+        public async Task<DealerServiceModel> GetByIdAsync(string userId)
+            => await db.Users
                 .Where(x => x.Id == userId)
                 .Select(x => new DealerServiceModel
                 {
@@ -34,11 +33,11 @@ namespace CarShop.Web.Services.Dealers
                     PhoneNumber = x.PhoneNumber,
                     Email = x.Email,
                 })
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
-        public DealerServiceModel GetInfo(string userId)
+        public async Task<DealerServiceModel> GetInfoAsync(string userId)
         {
-            var user = db.Users.FirstOrDefault(x => x.Id == userId);
+            var user = await db.Users.FirstOrDefaultAsync(x => x.Id == userId);
 
             return new DealerServiceModel
             {
@@ -47,26 +46,26 @@ namespace CarShop.Web.Services.Dealers
             };
         }
 
-        public bool OwnsCar(string userId, int carId)
+        public async Task<bool> OwnsCarAsync(string userId, int carId)
         {
-            var carOwnerId = carsService.GetCarViewModel(carId).OwnerId;
+            var carOwnerId = (await carsService.GetCarViewModelAsync(carId)).OwnerId;
             return carOwnerId == userId;
         }
 
-        public virtual void ProcessRequest(string userId, string phoneNumber)
+        public virtual async Task ProcessRequestAsync(string userId, string phoneNumber)
         {
-            var user = db.Users.FirstOrDefault(x => x.Id == userId);
+            var user = await db.Users.FirstOrDefaultAsync(x => x.Id == userId);
 
             user.PhoneNumber = phoneNumber;
 
-            db.DealerRequests.Add(new DealerRequest
+            await db.DealerRequests.AddAsync(new DealerRequest
             {
                 UserId = userId,
                 IsAccepted = false,
                 Pending = true,
             });
 
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
     }
 }

@@ -13,14 +13,14 @@ namespace CarShop.Tests.RoutingTests
             => MyRouting
                 .Configuration()
                 .ShouldMap("/Cars/Search")
-                .To<CarsController>(c => c.Search());
+                .To<CarsController>(c => c.SearchAsync());
 
         [Fact]
         public void GetCreateShouldBeMapped()
             => MyRouting
                 .Configuration()
                 .ShouldMap("/Cars/Create")
-                .To<CarsController>(c => c.Create());
+                .To<CarsController>(c => c.CreateAsync());
 
         [Fact]
         public void PostCreateShouldBeMapped()
@@ -29,7 +29,7 @@ namespace CarShop.Tests.RoutingTests
                .ShouldMap(request => request
                    .WithPath("/Cars/Create")
                    .WithMethod(HttpMethod.Post))
-                .To<CarsController>(c => c.Create(With.Any<CarFormModel>()));
+                .To<CarsController>(c => c.CreateAsync(With.Any<CarFormModel>()));
 
         [Fact]
         public void DetailsShouldBeMapped()
@@ -38,7 +38,7 @@ namespace CarShop.Tests.RoutingTests
                 .ShouldMap(request => request
                     .WithPath("/Cars/Details")
                     .WithQuery("id", With.Any<int>().ToString()))
-                .To<CarsController>(c => c.Details(With.Any<int>()));
+                .To<CarsController>(c => c.DetailsAsync(With.Any<int>()));
 
         [Fact]
         public void GetEditShouldBeMapped()
@@ -47,7 +47,7 @@ namespace CarShop.Tests.RoutingTests
                .ShouldMap(request => request
                    .WithPath("/Cars/Edit")
                    .WithQuery("id", With.Any<int>().ToString()))
-               .To<CarsController>(c => c.Edit(With.Any<int>()));
+               .To<CarsController>(c => c.EditAsync(With.Any<int>()));
 
         [Fact]
         public void PostEditShouldBeMapped()
@@ -56,7 +56,7 @@ namespace CarShop.Tests.RoutingTests
                .ShouldMap(request => request
                    .WithPath("/Cars/Edit")
                    .WithMethod(HttpMethod.Post))
-                .To<CarsController>(c => c.Edit(With.Any<CarFormModel>()));
+                .To<CarsController>(c => c.EditAsync(With.Any<CarFormModel>()));
 
         [Fact]
         public void DeleteShouldBeMapped()
@@ -65,7 +65,7 @@ namespace CarShop.Tests.RoutingTests
               .ShouldMap(request => request
                   .WithPath("/Cars/Delete")
                   .WithQuery("id", With.Any<int>().ToString()))
-              .To<CarsController>(c => c.Delete(With.Any<int>()));
+              .To<CarsController>(c => c.DeleteAsync(With.Any<int>()));
 
     }
 }

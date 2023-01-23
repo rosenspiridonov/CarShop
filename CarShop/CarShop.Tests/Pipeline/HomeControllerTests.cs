@@ -18,7 +18,7 @@ namespace CarShop.Tests.Pipeline
             => MyMvc
                 .Pipeline()
                 .ShouldMap("/")
-                .To<HomeController>(c => c.Index())
+                .To<HomeController>(c => c.IndexAsync())
                 .Which(c => c.WithData(FiveCars))
                 .ShouldReturn()
                 .View(v => v

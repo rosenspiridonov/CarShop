@@ -1,4 +1,6 @@
-﻿using CarShop.Services.Cars;
+﻿using System.Threading.Tasks;
+
+using CarShop.Services.Cars;
 using CarShop.Web.Data;
 using CarShop.Web.Data.Models;
 using CarShop.Web.Services.Dealers;
@@ -15,16 +17,16 @@ namespace CarShop.Tests.Mocks
             this.db = db;
         }
 
-        public override void ProcessRequest(string userId, string phoneNumber)
+        public override async Task ProcessRequestAsync(string userId, string phoneNumber)
         {
-            db.DealerRequests.Add(new DealerRequest
+            await db.DealerRequests.AddAsync(new DealerRequest
             {
                 UserId = userId,
                 IsAccepted = false,
                 Pending = true,
             });
 
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
     }
 }

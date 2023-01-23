@@ -9,34 +9,31 @@ namespace CarShop.Services.Cars
 {
     public interface ICarsService
     {
-        IEnumerable<CarServiceModel> GetCars(int start, int count);
+        Task<int> CarsCountAsync();
 
-        Task<int> CreateCarAsync(string ownerId, CarInputModel input);
+        Task<AllCarsServiceModel> AllAsync(
+            int currentPage = 1,
+            int carsPerPage = 20,
+            string ownerId = null,
+            CarSearchServiceModel searchModel = null,
+            bool returnDeleted = false);
 
-        void EditCar(CarInputModel input); 
+        Task<CarFormData> AllCarOptionsAsync();
 
-        CarFormData AllCarOptions();
+        Task<CarServiceModel> GetCarViewModelAsync(int id);
 
-        CarServiceModel GetCarViewModel(int id);
-
-        CarInputModel CarInputModelInfo(int id);
-
-        Task<bool> Delete(int id);
-
-        string OwnerId(int carId);
+        Task<CarInputModel> CarInputModelInfoAsync(int id);
 
         IEnumerable<CarListingServiceModel> SortCars(
             IEnumerable<CarListingServiceModel> collection,
             CarSorting sorting = CarSorting.Price,
             SortingOrder sortingOrder = SortingOrder.Ascending);
 
-        AllCarsServiceModel All(
-            int currentPage = 1, 
-            int carsPerPage = 20, 
-            string ownerId = null, 
-            CarSearchServiceModel searchModel = null, 
-            bool returnDeleted = false);
+        Task<int> CreateCarAsync(string ownerId, CarInputModel input);
 
-        Task<int> CarsCountAsync();
+        Task EditCarAsync(CarInputModel input); 
+
+        Task<bool> DeleteAsync(int id);
+
     }
 }

@@ -1,13 +1,15 @@
-﻿namespace CarShop.Web.Services.Dealers
+﻿using System.Threading.Tasks;
+
+namespace CarShop.Web.Services.Dealers
 {
     public interface IDealersService
     {
-        DealerServiceModel GetInfo(string userId);
+        Task<DealerServiceModel> GetInfoAsync(string userId);
 
-        bool OwnsCar(string userId, int carId);
+        Task<bool> OwnsCarAsync(string userId, int carId);
 
-        void ProcessRequest(string userId, string phoneNumber);
+        Task ProcessRequestAsync(string userId, string phoneNumber);
 
-        DealerServiceModel GetById(string userId);
+        Task<DealerServiceModel> GetByIdAsync(string userId);
     }
 }

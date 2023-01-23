@@ -39,7 +39,7 @@ namespace CarShop.Tests.ControllerTests
             => MyController<DealersController>
                 .Instance(instance => instance
                     .WithUser())
-                .Calling(c => c.Become(new DealerFormModel 
+                .Calling(c => c.BecomeAsync(new DealerFormModel 
                 {
                     PhoneNumber = phoneNumber
                 }))

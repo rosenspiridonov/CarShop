@@ -20,15 +20,15 @@ namespace CarShop.Web.Areas.Admin.Controllers
             this.userManager = userManager;
         }
 
-        public IActionResult Requests()
+        public async Task<IActionResult> RequestsAsync()
         {
-            var requests = adminService.DealersPendingRequests();
+            var requests = await adminService.DealersPendingRequestsAsync();
 
             return View(requests);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Requests(string userId)
+        public async Task<IActionResult> RequestsAsync(string userId)
         {
             var user = await userManager.FindByIdAsync(userId);
             var isDealer = await userManager.IsInRoleAsync(user, DealerRoleName);
@@ -39,9 +39,9 @@ namespace CarShop.Web.Areas.Admin.Controllers
             }
 
             await userManager.AddToRoleAsync(user, DealerRoleName);
-            adminService.ApproveDealer(userId);
+            await adminService.ApproveDealerAsync(userId);
 
-            var requests = adminService.DealersPendingRequests();
+            var requests = await adminService.DealersPendingRequestsAsync();
 
             return View(requests);  
             }

@@ -28,7 +28,7 @@ namespace CarShop.Web.Controllers
             this.dealersService = dealersService;
         }
 
-        public IActionResult All(
+        public async Task<IActionResult> AllAsync(
                 int page = 1,
                 CarSorting sorting = CarSorting.Price,
                 SortingOrder order = SortingOrder.Ascending,
@@ -36,7 +36,7 @@ namespace CarShop.Web.Controllers
         {
             const int carsPerPage = 10;
 
-            var result = carsService.All(currentPage: page, carsPerPage: carsPerPage, searchModel: searchModel);
+            var result = await carsService.AllAsync(currentPage: page, carsPerPage: carsPerPage, searchModel: searchModel);
 
             result.Cars = carsService.SortCars(result.Cars, sorting, order);
 
@@ -48,21 +48,21 @@ namespace CarShop.Web.Controllers
                 Cars = result.Cars.ToList()
             };
 
-            return this.View(model);
+            return View(model);
         }
 
-        public IActionResult Search()
+        public async Task<IActionResult> SearchAsync()
         {
             var model = new CarSearchServiceModel
             {
-                ViewData = carsService.AllCarOptions()
+                ViewData = await carsService.AllCarOptionsAsync()
             };
 
             return View(model);
         }
 
         [Authorize(Roles = DealerRoleName + ", " + AdminRoleName)]
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync()
         {
             if (!User.IsDealer() && !User.IsAdmin())    
             {
@@ -71,7 +71,7 @@ namespace CarShop.Web.Controllers
 
             var model = new CarFormModel()
             {
-                Data = carsService.AllCarOptions(),
+                Data = await carsService.AllCarOptionsAsync(),
             };
 
             return View(model);
@@ -79,9 +79,9 @@ namespace CarShop.Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = DealerRoleName + ", " + AdminRoleName)]
-        public async Task<IActionResult> Create(CarFormModel input)
+        public async Task<IActionResult> CreateAsync(CarFormModel input)
         {
-            input.Data = carsService.AllCarOptions();
+            input.Data = await carsService.AllCarOptionsAsync();
 
             // Check for validation
             if (!this.ModelState.IsValid)
@@ -96,11 +96,11 @@ namespace CarShop.Web.Controllers
             return RedirectToAction("Details", "Cars", new { id = carId });
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> DetailsAsync(int id)
         {
             var model = new CarDetailsViewModel
             {
-                Car = carsService.GetCarViewModel(id)
+                Car = await carsService.GetCarViewModelAsync(id)
             };
 
             if (model.Car.IsDeleted && User?.IsAdmin() == false)
@@ -108,17 +108,17 @@ namespace CarShop.Web.Controllers
                 return NotFound("Car does not exists!");
             }
 
-            model.Dealer = dealersService.GetInfo(model.Car.OwnerId);
+            model.Dealer = await dealersService.GetInfoAsync(model.Car.OwnerId);
 
             return this.View(model);
         }
 
         [Authorize(Roles = DealerRoleName + ", " + AdminRoleName)]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> EditAsync(int id)
         {
-            var carModel = carsService.CarInputModelInfo(id);
+            var carModel = await carsService.CarInputModelInfoAsync(id);
 
-            if (!dealersService.OwnsCar(this.User.GetId(), id) && !this.User.IsAdmin())
+            if (!await dealersService.OwnsCarAsync(this.User.GetId(), id) && !this.User.IsAdmin())
             {
                 return Unauthorized();
             }
@@ -126,7 +126,7 @@ namespace CarShop.Web.Controllers
             var carFormModel = new CarFormModel
             {
                 Car = carModel,
-                Data = carsService.AllCarOptions()
+                Data = await carsService.AllCarOptionsAsync()
             };
 
             return this.View(carFormModel);
@@ -134,9 +134,9 @@ namespace CarShop.Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = DealerRoleName + ", " + AdminRoleName)]
-        public IActionResult Edit(CarFormModel input)
+        public async Task<IActionResult> EditAsync(CarFormModel input)
         {
-            input.Data = carsService.AllCarOptions();
+            input.Data = await carsService.AllCarOptionsAsync();
 
             // Check for validation
             if (!this.ModelState.IsValid)
@@ -144,25 +144,25 @@ namespace CarShop.Web.Controllers
                 return View(input);
             }
 
-            if (!dealersService.OwnsCar(this.User.GetId(), input.Car.Id) && !this.User.IsAdmin())
+            if (!await dealersService.OwnsCarAsync(this.User.GetId(), input.Car.Id) && !this.User.IsAdmin())
             {
                 return Unauthorized();
             }
 
-            carsService.EditCar(input.Car);
+            await carsService.EditCarAsync(input.Car);
 
             return RedirectToAction("Details", "Cars", new { id = input.Car.Id });
         }
 
         [Authorize(Roles = DealerRoleName + ", " + AdminRoleName)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            if (!dealersService.OwnsCar(this.User.GetId(), id) && !this.User.IsAdmin())
+            if (!await dealersService.OwnsCarAsync(this.User.GetId(), id) && !this.User.IsAdmin())
             {
                 return Unauthorized();
             }
 
-            var isDeleted = await carsService.Delete(id);
+            var isDeleted = await carsService.DeleteAsync(id);
 
             if (!isDeleted)
             {

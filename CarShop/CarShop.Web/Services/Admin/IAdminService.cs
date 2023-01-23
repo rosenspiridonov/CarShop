@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using CarShop.Web.Services.Dealers;
 
@@ -6,10 +7,10 @@ namespace CarShop.Web.Services.Admin
 {
     public interface IAdminService
     {
-        IEnumerable<DealerServiceModel> DealersPendingRequests();
+        Task<IEnumerable<DealerServiceModel>> DealersPendingRequestsAsync();
 
-        void ApproveDealer(string userId);
+        Task ApproveDealerAsync(string userId);
 
-        void RestoreCar(int carId);
+        Task RestoreCarAsync(int carId);
     }
 }

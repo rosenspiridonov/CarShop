@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 
 using CarShop.Services.Cars;
 using CarShop.Web.Models.Cars;
@@ -22,12 +23,12 @@ namespace CarShop.Web.Areas.Admin.Controllers
             this.adminService = adminService;
         }
 
-        public IActionResult All(int page = 1, 
+        public async Task<IActionResult> AllAsync(int page = 1, 
             CarSorting sorting = CarSorting.Price,
             SortingOrder order = SortingOrder.Ascending)
         {
             const int carsPerPage = 10;
-            var result = carsService.All(page, carsPerPage, returnDeleted: true);
+            var result = await carsService.AllAsync(page, carsPerPage, returnDeleted: true);
 
             result.Cars = carsService.SortCars(result.Cars, sorting, order);
 
@@ -42,10 +43,10 @@ namespace CarShop.Web.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult Restore(int id)
+        public async Task<IActionResult> RestoreAsync(int id)
         {
-            adminService.RestoreCar(id);
-            ;
+            await adminService.RestoreCarAsync(id);
+            
             return RedirectToAction("All");
         }
     }

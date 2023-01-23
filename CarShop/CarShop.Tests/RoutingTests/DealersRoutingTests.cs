@@ -22,7 +22,7 @@ namespace CarShop.Tests.RoutingTests
                 .ShouldMap(request => request
                     .WithPath("/Dealers/Become")
                     .WithMethod(HttpMethod.Post))
-                 .To<DealersController>(c => c.Become(With.Any<DealerFormModel>()));
+                 .To<DealersController>(c => c.BecomeAsync(With.Any<DealerFormModel>()));
 
         [Fact]
         public void ThankYouShouldBeMapped()

@@ -16,7 +16,7 @@ namespace CarShop.Web.Controllers
             this.carsService = carsService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> IndexAsync()
         {
             var model = new IndexViewModel
             {

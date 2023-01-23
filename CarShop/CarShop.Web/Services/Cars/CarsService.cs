@@ -23,6 +23,173 @@ namespace CarShop.Services.Cars
             this.imageService = imageService;
         }
 
+        public async Task<int> CarsCountAsync()
+            => await db.Cars.CountAsync(x => !x.IsDeleted);
+
+        public async Task<AllCarsServiceModel> AllAsync(
+            int currentPage = 1,
+            int carsPerPage = 20,
+            string ownerId = null,
+            CarSearchServiceModel searchModel = null,
+            bool returnDeleted = false)
+        {
+            var query = searchModel is null ? this.db
+                .Cars
+                .AsQueryable() : this.Search(searchModel);
+
+            if (!returnDeleted)
+            {
+                query = query.Where(x => x.IsDeleted == false);
+            }
+
+            if (!string.IsNullOrWhiteSpace(ownerId))
+            {
+                query = query.Where(x => x.OwnerId == ownerId);
+            }
+
+            var totalCars = await query.CountAsync();
+
+            query = query
+                .OrderByDescending(x => x.Id)
+                .Skip((currentPage - 1) * carsPerPage)
+                .Take(carsPerPage);
+
+            return new AllCarsServiceModel()
+            {
+                TotalCars = totalCars,
+                Cars = query
+                        .Select(x => new CarListingServiceModel()
+                        {
+                            Id = x.Id,
+                            Brand = x.Brand.Name,
+                            Model = x.Model.Name,
+                            Modification = x.Modification,
+                            Price = x.Price,
+                            TravelledDistance = x.TravelledDistance,
+                            Year = x.ProduceYear,
+                            HorsePower = x.HorsePower,
+                            EngineType = x.EngineType.Name,
+                            ImageUrl = x.Image.Url,
+                            OwnerId = x.OwnerId,
+                            OwnerName = x.Owner.UserName,
+                            IsDeleted = x.IsDeleted
+                        })
+                        .ToList()
+            };
+        }
+
+        public async Task<CarFormData> AllCarOptionsAsync()
+            => new()
+            {
+                Brands = await db.Brands.OrderBy(x => x.Name).ToListAsync(),
+                Models = await db.Models.OrderBy(x => x.Name).ToListAsync(),
+                EngineTypes = await db.EngineTypes.OrderBy(x => x.Name).ToListAsync(),
+                EuroStandards = await db.EuroStandards.OrderBy(x => x.Name).ToListAsync(),
+                TransmisionTypes = await db.TransmisionTypes.OrderBy(x => x.Name).ToListAsync(),
+                CoupeTypes = await db.CoupeTypes.OrderBy(x => x.Name).ToListAsync(),
+                SafetyProperties = await db.SafetyProperties.OrderBy(x => x.Name).ToListAsync(),
+                ComfortProperties = await db.ComfortProperties.OrderBy(x => x.Name).ToListAsync(),
+                OtherProperties = await db.OtherProperties.OrderBy(x => x.Name).ToListAsync(),
+                ExteriorProperties = await db.ExteriorProperties.OrderBy(x => x.Name).ToListAsync(),
+                InteriorProperties = await db.InteriorProperties.OrderBy(x => x.Name).ToListAsync(),
+                ProtectionProperties = await db.ProtectionProperties.OrderBy(x => x.Name).ToListAsync(),
+                SpecialProperties = await db.SpecialProperties.OrderBy(x => x.Name).ToListAsync(),
+            };
+
+        public async Task<CarServiceModel> GetCarViewModelAsync(int id)
+            => await db.Cars
+                .Where(x => x.Id == id)
+                .Select(x => new CarServiceModel
+                {
+                    Id = x.Id,
+                    Brand = x.Brand.Name,
+                    Model = x.Model.Name,
+                    Modification = x.Modification,
+                    Price = x.Price,
+                    Description = x.Description,
+                    ProduceYear = x.ProduceYear,
+                    EngineType = x.EngineType.Name,
+                    HorsePower = x.HorsePower,
+                    EuroStandard = x.EuroStandard.Name,
+                    TransmisionType = x.Transmision.Name,
+                    CoupeType = x.CoupeType.Name,
+                    TravelledDistance = x.TravelledDistance,
+                    Color = x.Color,
+                    ImageUrl = x.Image.Url,
+                    OwnerId = x.OwnerId,
+                    IsActive = x.IsActive,
+                    SafetyProperties = x.SafetyProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
+                    ComfortProperties = x.ComfortProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
+                    OtherProperties = x.OtherProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
+                    ExteriorProperties = x.ExteriorProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
+                    InteriorProperties = x.InteriorProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
+                    ProtectionProperties = x.ProtectionProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
+                    SpecialProperties = x.SpecialProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
+                    IsDeleted = x.IsDeleted
+                }).FirstOrDefaultAsync();
+
+        public async Task<CarInputModel> CarInputModelInfoAsync(int id)
+            => await db
+                .Cars
+                .Where(x => x.Id == id && x.IsDeleted == false)
+                .Select(x => new CarInputModel()
+                {
+                    Id = x.Id,
+                    BrandId = x.BrandId,
+                    ModelId = x.ModelId,
+                    Modification = x.Modification,
+                    Price = x.Price,
+                    Description = x.Description,
+                    ProduceYear = x.ProduceYear,
+                    EngineTypeId = x.EngineTypeId,
+                    HorsePower = x.HorsePower,
+                    EuroStandardId = x.EuroStandardId,
+                    TransmisionTypeId = x.TransmisionId,
+                    CoupeTypeId = x.CoupeTypeId,
+                    TravelledDistance = x.TravelledDistance,
+                    Color = x.Color,
+                    ImageUrl = x.Image.Url,
+                    SafetyPropertiesIds = x.SafetyProperties.Select(x => x.Id).ToList(),
+                    ComfortPropertiesIds = x.ComfortProperties.Select(x => x.Id).ToList(),
+                    OtherPropertiesIds = x.OtherProperties.Select(x => x.Id).ToList(),
+                    ExteriorPropertiesIds = x.ExteriorProperties.Select(x => x.Id).ToList(),
+                    InteriorPropertiesIds = x.InteriorProperties.Select(x => x.Id).ToList(),
+                    ProtectionPropertiesIds = x.ProtectionProperties.Select(x => x.Id).ToList(),
+                    SpecialPropertiesIds = x.SpecialProperties.Select(x => (int?)x.Id).ToList(),
+                    OwnerId = x.OwnerId
+                }).FirstOrDefaultAsync();
+
+        public IEnumerable<CarListingServiceModel> SortCars(
+            IEnumerable<CarListingServiceModel> collection,
+            CarSorting sorting = CarSorting.Price,
+            SortingOrder sortingOrder = SortingOrder.Ascending)
+        {
+            var result = new List<CarListingServiceModel>();
+
+            if (sortingOrder is SortingOrder.Ascending)
+            {
+                result = sorting switch
+                {
+                    CarSorting.Year => collection.OrderBy(x => x.Year).ThenBy(x => x.Price).ToList(),
+                    CarSorting.Brand => collection.OrderBy(x => x.Brand).ThenBy(x => x.Price).ToList(),
+                    CarSorting.Price => collection.OrderBy(x => x.Price).ToList(),
+                    _ => result,
+                };
+            }
+            else
+            {
+                result = sorting switch
+                {
+                    CarSorting.Year => collection.OrderByDescending(x => x.Year).ThenByDescending(x => x.Price).ToList(),
+                    CarSorting.Brand => collection.OrderByDescending(x => x.Brand).ThenByDescending(x => x.Price).ToList(),
+                    CarSorting.Price => collection.OrderByDescending(x => x.Price).ToList(),
+                    _ => result,
+                };
+            }
+
+            return result;
+        }
+
         public async Task<int> CreateCarAsync(string ownerId, CarInputModel input)
         {
             var car = new Car
@@ -63,127 +230,9 @@ namespace CarShop.Services.Cars
             return car.Id;
         }
 
-        public IEnumerable<CarServiceModel> GetCars(int start, int count)
+        public async Task EditCarAsync(CarInputModel input)
         {
-            return db.Cars
-                .Where(x => x.IsDeleted == false)
-                .Select(x => new CarServiceModel
-                {
-                    Id = x.Id,
-                    Brand = x.Brand.Name,
-                    Model = x.Model.Name,
-                    Modification = x.Modification,
-                    Price = x.Price,
-                    Description = x.Description,
-                    ProduceYear = x.ProduceYear,
-                    EngineType = x.EngineType.Name,
-                    HorsePower = x.HorsePower,
-                    EuroStandard = x.EuroStandard.Name,
-                    TransmisionType = x.Transmision.Name,
-                    CoupeType = x.CoupeType.Name,
-                    TravelledDistance = x.TravelledDistance,
-                    Color = x.Color,
-                    ImageUrl = x.Image.Url,
-                    SafetyProperties = x.SafetyProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
-                    ComfortProperties = x.ComfortProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
-                    OtherProperties = x.OtherProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
-                    ExteriorProperties = x.ExteriorProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
-                    InteriorProperties = x.InteriorProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
-                    ProtectionProperties = x.ProtectionProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
-                    SpecialProperties = x.SpecialProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
-                })
-                .Skip(start)
-                .Take(count)
-                .OrderBy(x => x.Brand)
-                .ThenBy(x => x.Model)
-                .ThenBy(x => x.Modification)
-                .ToList();
-        }
-
-        public CarFormData AllCarOptions()
-            => new()
-            {
-                Brands = db.Brands.OrderBy(x => x.Name).ToList(),
-                Models = db.Models.OrderBy(x => x.Name).ToList(),
-                EngineTypes = db.EngineTypes.OrderBy(x => x.Name).ToList(),
-                EuroStandards = db.EuroStandards.OrderBy(x => x.Name).ToList(),
-                TransmisionTypes = db.TransmisionTypes.OrderBy(x => x.Name).ToList(),
-                CoupeTypes = db.CoupeTypes.OrderBy(x => x.Name).ToList(),
-                SafetyProperties = db.SafetyProperties.OrderBy(x => x.Name).ToList(),
-                ComfortProperties = db.ComfortProperties.OrderBy(x => x.Name).ToList(),
-                OtherProperties = db.OtherProperties.OrderBy(x => x.Name).ToList(),
-                ExteriorProperties = db.ExteriorProperties.OrderBy(x => x.Name).ToList(),
-                InteriorProperties = db.InteriorProperties.OrderBy(x => x.Name).ToList(),
-                ProtectionProperties = db.ProtectionProperties.OrderBy(x => x.Name).ToList(),
-                SpecialProperties = db.SpecialProperties.OrderBy(x => x.Name).ToList(),
-            };
-
-        public CarServiceModel GetCarViewModel(int id)
-            => db.Cars
-                .Where(x => x.Id == id)
-                .Select(x => new CarServiceModel
-                {
-                    Id = x.Id,
-                    Brand = x.Brand.Name,
-                    Model = x.Model.Name,
-                    Modification = x.Modification,
-                    Price = x.Price,
-                    Description = x.Description,
-                    ProduceYear = x.ProduceYear,
-                    EngineType = x.EngineType.Name,
-                    HorsePower = x.HorsePower,
-                    EuroStandard = x.EuroStandard.Name,
-                    TransmisionType = x.Transmision.Name,
-                    CoupeType = x.CoupeType.Name,
-                    TravelledDistance = x.TravelledDistance,
-                    Color = x.Color,
-                    ImageUrl = x.Image.Url,
-                    OwnerId = x.OwnerId,
-                    IsActive = x.IsActive,
-                    SafetyProperties = x.SafetyProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
-                    ComfortProperties = x.ComfortProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
-                    OtherProperties = x.OtherProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
-                    ExteriorProperties = x.ExteriorProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
-                    InteriorProperties = x.InteriorProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
-                    ProtectionProperties = x.ProtectionProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
-                    SpecialProperties = x.SpecialProperties.Select(x => x.Name).OrderBy(x => x).ToList(),
-                    IsDeleted = x.IsDeleted
-                }).FirstOrDefault();
-
-        public CarInputModel CarInputModelInfo(int id)
-            => db
-                .Cars
-                .Where(x => x.Id == id && x.IsDeleted == false)
-                .Select(x => new CarInputModel()
-                {
-                    Id = x.Id,
-                    BrandId = x.BrandId,
-                    ModelId = x.ModelId,
-                    Modification = x.Modification,
-                    Price = x.Price,
-                    Description = x.Description,
-                    ProduceYear = x.ProduceYear,
-                    EngineTypeId = x.EngineTypeId,
-                    HorsePower = x.HorsePower,
-                    EuroStandardId = x.EuroStandardId,
-                    TransmisionTypeId = x.TransmisionId,
-                    CoupeTypeId = x.CoupeTypeId,
-                    TravelledDistance = x.TravelledDistance,
-                    Color = x.Color,
-                    ImageUrl = x.Image.Url,
-                    SafetyPropertiesIds = x.SafetyProperties.Select(x => x.Id).ToList(),
-                    ComfortPropertiesIds = x.ComfortProperties.Select(x => x.Id).ToList(),
-                    OtherPropertiesIds = x.OtherProperties.Select(x => x.Id).ToList(),
-                    ExteriorPropertiesIds = x.ExteriorProperties.Select(x => x.Id).ToList(),
-                    InteriorPropertiesIds = x.InteriorProperties.Select(x => x.Id).ToList(),
-                    ProtectionPropertiesIds = x.ProtectionProperties.Select(x => x.Id).ToList(),
-                    SpecialPropertiesIds = x.SpecialProperties.Select(x => (int?)x.Id).ToList(),
-                    OwnerId = x.OwnerId
-                }).FirstOrDefault();
-
-        public void EditCar(CarInputModel input)
-        {
-            var car = db
+            var car = await db
                 .Cars
                 .Include(x => x.Image)
                 .Include(x => x.SafetyProperties)
@@ -193,7 +242,7 @@ namespace CarShop.Services.Cars
                 .Include(x => x.InteriorProperties)
                 .Include(x => x.ProtectionProperties)
                 .Include(x => x.SpecialProperties)
-                .FirstOrDefault(x => x.Id == input.Id);
+                .FirstOrDefaultAsync(x => x.Id == input.Id);
 
             car.BrandId = input.BrandId;
             car.ModelId = input.ModelId;
@@ -210,13 +259,12 @@ namespace CarShop.Services.Cars
             car.Color = input.Color;
             car.Image.Url = input.ImageUrl;
             car.OwnerId = input.OwnerId;
-
             
             foreach (var propId in input.SafetyPropertiesIds ?? new())
             {
                 if (!car.SafetyProperties.Any(x => x.Id == propId))
                 {
-                    car.SafetyProperties.Add(db.SafetyProperties.FirstOrDefault(x => x.Id == propId));
+                    car.SafetyProperties.Add(await db.SafetyProperties.FirstOrDefaultAsync(x => x.Id == propId));
                 }
             }
             
@@ -229,7 +277,7 @@ namespace CarShop.Services.Cars
             {
                 if (!car.ComfortProperties.Any(x => x.Id == propId))
                 {
-                    car.ComfortProperties.Add(db.ComfortProperties.FirstOrDefault(x => x.Id == propId));
+                    car.ComfortProperties.Add(await db.ComfortProperties.FirstOrDefaultAsync(x => x.Id == propId));
                 }
             }
 
@@ -242,7 +290,7 @@ namespace CarShop.Services.Cars
             {
                 if (!car.OtherProperties.Any(x => x.Id == propId))
                 {
-                    car.OtherProperties.Add(db.OtherProperties.FirstOrDefault(x => x.Id == propId));
+                    car.OtherProperties.Add(await db.OtherProperties.FirstOrDefaultAsync(x => x.Id == propId));
                 }
             }
 
@@ -255,7 +303,7 @@ namespace CarShop.Services.Cars
             {
                 if (!car.ExteriorProperties.Any(x => x.Id == propId))
                 {
-                    car.ExteriorProperties.Add(db.ExteriorProperties.FirstOrDefault(x => x.Id == propId));
+                    car.ExteriorProperties.Add(await db.ExteriorProperties.FirstOrDefaultAsync(x => x.Id == propId));
                 }
             }
 
@@ -268,7 +316,7 @@ namespace CarShop.Services.Cars
             {
                 if (!car.InteriorProperties.Any(x => x.Id == propId))
                 {
-                    car.InteriorProperties.Add(db.InteriorProperties.FirstOrDefault(x => x.Id == propId));
+                    car.InteriorProperties.Add(await db.InteriorProperties.FirstOrDefaultAsync(x => x.Id == propId));
                 }
             }
 
@@ -281,7 +329,7 @@ namespace CarShop.Services.Cars
             {
                 if (!car.ProtectionProperties.Any(x => x.Id == propId))
                 {
-                    car.ProtectionProperties.Add(db.ProtectionProperties.FirstOrDefault(x => x.Id == propId));
+                    car.ProtectionProperties.Add(await db.ProtectionProperties.FirstOrDefaultAsync(x => x.Id == propId));
                 }
             }
 
@@ -294,7 +342,7 @@ namespace CarShop.Services.Cars
             {
                 if (!car.SpecialProperties.Any(x => x.Id == propId))
                 {
-                    car.SpecialProperties.Add(db.SpecialProperties.FirstOrDefault(x => x.Id == propId));
+                    car.SpecialProperties.Add(await db.SpecialProperties.FirstOrDefaultAsync(x => x.Id == propId));
                 }
             }
 
@@ -304,10 +352,10 @@ namespace CarShop.Services.Cars
                 .ForEach(p => car.SpecialProperties.Remove(p));
 
             db.Update(car);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             var car = db.Cars.Find(id);
 
@@ -323,92 +371,6 @@ namespace CarShop.Services.Cars
             }
 
             return true;
-        }
-
-        public string OwnerId(int carId)
-            => db.Cars.Find(carId).OwnerId;
-
-        public IEnumerable<CarListingServiceModel> SortCars(
-            IEnumerable<CarListingServiceModel> collection,
-            CarSorting sorting = CarSorting.Price,
-            SortingOrder sortingOrder = SortingOrder.Ascending)
-        {
-            var result = new List<CarListingServiceModel>();
-
-            if (sortingOrder is SortingOrder.Ascending)
-            {
-                result = sorting switch
-                {
-                    CarSorting.Year => collection.OrderBy(x => x.Year).ThenBy(x => x.Price).ToList(),
-                    CarSorting.Brand => collection.OrderBy(x => x.Brand).ThenBy(x => x.Price).ToList(),
-                    CarSorting.Price => collection.OrderBy(x => x.Price).ToList(),
-                    _ => result,
-                };
-            }
-            else
-            {
-                result = sorting switch
-                {
-                    CarSorting.Year => collection.OrderByDescending(x => x.Year).ThenByDescending(x => x.Price).ToList(),
-                    CarSorting.Brand => collection.OrderByDescending(x => x.Brand).ThenByDescending(x => x.Price).ToList(),
-                    CarSorting.Price => collection.OrderByDescending(x => x.Price).ToList(),
-                    _ => result,
-                };
-            }
-
-            return result;
-        }
-
-        public AllCarsServiceModel All(
-            int currentPage = 1,
-            int carsPerPage = 20,
-            string ownerId = null,
-            CarSearchServiceModel searchModel = null,
-            bool returnDeleted = false)
-        {
-            var query = searchModel is null ? this.db
-                .Cars
-                .AsQueryable() : this.Search(searchModel);
-
-            if (!returnDeleted)
-            {
-                query = query.Where(x => x.IsDeleted == false);
-            }
-
-            if (!string.IsNullOrWhiteSpace(ownerId))
-            {
-                query = query.Where(x => x.OwnerId == ownerId);
-            }
-
-            var totalCars = query.Count();
-
-            query = query
-                .OrderByDescending(x => x.Id)
-                .Skip((currentPage - 1) * carsPerPage)
-                .Take(carsPerPage);
-
-            return new AllCarsServiceModel()
-            {
-                TotalCars = totalCars,
-                Cars = query
-                        .Select(x => new CarListingServiceModel()
-                        {
-                            Id = x.Id,
-                            Brand = x.Brand.Name,
-                            Model = x.Model.Name,
-                            Modification = x.Modification,
-                            Price = x.Price,
-                            TravelledDistance = x.TravelledDistance,
-                            Year = x.ProduceYear,
-                            HorsePower = x.HorsePower,
-                            EngineType = x.EngineType.Name,
-                            ImageUrl = x.Image.Url,
-                            OwnerId = x.OwnerId,
-                            OwnerName = x.Owner.UserName,
-                            IsDeleted = x.IsDeleted
-                        })
-                        .ToList()
-            };
         }
 
         private IQueryable<Car> Search(CarSearchServiceModel model)
@@ -432,13 +394,13 @@ namespace CarShop.Services.Cars
             query = model.CoupeTypeId is null ? query : query.Where(x => x.CoupeTypeId == model.CoupeTypeId);
             query = model.MaxTravelledDistance is null ? query : query.Where(x => x.TravelledDistance <= model.MaxTravelledDistance);
 
-            model.SafetyProperties = model.SafetyProperties?.Any() == false ? null : model.SafetyProperties;
-            model.ComfortProperties = model.ComfortProperties?.Any() == false ? null : model.ComfortProperties;
-            model.OtherProperties = model.OtherProperties?.Any() == false ? null : model.OtherProperties;
-            model.ExteriorProperties = model.ExteriorProperties?.Any() == false ? null : model.ExteriorProperties;
-            model.InteriorProperties = model.InteriorProperties?.Any() == false ? null : model.InteriorProperties;
-            model.ProtectionProperties = model.ProtectionProperties?.Any() == false ? null : model.ProtectionProperties;
-            model.SpecialProperties = model.SpecialProperties?.Any() == false ? null : model.SpecialProperties;
+            //model.SafetyProperties = model.SafetyProperties?.Any() == false ? null : model.SafetyProperties;
+            //model.ComfortProperties = model.ComfortProperties?.Any() == false ? null : model.ComfortProperties;
+            //model.OtherProperties = model.OtherProperties?.Any() == false ? null : model.OtherProperties;
+            //model.ExteriorProperties = model.ExteriorProperties?.Any() == false ? null : model.ExteriorProperties;
+            //model.InteriorProperties = model.InteriorProperties?.Any() == false ? null : model.InteriorProperties;
+            //model.ProtectionProperties = model.ProtectionProperties?.Any() == false ? null : model.ProtectionProperties;
+            //model.SpecialProperties = model.SpecialProperties?.Any() == false ? null : model.SpecialProperties;
 
             query = model.SafetyProperties is null ? query : query.Where(x => x.SafetyProperties.Any(p => model.SafetyProperties.Any(m => m == p.Id)));
             query = model.ComfortProperties is null ? query : query.Where(x => x.ComfortProperties.Any(p => model.ComfortProperties.Any(m => m == p.Id)));
@@ -451,7 +413,5 @@ namespace CarShop.Services.Cars
             return query;
         }
 
-        public async Task<int> CarsCountAsync()
-            => await db.Cars.CountAsync(x => !x.IsDeleted);
     }
 }

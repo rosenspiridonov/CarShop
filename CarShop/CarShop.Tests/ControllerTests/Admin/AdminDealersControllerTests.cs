@@ -16,7 +16,7 @@ namespace CarShop.Tests.ControllerTests.Admin
             => MyController<DealersController>
                 .Instance(instance => instance
                     .WithUser(AdminRoleName))
-                .Calling(c => c.Requests())
+                .Calling(c => c.RequestsAsync())
                 .ShouldReturn()
                 .View(view => view
                     .WithModelOfType<List<DealerServiceModel>>());
@@ -38,7 +38,7 @@ namespace CarShop.Tests.ControllerTests.Admin
                         NormalizedName = DealerRoleName.ToUpper()
                     })
                     .WithUser(AdminRoleName))
-                .Calling(c => c.Requests(TestUser.Identifier))
+                .Calling(c => c.RequestsAsync(TestUser.Identifier))
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForHttpMethod(HttpMethod.Post))

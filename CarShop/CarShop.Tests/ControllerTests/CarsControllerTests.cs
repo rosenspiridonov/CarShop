@@ -17,7 +17,7 @@ namespace CarShop.Tests.ControllerTests
         public void SearchShouldReturnCorrectViewWithModel()
             => MyController<CarsController>
                 .Instance()
-                .Calling(c => c.Search())
+                .Calling(c => c.SearchAsync())
                 .ShouldReturn()
                 .View(view => view
                     .WithModelOfType<CarSearchServiceModel>());
@@ -29,7 +29,7 @@ namespace CarShop.Tests.ControllerTests
                     .WithUser(user => user
                         .WithIdentifier(TestUser.Identifier)
                         .InRole(DealerRoleName)))
-                .Calling(c => c.Create())
+                .Calling(c => c.CreateAsync())
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests(DealerRoleName + ", " + AdminRoleName))
@@ -45,7 +45,7 @@ namespace CarShop.Tests.ControllerTests
                     .WithUser(user => user
                         .WithIdentifier(TestUser.Identifier)
                         .InRole(DealerRoleName)))
-                .Calling(c => c.Create(ValidCarFormModel))
+                .Calling(c => c.CreateAsync(ValidCarFormModel))
                 .ShouldHave()
                 .ValidModelState()
                 .AndAlso()
@@ -56,7 +56,7 @@ namespace CarShop.Tests.ControllerTests
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect
-                    .To<CarsController>(c => c.Details(With.Any<int>())));
+                    .To<CarsController>(c => c.DetailsAsync(With.Any<int>())));
 
         [Fact]
         public void DetailsShouldReturnCorrectViewAndModel()
@@ -70,7 +70,7 @@ namespace CarShop.Tests.ControllerTests
                         PhoneNumber = "1234567890"
                     })
                     .WithUser())
-                .Calling(c => c.Details(TestCar.Id))
+                .Calling(c => c.DetailsAsync(TestCar.Id))
                 .ShouldReturn()
                 .View(view => view
                     .WithModelOfType<CarDetailsViewModel>());
@@ -81,7 +81,7 @@ namespace CarShop.Tests.ControllerTests
                 .Instance(instance => instance
                     .WithUser(DealerRoleName)
                     .WithData(TestCar))
-                .Calling(c => c.Edit(TestCar.Id))
+                .Calling(c => c.EditAsync(TestCar.Id))
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests(DealerRoleName + ", " + AdminRoleName))
@@ -96,7 +96,7 @@ namespace CarShop.Tests.ControllerTests
                 .Instance(instance => instance
                     .WithUser(DealerRoleName)
                     .WithData(TestCar))
-                .Calling(c => c.Edit(ValidCarFormModel))
+                .Calling(c => c.EditAsync(ValidCarFormModel))
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests(DealerRoleName + ", " + AdminRoleName)
@@ -111,13 +111,13 @@ namespace CarShop.Tests.ControllerTests
                 .Instance(instance => instance
                     .WithUser(DealerRoleName)
                     .WithData(TestCar))
-                .Calling(c => c.Delete(TestCar.Id))
+                .Calling(c => c.DeleteAsync(TestCar.Id))
                 .ShouldHave()
                 .ActionAttributes(attributes => attributes
                     .RestrictingForAuthorizedRequests(DealerRoleName + ", " + AdminRoleName))
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect
-                    .To<HomeController>(c => c.Index()));
+                    .To<HomeController>(c => c.IndexAsync()));
     }
 }

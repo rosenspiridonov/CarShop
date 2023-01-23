@@ -45,20 +45,20 @@ namespace CarShop.Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = UserRoleName)]
-        public IActionResult Become(DealerFormModel model)
+        public async Task<IActionResult> BecomeAsync(DealerFormModel model)
         {
             if (!ModelState.IsValid)
             {
                 return this.View(model);
             }
 
-            dealersService.ProcessRequest(this.User.GetId(), model.PhoneNumber);
+            await dealersService.ProcessRequestAsync(this.User.GetId(), model.PhoneNumber);
 
             return RedirectToAction("ThankYou", "Dealers");
         }
 
         [Authorize(Roles = DealerRoleName + ", " + AdminRoleName)]
-        public async Task<IActionResult> MyCars(
+        public async Task<IActionResult> MyCarsAsync(
                 string id, 
                 int page = 1, 
                 CarSorting sort = CarSorting.Year, 
@@ -78,7 +78,7 @@ namespace CarShop.Web.Controllers
                 return NotFound();
             }
 
-            var result = carsService.All(currentPage: page, carsPerPage: carsPerPage, ownerId: id, returnDeleted: false);
+            var result = await carsService.AllAsync(currentPage: page, carsPerPage: carsPerPage, ownerId: id, returnDeleted: false);
 
             result.Cars = carsService.SortCars(result.Cars, sort, order);
 

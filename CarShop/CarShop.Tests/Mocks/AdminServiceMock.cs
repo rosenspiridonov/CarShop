@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using CarShop.Web.Data;
 using CarShop.Web.Services.Admin;
@@ -15,7 +16,7 @@ namespace CarShop.Tests.Mocks
         {
         }
 
-        public override IEnumerable<DealerServiceModel> DealersPendingRequests()
+        public override async Task<IEnumerable<DealerServiceModel>> DealersPendingRequestsAsync()
         {
             return new List<DealerServiceModel>()
             {
@@ -29,7 +30,7 @@ namespace CarShop.Tests.Mocks
             };
         }
 
-        public override void ApproveDealer(string userId)
+        public override async Task ApproveDealerAsync(string userId)
         {
             // Do nothing
         }
