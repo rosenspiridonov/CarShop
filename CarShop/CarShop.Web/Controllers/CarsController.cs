@@ -28,6 +28,7 @@ namespace CarShop.Web.Controllers
             this.dealersService = dealersService;
         }
 
+        [ResponseCache(Duration = 1800, Location = ResponseCacheLocation.Client)]
         public async Task<IActionResult> AllAsync(
                 int page = 1,
                 CarSorting sorting = CarSorting.Price,
